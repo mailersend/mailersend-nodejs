@@ -1,14 +1,14 @@
 {
   "name": "mailersend",
   "version": "1.0.0",
-  "description": "",
+  "description": "Node.js helper module for MailerSend API",
   "main": "index.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/mailersend/mailersend-nodejs.git"
   },
   "keywords": [],
-  "author": "Node.js helper module for MailerSend API",
+  "author": "MailerSend",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/mailersend/mailersend-nodejs/issues"
