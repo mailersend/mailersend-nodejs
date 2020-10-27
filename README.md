@@ -71,4 +71,3 @@ The official documentation is at [https://developers.mailersend.com](https://dev
 # License
 
 [The MIT License (MIT)](LICENSE)
-https://api.mailersend.com/v1
