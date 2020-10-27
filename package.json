@@ -8,8 +8,8 @@
     "url": "git+https://github.com/mailersend/mailersend-nodejs.git"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "Node.js helper module for MailerSend API",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/mailersend/mailersend-nodejs/issues"
   },
