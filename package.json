@@ -1,0 +1,20 @@
+{
+  "name": "mailersend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mailersend/mailersend-nodejs.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mailersend/mailersend-nodejs/issues"
+  },
+  "homepage": "https://www.mailersend.com/",
+  "dependencies": {
+    "isomorphic-unfetch": "^3.1.0"
+  }
+}
