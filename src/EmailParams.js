@@ -8,6 +8,8 @@ module.exports = class EmailParams {
     this.subject = config.subject;
     this.html = config.html;
     this.text = config.text;
+    this.templateId = config.templateId;
+    this.variables = config.variables;
 
     return this;
   }
@@ -44,6 +46,18 @@ module.exports = class EmailParams {
 
   setText(text) {
     this.text = text;
+
+    return this;
+  }
+
+  setTemplateId(templateId) {
+    this.templateId = templateId;
+
+    return this;
+  }
+
+  setVariables(variables) {
+    this.variables = variables;
 
     return this;
   }

@@ -37,6 +37,8 @@ module.exports = class MailerSend {
         subject: emailParams.subject,
         text: emailParams.text,
         html: emailParams.html,
+        template_id: emailParams.templateId,
+        variables: emailParams.variables,
       }),
     });
   }
