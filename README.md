@@ -6,12 +6,13 @@ MailerSend Node.js SDK
 
 # Table of Contents
 
-* [Installation](#installation)
-* [Usage](#usage)
-* [Support and Feedback](#support-and-feedback)
-* [License](#license)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Support and Feedback](#support-and-feedback)
+- [License](#license)
 
 <a name="installation"></a>
+
 # Installation
 
 ## Setup
@@ -21,6 +22,7 @@ npm install mailersend
 ```
 
 <a name="usage"></a>
+
 # Usage
 
 Sending a basic email.
@@ -47,16 +49,55 @@ const emailParams = new EmailParams()
 mailersend.send(emailParams);
 ```
 
+Using Templates and variables.
+
+```js
+const Recipient = require("mailersend").Recipient;
+const EmailParams = require("mailersend").EmailParams;
+const MailerSend = require("mailersend");
+
+const mailersend = new MailerSend({
+  api_key: "key",
+});
+
+const recipients = [new Recipient("your@client.com", "Your Client")];
+const templateId = "template_Id";
+const variables = [
+  {
+    email: "your@client.com",
+    substitutions: [
+      //Each variable should be its own object
+      {
+        var: "name",
+        value: "Your Client",
+      },
+    ],
+  },
+];
+
+const emailParams = new EmailParams()
+  .setFrom("your@domain.com")
+  .setFromName("Your Name")
+  .setRecipients(recipients)
+  .setSubject("Subject")
+  .setTemplateId(templateId)
+  .setVariables(variables);
+
+mailersend.send(emailParams);
+```
+
 <a name="endpoints"></a>
+
 # Available endpoints
 
 | Feature group | Endpoint    | Available |
 | ------------- | ----------- | --------- |
-| Email         | `POST send` | ✅         |
+| Email         | `POST send` | ✅        |
 
-*If, at the moment, some endpoint is not available, please use `cURL` and other available tools to access it. [Refer to official API docs for more info](https://developers.mailersend.com/).*
+_If, at the moment, some endpoint is not available, please use `cURL` and other available tools to access it. [Refer to official API docs for more info](https://developers.mailersend.com/)._
 
 <a name="support-and-feedback"></a>
+
 # Support and Feedback
 
 In case you find any bugs, submit an issue directly here in GitHub.
@@ -68,6 +109,7 @@ If you have any troubles using our API or SDK free to contact our support by ema
 The official documentation is at [https://developers.mailersend.com](https://developers.mailersend.com)
 
 <a name="license"></a>
+
 # License
 
 [The MIT License (MIT)](LICENSE)
