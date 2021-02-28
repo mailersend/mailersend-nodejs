@@ -221,7 +221,7 @@ deleteRecipient (deletes a recipient)
 ```js
 mailersend.deleteRecipient("recipient_id")
   .then((response) => {
-    //if successfull, response will be b
+    //if successfull, response will be empty
     console.log(response);
   })
   .catch((err) => {
