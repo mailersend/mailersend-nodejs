@@ -94,10 +94,9 @@ mailersend.send(emailParams);
 getRecipients (returns all recipients from domain)
 
 ```js
-mailersend
-
-  .getRecipients({ limit: 11, page: 1 }) //Limit: default = 25, min = 10, max = 100
-  .then((response) => {
+mailersend.getRecipients({ 
+limit: 11, page: 1 //Limit: default = 25, min = 10, max = 100
+}).then((response) => {
     console.log(response.data);
   })
   .catch((err) => {
@@ -159,8 +158,7 @@ Content-Type: application/json
 getRecipient (returns recipient using the recipient Id)
 
 ```js
-mailersend
-  .getRecipient("recipient_id")
+mailersend.getRecipient("recipient_id")
   .then((response) => {
     console.log(response.data);
   })
@@ -221,8 +219,7 @@ Content-Type: application/json
 deleteRecipient (deletes a recipient)
 
 ```js
-mailersend
-  .deleteRecipient("recipient_id")
+mailersend.deleteRecipient("recipient_id")
   .then((response) => {
     //if successfull, response will be b
     console.log(response);
