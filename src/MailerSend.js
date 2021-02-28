@@ -1,21 +1,22 @@
 "use strict";
 
 const fetch = require("isomorphic-unfetch");
+const axios = require("axios");
+
+let headers = {
+  "X-Requested-With": "XMLHttpRequest",
+  "Content-type": "application/json",
+};
 
 module.exports = class MailerSend {
   constructor(config) {
     this.api_key = config.api_key;
     this.basePath = "https://api.mailersend.com/v1";
+    headers.Authorization = `Bearer ${this.api_key}`;
   }
 
   request(endpoint = "", options = {}) {
     const url = this.basePath + endpoint;
-
-    const headers = {
-      Authorization: `Bearer ${this.api_key}`,
-      "X-Requested-With": "XMLHttpRequest",
-      "Content-type": "application/json",
-    };
 
     const config = {
       headers,
@@ -25,6 +26,7 @@ module.exports = class MailerSend {
     return fetch(url, config);
   }
 
+  //EMAILS
   send(emailParams) {
     return this.request("/email", {
       method: "POST",
@@ -42,5 +44,37 @@ module.exports = class MailerSend {
         tags: emailParams.tags,
       }),
     });
+  }
+
+  //RECIPIENTS
+  async getRecipients(recipientParams) {
+    const response = await axios.get(this.basePath + "/recipients", {
+      headers,
+      params: {
+        page: recipientParams.page,
+        limit: recipientParams.limit,
+      },
+    });
+    return response.data;
+  }
+
+  async getRecipient(recipientId) {
+    const response = await axios.get(
+      this.basePath + "/recipients" + `/${recipientId}`,
+      {
+        headers,
+      }
+    );
+    return response.data;
+  }
+
+  async deleteRecipient(recipientId) {
+    const response = await axios.delete(
+      this.basePath + "/recipients" + `/${recipientId}`,
+      {
+        headers,
+      }
+    );
+    return response.data;
   }
 };
