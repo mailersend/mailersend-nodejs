@@ -10,6 +10,7 @@ module.exports = class EmailParams {
     this.text = config.text;
     this.templateId = config.templateId;
     this.variables = config.variables;
+    this.personalization = config.personalization;
     this.tags = config.tags;
 
     return this;
@@ -59,6 +60,12 @@ module.exports = class EmailParams {
 
   setVariables(variables) {
     this.variables = variables;
+
+    return this;
+  }
+
+  setPersonalization(personalization) {
+    this.personalization = personalization;
 
     return this;
   }
