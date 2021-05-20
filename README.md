@@ -337,7 +337,7 @@ Content-Type: application/json
 }
 ```
 
-pauseToken (Sets token status to "pause" to prevent sendings)
+pauseToken (Sets token status to "pause" to disable token)
 
 ```js
 mailersend
@@ -365,6 +365,62 @@ Content-Type: application/json
   "status": "pause",
   "created_at": "2020-06-10 10:10:15"
 }
+```
+
+unpauseToken (Sets token status to "unpause" to enable token)
+
+```js
+mailersend
+  .unpauseToken("token_id")
+  .then((response) => {
+    console.log(response);
+  })
+  .catch((err) => {
+    console.log(err.message);
+  });
+```
+
+response:
+
+```
+Response Code: 200 OK
+Response Headers:
+Content-Type: application/json
+```
+
+```json
+{
+  "id": "token_id",
+  "name": "Token",
+  "status": "unpause",
+  "created_at": "2020-06-10 10:10:15"
+}
+```
+
+deleteToken (Deletes Token)
+
+```js
+mailersend
+  .deleteToken("token_id")
+  .then((response) => {
+    console.log(response.status);
+  })
+  .catch((err) => {
+    console.log(err.message);
+  });
+```
+
+response:
+
+```
+Response Code: 200 OK
+Response Body: [EMPTY]
+```
+
+Error:
+
+```json
+Request failed with status code 404
 ```
 
 <a name="endpoints"></a>
