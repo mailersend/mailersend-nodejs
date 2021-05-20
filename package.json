@@ -1,6 +1,6 @@
 {
   "name": "mailersend",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Node.js helper module for MailerSend API",
   "main": "index.js",
   "repository": {
@@ -15,6 +15,7 @@
   },
   "homepage": "https://www.mailersend.com/",
   "dependencies": {
+    "axios": "^0.21.1",
     "isomorphic-unfetch": "^3.1.0"
   }
 }

@@ -8,6 +8,7 @@ MailerSend Node.js SDK
 
 - [Installation](#installation)
 - [Usage](#usage)
+- [Recipients](#recipients)
 - [Support and Feedback](#support-and-feedback)
 - [License](#license)
 
@@ -86,13 +87,165 @@ const emailParams = new EmailParams()
 mailersend.send(emailParams);
 ```
 
+<a name="recipients"></a>
+
+# Recipients
+
+getRecipients (returns all recipients from domain)
+
+```js
+mailersend.getRecipients({ 
+limit: 11, page: 1 //Limit: default = 25, min = 10, max = 100
+}).then((response) => {
+    console.log(response.data);
+  })
+  .catch((err) => {
+    console.log(err);
+  });
+```
+
+response:
+
+```
+Response Code: 200 OK
+Response Headers:
+Content-Type: application/json
+```
+
+```json
+{
+  "data": [
+    {
+      "id": "5ee0b174b251345e407c92dc",
+      "email": "dsanford@example.net",
+      "created_at": "2020-06-10 10:09:56",
+      "updated_at": "2020-06-10 10:09:56",
+      "deleted_at": ""
+    },
+    {
+      "id": "5ee0b174b251345e407c92dd",
+      "email": "konopelski.nina@example.com",
+      "created_at": "2020-06-10 10:09:56",
+      "updated_at": "2020-06-10 10:09:56",
+      "deleted_at": ""
+    },
+    {
+      "id": "5ee0b174b251345e407c92de",
+      "email": "hester.howe@example.net",
+      "created_at": "2020-06-10 10:09:56",
+      "updated_at": "2020-06-10 10:09:56",
+      "deleted_at": ""
+    }
+  ],
+  "links": {
+    "first": "https://www.mailersend.io/api/v1/recipients?page=1",
+    "last": "https://www.mailersend.io/api/v1/recipients?page=1",
+    "prev": null,
+    "next": null
+  },
+  "meta": {
+    "current_page": 1,
+    "from": 1,
+    "last_page": 1,
+    "path": "https://www.mailersend.io/api/v1/recipients",
+    "per_page": 25,
+    "to": 3,
+    "total": 3
+  }
+}
+```
+
+getRecipient (returns recipient using the recipient Id)
+
+```js
+mailersend.getRecipient("recipient_id")
+  .then((response) => {
+    console.log(response.data);
+  })
+  .catch((err) => {
+    console.log(err);
+  });
+```
+
+response:
+
+```
+Response Code: 200 OK
+Response Headers:
+Content-Type: application/json
+```
+
+```json
+{
+  "data": {
+    "id": "5ee0b185b251345e407c938e",
+    "email": "hauck.sincere@example.net",
+    "created_at": "2020-06-10 10:10:13",
+    "updated_at": "2020-06-10 10:10:13",
+    "deleted_at": "",
+    "emails": [],
+    "domain": {
+      "id": "2j6xej",
+      "name": "example.org",
+      "dkim": true,
+      "spf": true,
+      "mx": false,
+      "tracking": false,
+      "is_verified": true,
+      "is_cname_verified": false,
+      "is_dns_active": true,
+      "is_cname_active": false,
+      "is_tracking_allowed": false,
+      "has_not_queued_messages": false,
+      "not_queued_messages_count": 0,
+      "domain_settings": {
+        "send_paused": false,
+        "track_clicks": true,
+        "track_opens": true,
+        "track_unsubscribe": true,
+        "track_unsubscribe_html": "<p>Click here to <a href=\"{$unsubscribe}\">unsubscribe</a></p>",
+        "track_unsubscribe_plain": "Click here to unsubscribe: {$unsubscribe}",
+        "track_content": true,
+        "custom_tracking_enabled": false,
+        "custom_tracking_subdomain": "email"
+      },
+      "created_at": "2020-06-10 10:10:13",
+      "updated_at": "2020-06-10 10:10:13"
+    }
+  }
+}
+```
+
+deleteRecipient (deletes a recipient)
+
+```js
+mailersend.deleteRecipient("recipient_id")
+  .then((response) => {
+    //if successfull, response will be empty
+    console.log(response);
+  })
+  .catch((err) => {
+    console.log(err.message);
+  });
+```
+
+Response
+
+```
+Response Code: 200 OK
+Response Body: [EMPTY]
+```
+
 <a name="endpoints"></a>
 
 # Available endpoints
 
-| Feature group | Endpoint    | Available |
-| ------------- | ----------- | --------- |
-| Email         | `POST send` | ✅        |
+| Feature group | Endpoint                 | Available |
+| ------------- | ------------------------ | --------- |
+| Email         | `POST send`              | ✅        |
+| Recipients    | `GET getRecipients`      | ✅        |
+| Recipients    | `GET getRecipient`       | ✅        |
+| Recipients    | `DELETE deleteRecipient` | ✅        |
 
 _If, at the moment, some endpoint is not available, please use `cURL` and other available tools to access it. [Refer to official API docs for more info](https://developers.mailersend.com/)._
 
