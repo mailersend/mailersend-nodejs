@@ -5,11 +5,15 @@ module.exports = class EmailParams {
     this.from = config.from;
     this.fromName = config.fromName;
     this.recipients = config.recipients;
+    this.cc = config.cc;
+    this.bcc = config.bcc;
+    this.attachments = config.attachments;
     this.subject = config.subject;
     this.html = config.html;
     this.text = config.text;
     this.templateId = config.templateId;
     this.variables = config.variables;
+    this.personalization = config.personalization;
     this.tags = config.tags;
 
     return this;
@@ -29,6 +33,24 @@ module.exports = class EmailParams {
 
   setRecipients(recipients) {
     this.recipients = recipients;
+
+    return this;
+  }
+
+  setAttachments(attachments) {
+    this.attachments = attachments;
+
+    return this;
+  }
+
+  setCc(cc) {
+    this.cc = cc;
+
+    return this;
+  }
+
+  setBcc(bcc) {
+    this.bcc = bcc;
 
     return this;
   }
@@ -59,6 +81,12 @@ module.exports = class EmailParams {
 
   setVariables(variables) {
     this.variables = variables;
+
+    return this;
+  }
+
+  setPersonalization(personalization) {
+    this.personalization = personalization;
 
     return this;
   }
