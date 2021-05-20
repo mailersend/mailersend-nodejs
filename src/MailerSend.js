@@ -36,6 +36,7 @@ module.exports = class MailerSend {
         to: emailParams.recipients,
         cc: emailParams.cc,
         bcc: emailParams.bcc,
+        attachments: emailParams.attachments,
         subject: emailParams.subject,
         text: emailParams.text,
         html: emailParams.html,
