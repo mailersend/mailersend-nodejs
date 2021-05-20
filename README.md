@@ -50,7 +50,7 @@ const emailParams = new EmailParams()
 mailersend.send(emailParams);
 ```
 
-Using Templates and variables.
+Using Simple Personalization (Variables in templates).
 
 ```js
 const Recipient = require("mailersend").Recipient;
@@ -79,12 +79,55 @@ const variables = [
 const emailParams = new EmailParams()
   .setFrom("your@domain.com")
   .setFromName("Your Name")
-  .setRecipients(recipients)
   .setSubject("Subject")
+  .setRecipients(recipients)
   .setTemplateId(templateId)
   .setVariables(variables);
 
 mailersend.send(emailParams);
+
+//setFrom, setFromName & setSubject are not neccessary if you added default settings to your template
+```
+
+Using Advanced Personalization:
+
+```js
+const Recipient = require("mailersend").Recipient;
+const EmailParams = require("mailersend").EmailParams;
+const MailerSend = require("mailersend");
+
+const mailersend = new MailerSend({
+  api_key: "key",
+});
+
+const recipients = [new Recipient("your@client.com", "Your Client")];
+const templateId = "template_Id";
+const personalization = [
+  {
+    email: "test@mailersend.com",
+    data: {
+      var: "value",
+      boolean: true,
+      object: {
+        key: "object-value",
+      },
+      number: 2,
+      array: [1, 2, 3],
+    },
+  },
+];
+
+const emailParams = new EmailParams()
+  .setFrom("your@domain.com")
+  .setFromName("Your Name")
+  .setSubject("Subject")
+  .setRecipients(recipients)
+  .setTemplateId(templateId)
+  .setPersonalization(personalization);
+
+mailersend.send(emailParams);
+
+//setFrom, setFromName & setSubject are not neccessary if you added default settings to your template
 ```
 
 <a name="recipients"></a>
@@ -94,9 +137,12 @@ mailersend.send(emailParams);
 getRecipients (returns all recipients from domain)
 
 ```js
-mailersend.getRecipients({ 
-limit: 11, page: 1 //Limit: default = 25, min = 10, max = 100
-}).then((response) => {
+mailersend
+  .getRecipients({
+    limit: 11,
+    page: 1, //Limit: default = 25, min = 10, max = 100
+  })
+  .then((response) => {
     console.log(response.data);
   })
   .catch((err) => {
@@ -158,7 +204,8 @@ Content-Type: application/json
 getRecipient (returns recipient using the recipient Id)
 
 ```js
-mailersend.getRecipient("recipient_id")
+mailersend
+  .getRecipient("recipient_id")
   .then((response) => {
     console.log(response.data);
   })
@@ -219,7 +266,8 @@ Content-Type: application/json
 deleteRecipient (deletes a recipient)
 
 ```js
-mailersend.deleteRecipient("recipient_id")
+mailersend
+  .deleteRecipient("recipient_id")
   .then((response) => {
     //if successfull, response will be empty
     console.log(response);
@@ -236,6 +284,89 @@ Response Code: 200 OK
 Response Body: [EMPTY]
 ```
 
+<a name="tokens"></a>
+
+# Tokens
+
+createToken (Creates a token for the domain you specify)
+
+```js
+mailersend
+  .createToken({
+    name: "Token Name",
+    scopes: ["email_full"],
+    domain_id: "domain_id",
+  })
+  .then((response) => {
+    console.log(response);
+  })
+  .catch((err) => {
+    console.log(err);
+  });
+```
+
+Possible Scopes:
+
+```json
+[
+  "email_full",
+  "domains_read",
+  "domains_full",
+  "activity_read",
+  "activity_full",
+  "analytics_read",
+  "analytics_full",
+  "tokens_full"
+]
+```
+
+response:
+
+```
+Response Code: 200 OK
+Response Headers:
+Content-Type: application/json
+```
+
+```json
+{
+  "id": "token_id",
+  "accessToken": "[redacted]",
+  "name": "Token Name",
+  "created_at": "2020-06-10 10:10:14"
+}
+```
+
+pauseToken (Sets token status to "pause" to prevent sendings)
+
+```js
+mailersend
+  .pauseToken("token_id")
+  .then((response) => {
+    console.log(response);
+  })
+  .catch((err) => {
+    console.log(err.message);
+  });
+```
+
+response:
+
+```
+Response Code: 200 OK
+Response Headers:
+Content-Type: application/json
+```
+
+```json
+{
+  "id": "token_id",
+  "name": "Token",
+  "status": "pause",
+  "created_at": "2020-06-10 10:10:15"
+}
+```
+
 <a name="endpoints"></a>
 
 # Available endpoints
@@ -246,6 +377,10 @@ Response Body: [EMPTY]
 | Recipients    | `GET getRecipients`      | ✅        |
 | Recipients    | `GET getRecipient`       | ✅        |
 | Recipients    | `DELETE deleteRecipient` | ✅        |
+| Tokens        | `POST createToken`       | ✅        |
+| Tokens        | `PUT pauseToken`         | ✅        |
+| Tokens        | `PUT unpauseToken`       | ✅        |
+| Tokens        | `DELETE deleteToken`     | ✅        |
 
 _If, at the moment, some endpoint is not available, please use `cURL` and other available tools to access it. [Refer to official API docs for more info](https://developers.mailersend.com/)._
 
