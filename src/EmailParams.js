@@ -5,6 +5,8 @@ module.exports = class EmailParams {
     this.from = config.from;
     this.fromName = config.fromName;
     this.recipients = config.recipients;
+    this.cc = config.cc;
+    this.bcc = config.bcc;
     this.subject = config.subject;
     this.html = config.html;
     this.text = config.text;
@@ -30,6 +32,18 @@ module.exports = class EmailParams {
 
   setRecipients(recipients) {
     this.recipients = recipients;
+
+    return this;
+  }
+
+  setCc(cc) {
+    this.cc = cc;
+
+    return this;
+  }
+
+  setBcc(bcc) {
+    this.bcc = bcc;
 
     return this;
   }
