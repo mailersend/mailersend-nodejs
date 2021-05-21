@@ -8,9 +8,9 @@ let headers = {
   "Content-type": "application/json",
 };
 
-const checkTokenId = (token_id) => {
-  if (!token_id) {
-    let err = new Error("Please provide a valid token_id");
+const checkParam = (param) => {
+  if (!param) {
+    let err = new Error("Please provide a valid value");
     throw err;
   }
 };
@@ -165,7 +165,7 @@ module.exports = class MailerSend {
   //Unpause Token
   async unpauseToken(token_id) {
     //Check if token_id was provided
-    checkTokenId(token_id);
+    checkParam(token_id);
 
     const response = await axios.delete(
       `${this.basePath}/token/${token_id}/settings`,
@@ -180,14 +180,42 @@ module.exports = class MailerSend {
     return response.data;
   }
 
+  //Delete Token
   async deleteToken(token_id) {
     //Check if token_id was provided
-    checkTokenId(token_id);
+    checkParam(token_id);
 
     const response = await axios.delete(`${this.basePath}/token/${token_id}`, {
       headers,
     });
 
     return response;
+  }
+
+  //MESSAGES
+
+  //Get List of Messages
+  async getMessages(messagesParams) {
+    const response = await axios.get(this.basePath + "/messages", {
+      headers,
+      params: {
+        page: messagesParams.page,
+        limit: messagesParams.limit,
+      },
+    });
+    return response.data;
+  }
+
+  //Get Single Message info
+  async getMessage(message_id) {
+    //Check if message ID was provided
+    checkParam(message_id);
+
+    const response = await axios.get(
+      this.basePath + `/messages/${message_id}`,
+      { headers }
+    );
+
+    return response.data;
   }
 };
