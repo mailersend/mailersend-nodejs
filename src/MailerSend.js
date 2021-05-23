@@ -68,4 +68,30 @@ module.exports = class MailerSend {
     );
     return response.data;
   }
+
+  // TOKENS
+  createToken2(createTokenParams) {
+    return axios.post(this.basePath + "/token", {
+      name: createTokenParams.name,
+      domain_id: createTokenParams.domain_id,
+      scopes: createTokenParams.scopes,
+    }, {
+      headers,
+    });
+  }
+
+  updateToken2(updateTokenParams) {
+    return axios.put(`${this.basePath}/token/${updateTokenParams.token_id}/settings`, {
+      status: updateTokenParams.status,
+    }, {
+      headers,
+    });
+  }
+
+  deleteToken2(deleteTokenParams) {
+    return axios.delete(`${this.basePath}/token/${deleteTokenParams.token_id}`, {
+      headers,
+    });
+  }
+
 };
