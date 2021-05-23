@@ -1,6 +1,5 @@
 "use strict";
 
-const fetch = require("isomorphic-unfetch");
 const axios = require("axios");
 
 let headers = {
@@ -22,38 +21,26 @@ module.exports = class MailerSend {
     headers.Authorization = `Bearer ${this.api_key}`;
   }
 
-  request(endpoint = "", options = {}) {
-    const url = this.basePath + endpoint;
-
-    const config = {
-      headers,
-      ...options,
-    };
-
-    return fetch(url, config);
-  }
-
   //EMAILS
   send(emailParams) {
-    return this.request("/email", {
-      method: "POST",
-      body: JSON.stringify({
-        from: {
-          email: emailParams.from,
-          name: emailParams.fromName,
-        },
-        to: emailParams.recipients,
-        cc: emailParams.cc,
-        bcc: emailParams.bcc,
-        attachments: emailParams.attachments,
-        subject: emailParams.subject,
-        text: emailParams.text,
-        html: emailParams.html,
-        template_id: emailParams.templateId,
-        variables: emailParams.variables,
-        personalization: emailParams.personalization,
-        tags: emailParams.tags,
-      }),
+    return axios.post(this.basePath + "/email", {
+      from: {
+        email: emailParams.from,
+        name: emailParams.fromName,
+      },
+      to: emailParams.recipients,
+      cc: emailParams.cc,
+      bcc: emailParams.bcc,
+      attachments: emailParams.attachments,
+      subject: emailParams.subject,
+      text: emailParams.text,
+      html: emailParams.html,
+      template_id: emailParams.templateId,
+      variables: emailParams.variables,
+      personalization: emailParams.personalization,
+      tags: emailParams.tags,
+    }, {
+      headers
     });
   }
 
@@ -217,5 +204,30 @@ module.exports = class MailerSend {
     );
 
     return response.data;
+  }
+  
+  // TOKENS
+  createToken2(createTokenParams) {
+    return axios.post(this.basePath + "/token", {
+      name: createTokenParams.name,
+      domain_id: createTokenParams.domain_id,
+      scopes: createTokenParams.scopes,
+    }, {
+      headers,
+    });
+  }
+
+  updateToken2(updateTokenParams) {
+    return axios.put(`${this.basePath}/token/${updateTokenParams.token_id}/settings`, {
+      status: updateTokenParams.status,
+    }, {
+      headers,
+    });
+  }
+
+  deleteToken2(deleteTokenParams) {
+    return axios.delete(`${this.basePath}/token/${deleteTokenParams.token_id}`, {
+      headers,
+    });
   }
 };
