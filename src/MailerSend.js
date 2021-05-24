@@ -7,13 +7,6 @@ let headers = {
   "Content-type": "application/json",
 };
 
-const checkParam = (param) => {
-  if (!param) {
-    let err = new Error("Please provide a valid value");
-    throw err;
-  }
-};
-
 module.exports = class MailerSend {
   constructor(config) {
     this.api_key = config.api_key;
@@ -174,7 +167,9 @@ module.exports = class MailerSend {
   //Get Single Message info
   async getMessage(message_id) {
     //Check if message ID was provided
-    checkParam(message_id);
+    if (!message_id) {
+      throw new Error("Please provide a valid message_id");
+    }
 
     const response = await axios.get(
       this.basePath + `/messages/${message_id}`,
