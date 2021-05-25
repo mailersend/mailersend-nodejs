@@ -15,7 +15,8 @@
   },
   "homepage": "https://www.mailersend.com/",
   "dependencies": {
-    "axios": "^0.21.1"
+    "axios": "^0.21.1",
+    "isomorphic-unfetch": "^3.1.0"
   },
   "devDependencies": {
     "dotenv": "^9.0.2"

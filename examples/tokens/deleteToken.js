@@ -11,6 +11,8 @@ const mailersend = new MailerSend({
 
 mailersend.deleteToken({
   token_id: "xxx"
-}).then((response) => {
-  console.log(response.data);
-});
+})
+  .then(response => response.json())
+  .then(data => {
+    console.log(data);
+  });

@@ -10,11 +10,11 @@ const mailersend = new MailerSend({
 });
 
 const recipients = [
-  new Recipient("your@client.com", "Your Client")
+  new Recipient("arunas@smala.lt", "Your Client")
 ];
 
 const emailParams = new EmailParams()
-      .setFrom("your@domain.com")
+      .setFrom("arunas@smala.lt")
       .setFromName("Your Name")
       .setRecipients(recipients)
       .setSubject("Subject")
