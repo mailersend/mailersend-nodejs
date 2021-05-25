@@ -27,12 +27,12 @@ npm install mailersend
 ### Send an email
 
 ```js
-const Recipient = require("../../src/Recipient");
-const EmailParams = require("../../src/EmailParams");
-const MailerSend = require("../../src/MailerSend");
+const Recipient = require("mailersend").Recipient;
+const EmailParams = require("mailersend").EmailParams;
+const MailerSend = require("mailersend");
 
 const mailersend = new MailerSend({
-    api_key: process.env.API_KEY,
+    api_key: "key",
 });
 
 const recipients = [
@@ -53,12 +53,12 @@ mailersend.send(emailParams);
 ### Add CC, BCC recipients
 
 ```js
-const Recipient = require("../../src/Recipient");
-const EmailParams = require("../../src/EmailParams");
-const MailerSend = require("../../src/MailerSend");
+const Recipient = require("mailersend").Recipient;
+const EmailParams = require("mailersend").EmailParams;
+const MailerSend = require("mailersend");
 
 const mailersend = new MailerSend({
-  api_key: process.env.API_KEY,
+    api_key: "key",
 });
 
 const recipients = [
@@ -87,12 +87,12 @@ mailersend.send(emailParams);
 ### Send a templated-email
 
 ```js
-const Recipient = require("../../src/Recipient");
-const EmailParams = require("../../src/EmailParams");
-const MailerSend = require("../../src/MailerSend");
+const Recipient = require("mailersend").Recipient;
+const EmailParams = require("mailersend").EmailParams;
+const MailerSend = require("mailersend");
 
 const mailersend = new MailerSend({
-  api_key: process.env.API_KEY,
+    api_key: "key",
 });
 
 const recipients = [
@@ -112,12 +112,12 @@ mailersend.send(emailParams);
 ### Advanced personalization
 
 ```js
-const Recipient = require("../../src/Recipient");
-const EmailParams = require("../../src/EmailParams");
-const MailerSend = require("../../src/MailerSend");
+const Recipient = require("mailersend").Recipient;
+const EmailParams = require("mailersend").EmailParams;
+const MailerSend = require("mailersend");
 
 const mailersend = new MailerSend({
-    api_key: process.env.API_KEY,
+    api_key: "key",
 });
 
 const recipients = [
@@ -148,12 +148,12 @@ mailersend.send(emailParams);
 ### Simple personalization
 
 ```js
-const Recipient = require("../../src/Recipient");
-const EmailParams = require("../../src/EmailParams");
-const MailerSend = require("../../src/MailerSend");
+const Recipient = require("mailersend").Recipient;
+const EmailParams = require("mailersend").EmailParams;
+const MailerSend = require("mailersend");
 
 const mailersend = new MailerSend({
-    api_key: process.env.API_KEY,
+    api_key: "key",
 });
 
 const recipients = [
@@ -189,13 +189,13 @@ mailersend.send(emailParams);
 ```js
 const fs = require('fs');
 
-const Recipient = require("../../src/Recipient");
-const Attachment = require("../../src/Attachment");
-const EmailParams = require("../../src/EmailParams");
-const MailerSend = require("../../src/MailerSend");
+const Recipient = require("mailersend").Recipient;
+const EmailParams = require("mailersend").EmailParams;
+const Attachment = require("mailersend").Attachment;
+const MailerSend = require("mailersend");
 
 const mailersend = new MailerSend({
-    api_key: process.env.API_KEY,
+    api_key: "key",
 });
 
 const recipients = [
@@ -223,10 +223,10 @@ mailersend.send(emailParams);
 ### Create a token
 
 ```js
-const MailerSend = require("../../src/MailerSend");
+const MailerSend = require("mailersend");
 
 const mailersend = new MailerSend({
-  api_key: process.env.API_KEY,
+    api_key: "key",
 });
 
 mailersend.createToken({
@@ -253,10 +253,10 @@ mailersend.createToken({
 ### Update token
 
 ```js
-const MailerSend = require("../../src/MailerSend");
+const MailerSend = require("mailersend");
 
 const mailersend = new MailerSend({
-  api_key: process.env.API_KEY,
+    api_key: "key",
 });
 
 mailersend.updateToken({
@@ -272,10 +272,10 @@ mailersend.updateToken({
 ### Delete token
 
 ```js
-const MailerSend = require("../../src/MailerSend");
+const MailerSend = require("mailersend");
 
 const mailersend = new MailerSend({
-  api_key: process.env.API_KEY,
+    api_key: "key",
 });
 
 mailersend.deleteToken({
@@ -293,10 +293,10 @@ mailersend.deleteToken({
 ### Get activity list
 
 ```js
-const MailerSend = require("../../src/MailerSend");
+const MailerSend = require("mailersend");
 
 const mailersend = new MailerSend({
-  api_key: process.env.API_KEY,
+    api_key: "key",
 });
 
 mailersend.activityList({
@@ -311,10 +311,10 @@ mailersend.activityList({
 ### Get activity data by date
 
 ```js
-const MailerSend = require("../../src/MailerSend");
+const MailerSend = require("mailersend");
 
 const mailersend = new MailerSend({
-  api_key: process.env.API_KEY,
+    api_key: "key",
 });
 
 mailersend.activityByDate({
@@ -331,10 +331,10 @@ mailersend.activityByDate({
 ### Opens by country
 
 ```js
-const MailerSend = require("../../src/MailerSend");
+const MailerSend = require("mailersend");
 
 const mailersend = new MailerSend({
-  api_key: process.env.API_KEY,
+    api_key: "key",
 });
 
 mailersend.activityByCountry({
@@ -350,10 +350,10 @@ mailersend.activityByCountry({
 ### Oppens by user-agent
 
 ```js
-const MailerSend = require("../../src/MailerSend");
+const MailerSend = require("mailersend");
 
 const mailersend = new MailerSend({
-  api_key: process.env.API_KEY,
+    api_key: "key",
 });
 
 mailersend.activityByUserAgent({
@@ -369,10 +369,10 @@ mailersend.activityByUserAgent({
 ### Opens by reading environment
 
 ```js
-const MailerSend = require("../../src/MailerSend");
+const MailerSend = require("mailersend");
 
 const mailersend = new MailerSend({
-  api_key: process.env.API_KEY,
+    api_key: "key",
 });
 
 mailersend.activityByReadingEnvironment({
@@ -391,10 +391,10 @@ mailersend.activityByReadingEnvironment({
 ### Get domain list
 
 ```js
-const MailerSend = require("../../src/MailerSend");
+const MailerSend = require("mailersend");
 
 const mailersend = new MailerSend({
-  api_key: process.env.API_KEY,
+    api_key: "key",
 });
 
 mailersend.domainList({
@@ -408,10 +408,10 @@ mailersend.domainList({
 ### Get domain
 
 ```js
-const MailerSend = require("../../src/MailerSend");
+const MailerSend = require("mailersend");
 
 const mailersend = new MailerSend({
-  api_key: process.env.API_KEY,
+    api_key: "key",
 });
 
 mailersend.domain({
@@ -426,10 +426,10 @@ mailersend.domain({
 ### Delete domain
 
 ```js
-const MailerSend = require("../../src/MailerSend");
+const MailerSend = require("mailersend");
 
 const mailersend = new MailerSend({
-  api_key: process.env.API_KEY,
+    api_key: "key",
 });
 
 mailersend.deleteDomain({
@@ -444,10 +444,10 @@ mailersend.deleteDomain({
 ### Get recipients per domain
 
 ```js
-const MailerSend = require("../../src/MailerSend");
+const MailerSend = require("mailersend");
 
 const mailersend = new MailerSend({
-  api_key: process.env.API_KEY,
+    api_key: "key",
 });
 
 mailersend.domainRecipients({
@@ -462,10 +462,10 @@ mailersend.domainRecipients({
 ### Update domain settings
 
 ```js
-const MailerSend = require("../../src/MailerSend");
+const MailerSend = require("mailersend");
 
 const mailersend = new MailerSend({
-  api_key: process.env.API_KEY,
+    api_key: "key",
 });
 
 mailersend.domainSettings({
@@ -484,10 +484,10 @@ mailersend.domainSettings({
 ### Get a list of messages
 
 ```js
-const MailerSend = require("../../src/MailerSend");
+const MailerSend = require("mailersend");
 
 const mailersend = new MailerSend({
-  api_key: process.env.API_KEY,
+    api_key: "key",
 });
 
 mailersend.messagesList()
@@ -500,10 +500,10 @@ mailersend.messagesList()
 ### Get info on a message
 
 ```js
-const MailerSend = require("../../src/MailerSend");
+const MailerSend = require("mailersend");
 
 const mailersend = new MailerSend({
-  api_key: process.env.API_KEY,
+    api_key: "key",
 });
 
 mailersend.message({
@@ -521,10 +521,10 @@ mailersend.message({
 ### Get recipients
 
 ```js
-const MailerSend = require("../../src/MailerSend");
+const MailerSend = require("mailersend");
 
 const mailersend = new MailerSend({
-  api_key: process.env.API_KEY,
+    api_key: "key",
 });
 
 mailersend.recipientsList()
@@ -537,10 +537,10 @@ mailersend.recipientsList()
 ### Get single recipient
 
 ```js
-const MailerSend = require("../../src/MailerSend");
+const MailerSend = require("mailersend");
 
 const mailersend = new MailerSend({
-  api_key: process.env.API_KEY,
+    api_key: "key",
 });
 
 mailersend.recipient({
@@ -555,10 +555,10 @@ mailersend.recipient({
 ### Delete recipient
 
 ```js
-const MailerSend = require("../../src/MailerSend");
+const MailerSend = require("mailersend");
 
 const mailersend = new MailerSend({
-  api_key: process.env.API_KEY,
+    api_key: "key",
 });
 
 mailersend.deleteRecipient({
@@ -572,10 +572,10 @@ mailersend.deleteRecipient({
 ### List webhooks
 
 ```js
-const MailerSend = require("../../src/MailerSend");
+const MailerSend = require("mailersend");
 
 const mailersend = new MailerSend({
-  api_key: process.env.API_KEY,
+    api_key: "key",
 });
 
 mailersend.webhooksList({
@@ -590,10 +590,10 @@ mailersend.webhooksList({
 ### Get webhook
 
 ```js
-const MailerSend = require("../../src/MailerSend");
+const MailerSend = require("mailersend");
 
 const mailersend = new MailerSend({
-  api_key: process.env.API_KEY,
+    api_key: "key",
 });
 
 mailersend.webhook({
@@ -608,10 +608,10 @@ mailersend.webhook({
 ### Create webhook
 
 ```js
-const MailerSend = require("../../src/MailerSend");
+const MailerSend = require("mailersend");
 
 const mailersend = new MailerSend({
-  api_key: process.env.API_KEY,
+    api_key: "key",
 });
 
 mailersend.createWebhook({
@@ -629,10 +629,10 @@ mailersend.createWebhook({
 ### Update webhook
 
 ```js
-const MailerSend = require("../../src/MailerSend");
+const MailerSend = require("mailersend");
 
 const mailersend = new MailerSend({
-  api_key: process.env.API_KEY,
+    api_key: "key",
 });
 
 mailersend.updateWebhook({
@@ -648,10 +648,10 @@ mailersend.updateWebhook({
 ### Delete webhook
 
 ```js
-const MailerSend = require("../../src/MailerSend");
+const MailerSend = require("mailersend");
 
 const mailersend = new MailerSend({
-  api_key: process.env.API_KEY,
+    api_key: "key",
 });
 
 mailersend.deleteWebhook({
