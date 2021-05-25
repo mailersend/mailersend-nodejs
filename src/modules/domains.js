@@ -30,4 +30,13 @@ module.exports = {
       params: queryParams
     });
   },
+
+  domainSettings(params) {
+    const { domain_id, queryParams } = params
+
+    return this.request(`/domains/${domain_id}/settings`, {
+      method: "PUT",
+      params: queryParams
+    });
+  },
 }
