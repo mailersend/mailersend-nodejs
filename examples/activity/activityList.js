@@ -10,7 +10,9 @@ const mailersend = new MailerSend({
 });
 
 mailersend.activityList({
-  domain_id: "xxx",
-}).then((response) => {
-  console.log(response.data);
-});
+  domain_id: "m0p7kx4x7l9yjre2",
+})
+  .then(response => response.json())
+  .then(data => {
+    console.log(data);
+  });
