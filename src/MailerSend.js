@@ -43,7 +43,6 @@ module.exports = class MailerSend {
     let queryString = serializeQuery(params)
     queryString = queryString ? `?${queryString}` : ''
 
-    console.log(this.basePath + endpoint + queryString)
     return fetch(this.basePath + endpoint + queryString, {
       method,
 
