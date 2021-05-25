@@ -21,4 +21,11 @@ module.exports = {
       params
     });
   },
+
+  activityByUserAgent(params) {
+    return this.request("/analytics/ua-name", {
+      method: "GET",
+      params
+    });
+  },
 }
