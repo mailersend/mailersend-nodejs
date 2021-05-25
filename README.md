@@ -12,8 +12,6 @@ MailerSend Node.js SDK
 - [Support and Feedback](#support-and-feedback)
 - [License](#license)
 
-<a name="installation"></a>
-
 # Installation
 
 ## Setup
@@ -21,8 +19,6 @@ MailerSend Node.js SDK
 ```bash
 npm install mailersend
 ```
-
-<a name="usage"></a>
 
 # Usage
 
@@ -297,26 +293,96 @@ mailersend.deleteToken({
 ### Get activity list
 
 ```js
+const MailerSend = require("../../src/MailerSend");
+
+const mailersend = new MailerSend({
+  api_key: process.env.API_KEY,
+});
+
+mailersend.activityList({
+  domain_id: "xxx",
+})
+  .then(response => response.json())
+  .then(data => {
+    console.log(data);
+  });
 ```
 
 ### Get activity data by date
 
 ```js
+const MailerSend = require("../../src/MailerSend");
+
+const mailersend = new MailerSend({
+  api_key: process.env.API_KEY,
+});
+
+mailersend.activityByDate({
+  date_from: 1443651141,
+  date_to: 2443651141,
+  event: ["processed"]
+})
+  .then(response => response.json())
+  .then(data => {
+    console.log(data);
+  });
 ```
 
 ### Opens by country
 
 ```js
+const MailerSend = require("../../src/MailerSend");
+
+const mailersend = new MailerSend({
+  api_key: process.env.API_KEY,
+});
+
+mailersend.activityByCountry({
+  date_from: 1443651141,
+  date_to: 2443651141
+})
+  .then(response => response.json())
+  .then(data => {
+    console.log(data);
+  });
 ```
 
 ### Oppens by user-agent
 
 ```js
+const MailerSend = require("../../src/MailerSend");
+
+const mailersend = new MailerSend({
+  api_key: process.env.API_KEY,
+});
+
+mailersend.activityByUserAgent({
+  date_from: 1443651141,
+  date_to: 2443651141
+})
+  .then(response => response.json())
+  .then(data => {
+    console.log(data);
+  });
 ```
 
 ### Opens by reading environment
 
 ```js
+const MailerSend = require("../../src/MailerSend");
+
+const mailersend = new MailerSend({
+  api_key: process.env.API_KEY,
+});
+
+mailersend.activityByReadingEnvironment({
+  date_from: 1443651141,
+  date_to: 2443651141
+})
+  .then(response => response.json())
+  .then(data => {
+    console.log(data);
+  });
 ```
 
 
@@ -325,26 +391,91 @@ mailersend.deleteToken({
 ### Get domain list
 
 ```js
+const MailerSend = require("../../src/MailerSend");
+
+const mailersend = new MailerSend({
+  api_key: process.env.API_KEY,
+});
+
+mailersend.domainList({
+})
+  .then(response => response.json())
+  .then(data => {
+    console.log(data);
+  });
 ```
 
 ### Get domain
 
 ```js
+const MailerSend = require("../../src/MailerSend");
+
+const mailersend = new MailerSend({
+  api_key: process.env.API_KEY,
+});
+
+mailersend.domain({
+  domain_id: 'xxx'
+})
+  .then(response => response.json())
+  .then(data => {
+    console.log(data);
+  });
 ```
 
 ### Delete domain
 
 ```js
+const MailerSend = require("../../src/MailerSend");
+
+const mailersend = new MailerSend({
+  api_key: process.env.API_KEY,
+});
+
+mailersend.deleteDomain({
+  domain_id: 'xxx'
+})
+  .then(response => response.json())
+  .then(data => {
+    console.log(data);
+  });
 ```
 
 ### Get recipients per domain
 
 ```js
+const MailerSend = require("../../src/MailerSend");
+
+const mailersend = new MailerSend({
+  api_key: process.env.API_KEY,
+});
+
+mailersend.domainRecipients({
+  domain_id: 'xxx'
+})
+  .then(response => response.json())
+  .then(data => {
+    console.log(data);
+  });
 ```
 
 ### Update domain settings
 
 ```js
+const MailerSend = require("../../src/MailerSend");
+
+const mailersend = new MailerSend({
+  api_key: process.env.API_KEY,
+});
+
+mailersend.domainSettings({
+  domain_id: 'xxx',
+  send_paused: false
+})
+  .then(response => response.json())
+  .then(data => {
+    console.log(data);
+  });
 ```
 
 
@@ -353,11 +484,35 @@ mailersend.deleteToken({
 ### Get a list of messages
 
 ```js
+const MailerSend = require("../../src/MailerSend");
+
+const mailersend = new MailerSend({
+  api_key: process.env.API_KEY,
+});
+
+mailersend.messagesList()
+  .then(response => response.json())
+  .then(data => {
+    console.log(data);
+  });
 ```
 
 ### Get info on a message
 
 ```js
+const MailerSend = require("../../src/MailerSend");
+
+const mailersend = new MailerSend({
+  api_key: process.env.API_KEY,
+});
+
+mailersend.message({
+  message_id: 'xxx'
+})
+  .then(response => response.json())
+  .then(data => {
+    console.log(data);
+  });
 ```
 
 
@@ -366,16 +521,49 @@ mailersend.deleteToken({
 ### Get recipients
 
 ```js
+const MailerSend = require("../../src/MailerSend");
+
+const mailersend = new MailerSend({
+  api_key: process.env.API_KEY,
+});
+
+mailersend.recipientsList()
+  .then(response => response.json())
+  .then(data => {
+    console.log(data);
+  });
 ```
 
 ### Get single recipient
 
 ```js
+const MailerSend = require("../../src/MailerSend");
+
+const mailersend = new MailerSend({
+  api_key: process.env.API_KEY,
+});
+
+mailersend.recipient({
+  recipient_id: 'xxx'
+})
+  .then(response => response.json())
+  .then(data => {
+    console.log(data);
+  });
 ```
 
 ### Delete recipient
 
 ```js
+const MailerSend = require("../../src/MailerSend");
+
+const mailersend = new MailerSend({
+  api_key: process.env.API_KEY,
+});
+
+mailersend.deleteRecipient({
+  recipient_id: 'xxx'
+});
 ```
 
 
@@ -384,29 +572,92 @@ mailersend.deleteToken({
 ### List webhooks
 
 ```js
+const MailerSend = require("../../src/MailerSend");
+
+const mailersend = new MailerSend({
+  api_key: process.env.API_KEY,
+});
+
+mailersend.webhooksList({
+  domain_id: "xxx"
+})
+  .then(response => response.json())
+  .then(data => {
+    console.log(data);
+  });
 ```
 
 ### Get webhook
 
 ```js
+const MailerSend = require("../../src/MailerSend");
+
+const mailersend = new MailerSend({
+  api_key: process.env.API_KEY,
+});
+
+mailersend.webhook({
+  webhook_id: 'xxx'
+})
+  .then(response => response.json())
+  .then(data => {
+    console.log(data);
+  });
 ```
 
 ### Create webhook
 
 ```js
+const MailerSend = require("../../src/MailerSend");
+
+const mailersend = new MailerSend({
+  api_key: process.env.API_KEY,
+});
+
+mailersend.createWebhook({
+  url: "https://example.com",
+  name: "Webhook name",
+  events: ["activity.sent"],
+  domain_id: "xxx"
+})
+  .then(response => response.json())
+  .then(data => {
+    console.log(data);
+  });
 ```
 
 ### Update webhook
 
 ```js
+const MailerSend = require("../../src/MailerSend");
+
+const mailersend = new MailerSend({
+  api_key: process.env.API_KEY,
+});
+
+mailersend.updateWebhook({
+  webhook_id: "xxx",
+  name: "New name"
+})
+  .then(response => response.json())
+  .then(data => {
+    console.log(data);
+  });
 ```
 
 ### Delete webhook
 
 ```js
-```
+const MailerSend = require("../../src/MailerSend");
 
-<a name="support-and-feedback"></a>
+const mailersend = new MailerSend({
+  api_key: process.env.API_KEY,
+});
+
+mailersend.deleteWebhook({
+  webhook_id: 'xxx'
+});
+```
 
 # Support and Feedback
 
@@ -417,8 +668,6 @@ You are welcome to create SDK for any other programming language.
 If you have any troubles using our API or SDK free to contact our support by email [info@mailersend.com](mailto:info@mailersend.com)
 
 The official documentation is at [https://developers.mailersend.com](https://developers.mailersend.com)
-
-<a name="license"></a>
 
 # License
 

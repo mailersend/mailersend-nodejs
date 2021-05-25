@@ -9,4 +9,4 @@ const mailersend = new MailerSend({
 
 mailersend.deleteRecipient({
   recipient_id: 'xxx'
-})
+});

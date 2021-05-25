@@ -9,4 +9,4 @@ const mailersend = new MailerSend({
 
 mailersend.deleteWebhook({
   webhook_id: 'xxx'
-})
+});
