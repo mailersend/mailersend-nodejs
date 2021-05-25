@@ -21,4 +21,13 @@ module.exports = {
       method: "DELETE"
     });
   },
+
+  domainRecipients(params) {
+    const { domain_id, queryParams } = params
+
+    return this.request(`/domains/${domain_id}/recipients`, {
+      method: "GET",
+      params: queryParams
+    });
+  },
 }
