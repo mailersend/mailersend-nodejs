@@ -1,11 +1,17 @@
 module.exports = {
   activityList(params) {
     const { domain_id, ...queryParams } = params
-    let queryString = new URLSearchParams(queryParams).toString()
-    queryString = queryString ? `?${queryString}` : ''
 
-    return this.request(`/activity/${domain_id}${queryString}`, {
+    return this.request(`/activity/${domain_id}`, {
       method: "GET",
+      params: queryParams
+    });
+  },
+
+  activityByDate(params) {
+    return this.request("/analytics/date", {
+      method: "GET",
+      params
     });
   },
 }

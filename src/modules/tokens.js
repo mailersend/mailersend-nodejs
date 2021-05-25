@@ -42,7 +42,7 @@ module.exports = {
 
     return this.request("/token", {
       method: "POST",
-      body: JSON.stringify(createTokenParams)
+      body: createTokenParams
     });
   },
 
@@ -59,9 +59,9 @@ module.exports = {
 
     return this.request(`/token/${token_id}/settings`, {
       method: "PUT",
-      body: JSON.stringify({
+      body: {
         status: status,
-      })
+      }
     });
   },
 

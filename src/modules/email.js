@@ -2,7 +2,7 @@ module.exports = {
   send(emailParams) {
     return this.request("/email", {
       method: "POST",
-      body: JSON.stringify({
+      body: {
         from: {
           email: emailParams.from,
           name: emailParams.fromName,
@@ -18,7 +18,7 @@ module.exports = {
         variables: emailParams.variables,
         personalization: emailParams.personalization,
         tags: emailParams.tags,
-      })
+      }
     });
   }
 }

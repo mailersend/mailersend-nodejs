@@ -1,5 +1,23 @@
 "use strict";
 
+function serializeQuery(params, prefix) {
+  const query = Object.keys(params).map((key) => {
+    const value  = params[key];
+
+    if (params.constructor === Array)
+      key = `${prefix}[]`;
+    else if (params.constructor === Object)
+      key = (prefix ? `${prefix}[${key}]` : key);
+
+    if (typeof value === 'object')
+      return serializeQuery(value, key);
+    else
+      return `${key}=${encodeURIComponent(value)}`;
+  });
+
+  return [].concat.apply([], query).join('&')
+}
+
 const fetch = require("isomorphic-unfetch");
 
 const email = require("./modules/email.js");
@@ -20,20 +38,24 @@ module.exports = class MailerSend {
   }
 
   request(endpoint = "", options = {}) {
-    const url = this.basePath + endpoint;
+    const { headers = {}, method = 'GET', body = null, params = {}} = options
 
-    const headers = {
-      Authorization: `Bearer ${this.api_key}`,
-      "X-Requested-With": "XMLHttpRequest",
-      "Content-type": "application/json",
-    };
+    let queryString = serializeQuery(params)
+    queryString = queryString ? `?${queryString}` : ''
 
-    const config = {
-      headers,
-      ...options,
-    };
+    console.log(this.basePath + endpoint + queryString)
+    return fetch(this.basePath + endpoint + queryString, {
+      method,
 
-    return fetch(url, config);
+      headers: {
+        ...headers,
+        Authorization: `Bearer ${this.api_key}`,
+        "X-Requested-With": "XMLHttpRequest",
+        "Content-type": "application/json",
+      },
+
+      body: body && JSON.stringify(body)
+    });
   }
 
   //RECIPIENTS
