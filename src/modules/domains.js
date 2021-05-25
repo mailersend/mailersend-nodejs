@@ -13,4 +13,12 @@ module.exports = {
       method: "GET"
     });
   },
+
+  deleteDomain(params) {
+    const { domain_id } = params
+
+    return this.request(`/domains/${domain_id}`, {
+      method: "DELETE"
+    });
+  },
 }
