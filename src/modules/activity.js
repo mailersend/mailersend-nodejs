@@ -22,8 +22,8 @@ module.exports = {
     });
   },
 
-  activityByUserAgent(params) {
-    return this.request("/analytics/ua-name", {
+  activityByReadingEnvironment(params) {
+    return this.request("/analytics/ua-type", {
       method: "GET",
       params
     });
