@@ -23,6 +23,7 @@ const fetch = require("isomorphic-unfetch");
 const email = require("./modules/email.js");
 const tokens = require("./modules/tokens.js");
 const activity = require("./modules/activity.js");
+const domains = require("./modules/domains.js");
 
 let headers = {
   "X-Requested-With": "XMLHttpRequest",
@@ -34,7 +35,7 @@ module.exports = class MailerSend {
     this.basePath = "https://api.mailersend.com/v1";
     headers.Authorization = `Bearer ${this.api_key}`;
 
-    return Object.assign(this, email, tokens, activity)
+    return Object.assign(this, email, tokens, activity, domains)
   }
 
   request(endpoint = "", options = {}) {
