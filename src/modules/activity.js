@@ -14,4 +14,11 @@ module.exports = {
       params
     });
   },
+
+  activityByCountry(params) {
+    return this.request("/analytics/country", {
+      method: "GET",
+      params
+    });
+  },
 }
