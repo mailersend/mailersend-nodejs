@@ -7,10 +7,47 @@ MailerSend Node.js SDK
 # Table of Contents
 
 - [Installation](#installation)
+  * [Setup](#setup)
 - [Usage](#usage)
-- [Recipients](#recipients)
+  * [Email](#email)
+    + [Send an email](#send-an-email)
+    + [Add CC, BCC recipients](#add-cc--bcc-recipients)
+    + [Send a template-based email](#send-a-template-based-email)
+    + [Advanced personalization](#advanced-personalization)
+    + [Simple personalization](#simple-personalization)
+    + [Send email with attachment](#send-email-with-attachment)
+  * [Tokens](#tokens)
+    + [Create a token](#create-a-token)
+    + [Update token](#update-token)
+    + [Delete token](#delete-token)
+  * [Activity](#activity)
+    + [Get activity list](#get-activity-list)
+    + [Get activity data by date](#get-activity-data-by-date)
+    + [Opens by country](#opens-by-country)
+    + [Oppens by user-agent](#oppens-by-user-agent)
+    + [Opens by reading environment](#opens-by-reading-environment)
+  * [Domains](#domains)
+    + [Get domain list](#get-domain-list)
+    + [Get domain](#get-domain)
+    + [Delete domain](#delete-domain)
+    + [Get recipients per domain](#get-recipients-per-domain)
+    + [Update domain settings](#update-domain-settings)
+  * [Messages](#messages)
+    + [Get a list of messages](#get-a-list-of-messages)
+    + [Get info on a message](#get-info-on-a-message)
+  * [Recipients](#recipients)
+    + [Get recipients](#get-recipients)
+    + [Get single recipient](#get-single-recipient)
+    + [Delete recipient](#delete-recipient)
+  * [Webhooks](#webhooks)
+    + [List webhooks](#list-webhooks)
+    + [Get webhook](#get-webhook)
+    + [Create webhook](#create-webhook)
+    + [Update webhook](#update-webhook)
+    + [Delete webhook](#delete-webhook)
 - [Support and Feedback](#support-and-feedback)
 - [License](#license)
+
 
 # Installation
 
@@ -84,7 +121,7 @@ const emailParams = new EmailParams()
 mailersend.send(emailParams);
 ```
 
-### Send a templated-email
+### Send a template-based email
 
 ```js
 const Recipient = require("mailersend").Recipient;
