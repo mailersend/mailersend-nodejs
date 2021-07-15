@@ -24,23 +24,23 @@ MailerSend Node.js SDK
     + [Get activity list](#get-activity-list)
     + [Get activity data by date](#get-activity-data-by-date)
     + [Opens by country](#opens-by-country)
-    + [Oppens by user-agent](#oppens-by-user-agent)
+    + [Opens by user-agent](#opens-by-user-agent)
     + [Opens by reading environment](#opens-by-reading-environment)
   * [Domains](#domains)
-    + [Get domain list](#get-domain-list)
+    + [Get a list of domains](#get-a-list-of-domains)
     + [Get domain](#get-domain)
     + [Delete domain](#delete-domain)
-    + [Get recipients per domain](#get-recipients-per-domain)
+    + [Get a list of recipients per domain](#get-a-list-of-recipients-per-domain)
     + [Update domain settings](#update-domain-settings)
   * [Messages](#messages)
     + [Get a list of messages](#get-a-list-of-messages)
     + [Get info on a message](#get-info-on-a-message)
   * [Recipients](#recipients)
-    + [Get recipients](#get-recipients)
+    + [Get a list of recipients](#get-a-list-of-recipients)
     + [Get single recipient](#get-single-recipient)
     + [Delete recipient](#delete-recipient)
   * [Webhooks](#webhooks)
-    + [List webhooks](#list-webhooks)
+    + [Get a list of webhooks](#get-a-list-of-webhooks)
     + [Get webhook](#get-webhook)
     + [Create webhook](#create-webhook)
     + [Update webhook](#update-webhook)
@@ -384,7 +384,7 @@ mailersend.activityByCountry({
   });
 ```
 
-### Oppens by user-agent
+### Opens by user-agent
 
 ```js
 const MailerSend = require("mailersend");
@@ -425,7 +425,7 @@ mailersend.activityByReadingEnvironment({
 
 ## Domains
 
-### Get domain list
+### Get a list of domains
 
 ```js
 const MailerSend = require("mailersend");
@@ -478,7 +478,7 @@ mailersend.deleteDomain({
   });
 ```
 
-### Get recipients per domain
+### Get a list of recipients per domain
 
 ```js
 const MailerSend = require("mailersend");
@@ -555,7 +555,7 @@ mailersend.message({
 
 ## Recipients
 
-### Get recipients
+### Get a list of recipients
 
 ```js
 const MailerSend = require("mailersend");
@@ -606,7 +606,7 @@ mailersend.deleteRecipient({
 
 ## Webhooks
 
-### List webhooks
+### Get a list of webhooks
 
 ```js
 const MailerSend = require("mailersend");
