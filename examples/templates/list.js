@@ -7,8 +7,7 @@ const mailersend = new MailerSend({
     api_key: process.env.API_KEY,
 });
 
-mailersend.templateList({
-})
+mailersend.templateList()
 .then(response => response.json())
 .then(data => {
     console.log(data);
