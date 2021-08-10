@@ -1,5 +1,5 @@
 module.exports = {
-    templateList(params) {
+    templateList(params = {}) {
       return this.request("/templates", {
         method: "GET",
         params

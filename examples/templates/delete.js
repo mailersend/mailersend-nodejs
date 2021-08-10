@@ -1,7 +1,7 @@
 "use strict";
 require('dotenv').config()
 
-const MailerSend = require("mailersend");
+const MailerSend = require("../../src/MailerSend");
 
 const mailersend = new MailerSend({
     api_key: process.env.API_KEY,
@@ -9,7 +9,4 @@ const mailersend = new MailerSend({
 
 mailersend.deleteTemplate({
     template_id: 'xxx'
-})
-.then(response => {
-    console.log(response);
 });

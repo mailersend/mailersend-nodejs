@@ -41,8 +41,8 @@ MailerSend Node.js SDK
     + [Delete recipient](#delete-recipient)
   * [Templates](#templates)
     + [Get a list of templates](#get-a-list-of-templates)
-    + [Get template](#get-template)
-    + [Delete template](#delete-template)
+    + [Get a single template](#get-a-single-template)
+    + [Delete a template](#delete-a-template)
   * [Webhooks](#webhooks)
     + [Get a list of webhooks](#get-a-list-of-webhooks)
     + [Get webhook](#get-webhook)
@@ -617,15 +617,14 @@ const mailersend = new MailerSend({
     api_key: "key",
 });
 
-mailersend.templateList({
-})
+mailersend.templateList()
   .then(response => response.json())
   .then(data => {
     console.log(data);
   });
 ```
 
-### Get template
+### Get a single template
 
 ```js
 const MailerSend = require("mailersend");
@@ -643,7 +642,7 @@ mailersend.template({
   });
 ```
 
-### Delete template
+### Delete a template
 
 ```js
 const MailerSend = require("mailersend");
@@ -654,10 +653,7 @@ const mailersend = new MailerSend({
 
 mailersend.deleteTemplate({
   template_id: 'xxx'
-})
-  .then(response => {
-    console.log(response);
-  });
+});
 ```
 
 ## Webhooks
