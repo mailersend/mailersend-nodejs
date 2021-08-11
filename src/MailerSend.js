@@ -7,6 +7,7 @@ const activity = require("./modules/activity.js");
 const domains = require("./modules/domains.js");
 const messages = require("./modules/messages.js");
 const recipients = require("./modules/recipients.js");
+const templates = require("./modules/templates.js");
 const webhooks = require("./modules/webhooks.js");
 
 let headers = {
@@ -28,6 +29,7 @@ module.exports = class MailerSend {
       domains,
       messages,
       recipients,
+      templates,
       webhooks,
     )
   }
