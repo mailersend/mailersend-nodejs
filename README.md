@@ -39,6 +39,7 @@ MailerSend Node.js SDK
     + [Get a list of recipients](#get-a-list-of-recipients)
     + [Get single recipient](#get-single-recipient)
     + [Delete recipient](#delete-recipient)
+    + [Add recipients to a suppression list](#add-recipients-to-a-suppression-list)
   * [Templates](#templates)
     + [Get a list of templates](#get-a-list-of-templates)
     + [Get a single template](#get-a-single-template)
@@ -606,6 +607,89 @@ mailersend.deleteRecipient({
   recipient_id: 'xxx'
 });
 ```
+
+### Add recipients to a suppression list
+
+#### Blocklist
+```js
+const MailerSend = require("mailersend");
+
+const mailersend = new MailerSend({
+    api_key: "key",
+});
+
+mailersend.addRecipientsToBlocklist({
+  domain_id: 'xxx',
+  recipients: [
+    "test@example.com"
+  ]
+})
+  .then(response => response.json())
+  .then(data => {
+    console.log(data);
+  });
+```
+
+#### Hard Bounces
+```js
+const MailerSend = require("mailersend");
+
+const mailersend = new MailerSend({
+    api_key: "key",
+});
+
+mailersend.addRecipientsToHardBounces({
+  domain_id: 'xxx',
+  recipients: [
+    "test@example.com"
+  ]
+})
+  .then(response => response.json())
+  .then(data => {
+    console.log(data);
+  });
+```
+
+#### Spam Complaints
+```js
+const MailerSend = require("mailersend");
+
+const mailersend = new MailerSend({
+    api_key: "key",
+});
+
+mailersend.addRecipientsToSpamComplaints({
+  domain_id: 'xxx',
+  recipients: [
+    "test@example.com"
+  ]
+})
+  .then(response => response.json())
+  .then(data => {
+    console.log(data);
+  });
+```
+
+#### Unsubscribe
+```js
+const MailerSend = require("mailersend");
+
+const mailersend = new MailerSend({
+    api_key: "key",
+});
+
+mailersend.addRecipientsToUnsubscribeList({
+  domain_id: 'xxx',
+  recipients: [
+    "test@example.com"
+  ]
+})
+  .then(response => response.json())
+  .then(data => {
+    console.log(data);
+  });
+```
+
 ## Templates
 
 ### Get a list of templates

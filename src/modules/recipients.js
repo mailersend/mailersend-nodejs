@@ -21,4 +21,32 @@ module.exports = {
       method: "DELETE"
     });
   },
+
+  addRecipientsToBlocklist(params) {
+    return this.request(`/suppressions/blocklist`, {
+      method: "POST",
+      params
+    });
+  },
+
+  addRecipientsToHardBounces(params) {
+    return this.request(`/suppressions/hard-bounces`, {
+      method: "POST",
+      params
+    });
+  },
+
+  addRecipientsToSpamComplaints(params) {
+    return this.request(`/suppressions/spam-complaints`, {
+      method: "POST",
+      params
+    });
+  },
+
+  addRecipientsToUnsubscribeList(params) {
+    return this.request(`/suppressions/unsubscribes`, {
+      method: "POST",
+      params
+    });
+  },
 }
