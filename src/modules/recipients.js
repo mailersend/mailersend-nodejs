@@ -77,4 +77,32 @@ module.exports = {
       params
     });
   },
+
+  deleteRecipientsFromBlocklist(params) {
+    return this.request(`/suppressions/blocklist`, {
+      method: "DELETE",
+      params
+    });
+  },
+
+  deleteRecipientsFromHardBounceList(params) {
+    return this.request(`/suppressions/hard-bounces`, {
+      method: "DELETE",
+      params
+    });
+  },
+
+  deleteRecipientsFromSpamComplaintList(params) {
+    return this.request(`/suppressions/spam-complaints`, {
+      method: "DELETE",
+      params
+    });
+  },
+
+  deleteRecipientsFromUnsubscribeList(params) {
+    return this.request(`/suppressions/unsubscribes`, {
+      method: "DELETE",
+      params
+    });
+  },
 }
