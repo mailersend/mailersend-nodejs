@@ -7,7 +7,7 @@ const mailersend = new MailerSend({
   api_key: process.env.API_KEY,
 });
 
-mailersend.addRecipientsToHardBounces({
+mailersend.addRecipientsToSpamComplaintList({
   domain_id: 'xxx',
   recipients: [
     "test@example.com"

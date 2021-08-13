@@ -29,14 +29,14 @@ module.exports = {
     });
   },
 
-  addRecipientsToHardBounces(params) {
+  addRecipientsToHardBounceList(params) {
     return this.request(`/suppressions/hard-bounces`, {
       method: "POST",
       params
     });
   },
 
-  addRecipientsToSpamComplaints(params) {
+  addRecipientsToSpamComplaintList(params) {
     return this.request(`/suppressions/spam-complaints`, {
       method: "POST",
       params

@@ -638,7 +638,7 @@ const mailersend = new MailerSend({
     api_key: "key",
 });
 
-mailersend.addRecipientsToHardBounces({
+mailersend.addRecipientsToHardBounceList({
   domain_id: 'xxx',
   recipients: [
     "test@example.com"
@@ -658,7 +658,7 @@ const mailersend = new MailerSend({
     api_key: "key",
 });
 
-mailersend.addRecipientsToSpamComplaints({
+mailersend.addRecipientsToSpamComplaintList({
   domain_id: 'xxx',
   recipients: [
     "test@example.com"
