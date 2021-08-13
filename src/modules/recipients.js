@@ -49,4 +49,32 @@ module.exports = {
       params
     });
   },
+
+  getRecipientsFromBlocklist(params) {
+    return this.request(`/suppressions/blocklist`, {
+      method: "GET",
+      params
+    });
+  },
+
+  getRecipientsFromHardBounceList(params) {
+    return this.request(`/suppressions/hard-bounces`, {
+      method: "GET",
+      params
+    });
+  },
+
+  getRecipientsFromSpamComplaintList(params) {
+    return this.request(`/suppressions/spam-complaints`, {
+      method: "GET",
+      params
+    });
+  },
+
+  getRecipientsFromUnsubscribeList(params) {
+    return this.request(`/suppressions/unsubscribes`, {
+      method: "GET",
+      params
+    });
+  },
 }
