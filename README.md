@@ -562,6 +562,7 @@ mailersend.getDNS({
     console.log(data);
   });
 ```
+
 ### Verify a domain 
 
 ```js
