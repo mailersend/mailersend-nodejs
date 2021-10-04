@@ -32,6 +32,9 @@ MailerSend Node.js SDK
     + [Delete domain](#delete-domain)
     + [Get a list of recipients per domain](#get-a-list-of-recipients-per-domain)
     + [Update domain settings](#update-domain-settings)
+    + [Add a domain](#add-a-domain)
+    + [Get DNS records](#get-dns-records)
+    + [Verify a domain](#verify-a-domain)
   * [Messages](#messages)
     + [Get a list of messages](#get-a-list-of-messages)
     + [Get info on a message](#get-info-on-a-message)
@@ -521,7 +524,62 @@ mailersend.domainSettings({
     console.log(data);
   });
 ```
+### Add a domain 
 
+```js
+const MailerSend = require("mailersend");
+
+const mailersend = new MailerSend({
+    api_key: "key",
+});
+
+mailersend.addDomain({
+    name: "example.com",
+    return_path_subdomain: "rp_subdomain",
+    custom_tracking_subdomain: "ct_subdomain",
+    inbound_routing_subdomain: "ir_subdomain",
+  })
+  .then((response) => response.json())
+  .then((data) => {
+    console.log(data);
+  });
+```
+
+### Get DNS records 
+
+```js
+const MailerSend = require("mailersend");
+
+const mailersend = new MailerSend({
+    api_key: "key",
+});
+
+mailersend.getDNS({
+    domain_id: "xxx",
+  })
+  .then((response) => response.json())
+  .then((data) => {
+    console.log(data);
+  });
+```
+
+### Verify a domain 
+
+```js
+const MailerSend = require("mailersend");
+
+const mailersend = new MailerSend({
+    api_key: "key",
+});
+
+mailersend.verifyDomain({
+    domain_id: "xxx",
+  })
+  .then((response) => response.json())
+  .then((data) => {
+    console.log(data);
+  });
+```
 
 ## Messages
 
