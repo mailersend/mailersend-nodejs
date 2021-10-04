@@ -1,0 +1,30 @@
+export = EmailParams;
+declare class EmailParams {
+    constructor(config?: {});
+    from: any;
+    fromName: any;
+    recipients: any;
+    cc: any;
+    bcc: any;
+    attachments: any;
+    subject: any;
+    html: any;
+    text: any;
+    templateId: any;
+    variables: any;
+    personalization: any;
+    tags: any;
+    setFrom(from: any): import("./EmailParams");
+    setFromName(fromName: any): import("./EmailParams");
+    setRecipients(recipients: any): import("./EmailParams");
+    setAttachments(attachments: any): import("./EmailParams");
+    setCc(cc: any): import("./EmailParams");
+    setBcc(bcc: any): import("./EmailParams");
+    setSubject(subject: any): import("./EmailParams");
+    setHtml(html: any): import("./EmailParams");
+    setText(text: any): import("./EmailParams");
+    setTemplateId(templateId: any): import("./EmailParams");
+    setVariables(variables: any): import("./EmailParams");
+    setPersonalization(personalization: any): import("./EmailParams");
+    setTags(tags: any): import("./EmailParams");
+}
