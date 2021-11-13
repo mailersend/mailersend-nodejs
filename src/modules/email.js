@@ -10,6 +10,7 @@ module.exports = {
         to: emailParams.recipients,
         cc: emailParams.cc,
         bcc: emailParams.bcc,
+        reply_to: emailParams.reply_to,
         attachments: emailParams.attachments,
         subject: emailParams.subject,
         text: emailParams.text,
