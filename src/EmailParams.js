@@ -11,6 +11,7 @@ module.exports = class EmailParams {
     this.subject = config.subject;
     this.html = config.html;
     this.text = config.text;
+    this.replyTo = config.replyTo;
     this.templateId = config.templateId;
     this.variables = config.variables;
     this.personalization = config.personalization;
