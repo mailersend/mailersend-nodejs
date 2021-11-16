@@ -1,3 +1,5 @@
+const EmailObject = require("mailersend").EmailObject;
+
 module.exports = {
   send(emailParams) {
     let emailObject = new EmailObject(emailParams)

@@ -55,6 +55,12 @@ module.exports = class EmailParams {
     return this;
   }
 
+  setReplyTo(replyTo) {
+    this.replyTo = replyTo;
+
+    return this;
+  }
+
   setSubject(subject) {
     this.subject = subject;
 
