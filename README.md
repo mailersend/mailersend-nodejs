@@ -16,6 +16,7 @@ MailerSend Node.js SDK
     + [Advanced personalization](#advanced-personalization)
     + [Simple personalization](#simple-personalization)
     + [Send email with attachment](#send-email-with-attachment)
+    + [Send bulk emails and check status](#send-bulk-emails-and-check-status)
   * [Tokens](#tokens)
     + [Create a token](#create-a-token)
     + [Update token](#update-token)
@@ -263,6 +264,56 @@ const emailParams = new EmailParams()
       .setText("This is the text content");
 
 mailersend.send(emailParams);
+```
+
+### Send bulk emails and check status
+```js
+const Recipient = require("mailersend").Recipient;
+const EmailParams = require("mailersend").EmailParams;
+const BulkEmails = require("mailersend").BulkEmails;
+const MailerSend = require("mailersend");
+
+const mailersend = new MailerSend({
+  api_key: "key",
+});
+
+const bulkEmails = new BulkEmails();
+
+const recipients = [
+  new Recipient("your@client.com", "Your Client")
+];
+
+const emailParams = new EmailParams()
+  .setFrom("your@domain.com")
+  .setFromName("Your Name")
+  .setRecipients(recipients)
+  .setSubject("Subject")
+  .setHtml("This is the HTML content")
+  .setText("This is the text content");
+
+
+bulkEmails.addEmail(emailParams)
+bulkEmails.addEmails([
+  emailParams,
+  emailParams
+])
+
+mailersend.sendBulk(bulkEmails)
+  .then((response) => response.json())
+  .then((data) => {
+    console.log(data);
+
+    mailersend.getBulkEmailStatus(data)
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+      });
+  });
+```
+
+### Get bulk emails status
+```js
+
 ```
 
 ## Tokens
@@ -524,7 +575,7 @@ mailersend.domainSettings({
     console.log(data);
   });
 ```
-### Add a domain 
+### Add a domain
 
 ```js
 const MailerSend = require("mailersend");
@@ -545,7 +596,7 @@ mailersend.addDomain({
   });
 ```
 
-### Get DNS records 
+### Get DNS records
 
 ```js
 const MailerSend = require("mailersend");
@@ -563,7 +614,7 @@ mailersend.getDNS({
   });
 ```
 
-### Verify a domain 
+### Verify a domain
 
 ```js
 const MailerSend = require("mailersend");

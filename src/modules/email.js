@@ -1,24 +1,28 @@
 module.exports = {
   send(emailParams) {
+    let emailObject = new EmailObject(emailParams)
+
     return this.request("/email", {
       method: "POST",
-      body: {
-        from: {
-          email: emailParams.from,
-          name: emailParams.fromName,
-        },
-        to: emailParams.recipients,
-        cc: emailParams.cc,
-        bcc: emailParams.bcc,
-        attachments: emailParams.attachments,
-        subject: emailParams.subject,
-        text: emailParams.text,
-        html: emailParams.html,
-        template_id: emailParams.templateId,
-        variables: emailParams.variables,
-        personalization: emailParams.personalization,
-        tags: emailParams.tags,
-      }
+      body: emailObject.email
     });
-  }
+  },
+
+  sendBulk(bulkEmails) {
+    const emails = bulkEmails.emails;
+    bulkEmails.flush();
+
+    return this.request("/bulk-email", {
+      method: "POST",
+      body: emails
+    });
+  },
+
+  getBulkEmailStatus(params) {
+    const { bulk_email_id } = params
+
+    return this.request(`/bulk-email/${bulk_email_id}`, {
+      method: "GET"
+    });
+  },
 }
