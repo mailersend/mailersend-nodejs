@@ -311,11 +311,6 @@ mailersend.sendBulk(bulkEmails)
   });
 ```
 
-### Get bulk emails status
-```js
-
-```
-
 ## Tokens
 
 ### Create a token
