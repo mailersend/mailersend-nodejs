@@ -102,5 +102,4 @@ module.exports = class EmailParams {
 
     return this;
   }
-
 };
