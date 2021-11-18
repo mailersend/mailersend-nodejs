@@ -35,10 +35,4 @@ mailersend.sendBulk(bulkEmails)
   .then((response) => response.json())
   .then((data) => {
     console.log(data);
-
-    mailersend.getBulkEmailStatus(data)
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
-      });
   });

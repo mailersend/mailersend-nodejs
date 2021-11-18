@@ -308,40 +308,18 @@ mailersend.sendBulk(bulkEmails)
 
 ### Get bulk request status
 ```js
-const Recipient = require("mailersend").Recipient;
-const EmailParams = require("mailersend").EmailParams;
-const BulkEmails = require("mailersend").BulkEmails;
 const MailerSend = require("mailersend");
 
 const mailersend = new MailerSend({
   api_key: "key",
 });
 
-const bulkEmails = new BulkEmails();
-
-const recipients = [
-  new Recipient("your@client.com", "Your Client")
-];
-
-const emailParams = new EmailParams()
-  .setFrom("your@domain.com")
-  .setFromName("Your Name")
-  .setRecipients(recipients)
-  .setSubject("Subject")
-  .setHtml("This is the HTML content")
-  .setText("This is the text content");
-
-
-bulkEmails.addEmail(emailParams)
-
-mailersend.sendBulk(bulkEmails)
+mailersend.getBulkEmailRequestStatus({
+  bulk_email_id: 'xxx'
+})
   .then((response) => response.json())
   .then((data) => {
-    mailersend.getBulkEmailStatus(data)
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
-      });
+    console.log(data);
   });
 ```
 

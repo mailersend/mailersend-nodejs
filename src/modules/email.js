@@ -20,7 +20,7 @@ module.exports = {
     });
   },
 
-  getBulkEmailStatus(params) {
+  getBulkEmailRequestStatus(params) {
     const { bulk_email_id } = params
 
     return this.request(`/bulk-email/${bulk_email_id}`, {
