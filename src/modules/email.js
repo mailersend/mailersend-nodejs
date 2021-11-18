@@ -6,7 +6,7 @@ module.exports = {
 
     return this.request("/email", {
       method: "POST",
-      body: emailObject.email
+      body: emailObject.data
     });
   },
 

@@ -8,7 +8,7 @@ module.exports = class BulkEmails {
 
   addEmail(emailParams) {
     const emailObject = new EmailObject(emailParams)
-    this.emails.push(emailObject.email);
+    this.emails.push(emailObject.data);
   }
 
   addEmails(emailsParamsArray) {

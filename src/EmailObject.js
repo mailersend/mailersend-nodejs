@@ -2,7 +2,7 @@
 
 module.exports = class EmailObject {
   constructor(emailParams) {
-    this.email = {
+    this.data = {
       from: {
         email: emailParams.from,
         name: emailParams.fromName,
@@ -10,7 +10,7 @@ module.exports = class EmailObject {
       to: emailParams.recipients,
       cc: emailParams.cc,
       bcc: emailParams.bcc,
-      reply_to: emailParams.reply_to,
+      reply_to: emailParams.replyTo,
       attachments: emailParams.attachments,
       subject: emailParams.subject,
       text: emailParams.text,

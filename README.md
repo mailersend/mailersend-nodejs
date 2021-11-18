@@ -16,7 +16,8 @@ MailerSend Node.js SDK
     + [Advanced personalization](#advanced-personalization)
     + [Simple personalization](#simple-personalization)
     + [Send email with attachment](#send-email-with-attachment)
-    + [Send bulk emails and check status](#send-bulk-emails-and-check-status)
+    + [Send bulk emails](#send-bulk-emails)
+    + [Get bulk request status](#get-bulk-request-status)
   * [Tokens](#tokens)
     + [Create a token](#create-a-token)
     + [Update token](#update-token)
@@ -266,7 +267,7 @@ const emailParams = new EmailParams()
 mailersend.send(emailParams);
 ```
 
-### Send bulk emails and check status
+### Send bulk emails
 ```js
 const Recipient = require("mailersend").Recipient;
 const EmailParams = require("mailersend").EmailParams;
@@ -302,7 +303,40 @@ mailersend.sendBulk(bulkEmails)
   .then((response) => response.json())
   .then((data) => {
     console.log(data);
+  });
+```
 
+### Get bulk request status
+```js
+const Recipient = require("mailersend").Recipient;
+const EmailParams = require("mailersend").EmailParams;
+const BulkEmails = require("mailersend").BulkEmails;
+const MailerSend = require("mailersend");
+
+const mailersend = new MailerSend({
+  api_key: "key",
+});
+
+const bulkEmails = new BulkEmails();
+
+const recipients = [
+  new Recipient("your@client.com", "Your Client")
+];
+
+const emailParams = new EmailParams()
+  .setFrom("your@domain.com")
+  .setFromName("Your Name")
+  .setRecipients(recipients)
+  .setSubject("Subject")
+  .setHtml("This is the HTML content")
+  .setText("This is the text content");
+
+
+bulkEmails.addEmail(emailParams)
+
+mailersend.sendBulk(bulkEmails)
+  .then((response) => response.json())
+  .then((data) => {
     mailersend.getBulkEmailStatus(data)
       .then((response) => response.json())
       .then((data) => {
@@ -340,7 +374,6 @@ mailersend.createToken({
   .then(data => {
     console.log(data);
   });
-
 ```
 
 ### Update token
