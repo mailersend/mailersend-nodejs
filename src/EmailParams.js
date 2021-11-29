@@ -7,6 +7,7 @@ module.exports = class EmailParams {
     this.recipients = config.recipients;
     this.cc = config.cc;
     this.bcc = config.bcc;
+    this.replyTo = config.replyTo;
     this.attachments = config.attachments;
     this.subject = config.subject;
     this.html = config.html;
