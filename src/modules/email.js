@@ -1,4 +1,4 @@
-const EmailObject = require("mailersend").EmailObject;
+const EmailObject = require("../EmailObject");
 
 module.exports = {
   send(emailParams) {
