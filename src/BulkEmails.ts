@@ -1,13 +1,12 @@
-"use strict";
-const EmailObject = require("../src/EmailObject");
+import { EmailObject } from './EmailObject';
 
-module.exports = class BulkEmails {
+export class BulkEmails {
   constructor() {
     this.emails = [];
   }
 
   addEmail(emailParams) {
-    const emailObject = new EmailObject(emailParams)
+    const emailObject = new EmailObject(emailParams);
     this.emails.push(emailObject.data);
   }
 
@@ -16,10 +15,10 @@ module.exports = class BulkEmails {
 
     emailsParamsArray.forEach(function (emailParams) {
       _self.addEmail(emailParams);
-    })
+    });
   }
 
   flush() {
     this.emails = [];
   }
-};
+}

@@ -1,6 +1,4 @@
-"use strict";
-
-module.exports = class EmailObject {
+export class EmailObject {
   constructor(emailParams) {
     this.data = {
       from: {
@@ -21,4 +19,4 @@ module.exports = class EmailObject {
       tags: emailParams.tags,
     };
   }
-};
+}

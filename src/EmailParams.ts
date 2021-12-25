@@ -1,6 +1,4 @@
-"use strict";
-
-module.exports = class EmailParams {
+export class EmailParams {
   constructor(config = {}) {
     this.from = config.from;
     this.fromName = config.fromName;
@@ -103,4 +101,4 @@ module.exports = class EmailParams {
 
     return this;
   }
-};
+}

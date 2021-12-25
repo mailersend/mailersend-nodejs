@@ -1,8 +1,6 @@
-"use strict";
-
-module.exports = class Recipient {
+export class Recipient {
   constructor(email, name) {
     this.email = email;
     this.name = name;
   }
-};
+}
