@@ -27,7 +27,7 @@
     "semi": true
   },
   "dependencies": {
-    "isomorphic-unfetch": "^3.1.0"
+    "isomorphic-unfetch": "3.1.0"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "5.8.0",
@@ -35,6 +35,7 @@
     "dotenv": "^9.0.2",
     "eslint": "8.5.0",
     "eslint-config-prettier": "8.3.0",
+    "node-fetch": "3.1.0",
     "prettier": "2.5.1",
     "typescript": "4.5.4"
   }
