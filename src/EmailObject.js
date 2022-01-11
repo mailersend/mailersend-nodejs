@@ -10,7 +10,9 @@ module.exports = class EmailObject {
       to: emailParams.recipients,
       cc: emailParams.cc,
       bcc: emailParams.bcc,
-      reply_to: emailParams.replyTo,
+      reply_to: {
+        email: emailParams.replyTo
+      },
       attachments: emailParams.attachments,
       subject: emailParams.subject,
       text: emailParams.text,
