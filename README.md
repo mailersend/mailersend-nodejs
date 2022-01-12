@@ -36,7 +36,7 @@ MailerSend Node.js SDK
     + [Update domain settings](#update-domain-settings)
     + [Add a domain](#add-a-domain)
     + [Get DNS records](#get-dns-records)
-    + [Verify a domain](#verify-a-domain)
+    + [Get verification status](#get-verification-status)
   * [Messages](#messages)
     + [Get a list of messages](#get-a-list-of-messages)
     + [Get info on a message](#get-info-on-a-message)
@@ -620,7 +620,7 @@ mailersend.getDNS({
   });
 ```
 
-### Verify a domain
+### Get verification status
 
 ```js
 const MailerSend = require("mailersend");
