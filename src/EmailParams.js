@@ -8,6 +8,7 @@ module.exports = class EmailParams {
     this.cc = config.cc;
     this.bcc = config.bcc;
     this.replyTo = config.replyTo;
+    this.replyToName = config.replyToName;
     this.attachments = config.attachments;
     this.subject = config.subject;
     this.html = config.html;
@@ -58,6 +59,12 @@ module.exports = class EmailParams {
 
   setReplyTo(replyTo) {
     this.replyTo = replyTo;
+
+    return this;
+  }
+
+  setReplyToName(replyToName) {
+    this.replyToName = replyToName;
 
     return this;
   }
