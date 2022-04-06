@@ -92,6 +92,8 @@ const emailParams = new EmailParams()
       .setFrom("your@domain.com")
       .setFromName("Your Name")
       .setRecipients(recipients)
+      .setReplyTo("reply@domain.com")
+      .setReplyToName("Reply to name")
       .setSubject("Subject")
       .setHtml("This is the HTML content")
       .setText("This is the text content");
