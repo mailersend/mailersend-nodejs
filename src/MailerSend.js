@@ -9,6 +9,13 @@ const messages = require("./modules/messages.js");
 const recipients = require("./modules/recipients.js");
 const templates = require("./modules/templates.js");
 const webhooks = require("./modules/webhooks.js");
+const sms = require("./modules/sms.js");
+const smsNumbers = require("./modules/sms/numbers.js");
+const smsWebhooks = require("./modules/sms/webhooks.js");
+const smsInbounds = require("./modules/sms/inbounds.js");
+const smsActivities = require("./modules/sms/activities.js");
+const smsMessages = require("./modules/sms/messages.js");
+const smsRecipients = require("./modules/sms/recipients.js");
 
 let headers = {
   "X-Requested-With": "XMLHttpRequest",
@@ -31,6 +38,13 @@ module.exports = class MailerSend {
       recipients,
       templates,
       webhooks,
+      sms,
+      smsNumbers,
+      smsWebhooks,
+      smsInbounds,
+      smsActivities,
+      smsMessages,
+      smsRecipients,
     )
   }
 
