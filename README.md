@@ -1293,6 +1293,435 @@ mailersend.deleteWebhook({
 });
 ```
 
+# SMS
+
+### Send SMS
+```js
+const MailerSend = require("mailersend");
+const SmsParams  = require("mailersend").SmsParams;
+
+const mailersend = new MailerSend({
+  api_key: "key",
+});
+
+const recipients = [
+  "+18332647501",
+  "+18332647500",
+];
+
+const smsParams = new SmsParams()
+      .setFrom("+18332647501")
+      .setRecipients(recipients)
+      .setText("This is the text content");
+
+mailersend.sendSms(smsParams);
+```
+
+### SMS personalization
+```js
+const MailerSend = require("mailersend");
+const SmsParams  = require("mailersend").SmsParams;
+
+const mailersend = new MailerSend({
+  api_key: "key",
+});
+
+const personalization = [
+  {
+    "phone_number": "+18332647501",
+    "data": {
+      "name": "Dummy"
+    }
+  },
+  {
+    "phone_number": "+18332647502",
+    "data": {
+      "name": "Not Dummy"
+    }
+  }
+];
+
+const smsParams = new SmsParams()
+  .setFrom("+18332647501")
+  .setRecipients(recipients)
+  .setPersonalization(personalization)
+  .setText("Hey {{name}} welcome to our organization");
+
+mailersend.sendSms(smsParams);
+```
+
+## Phone Numbers
+
+### Get phone number list
+```js
+const MailerSend = require("mailersend");
+
+const mailersend = new MailerSend({
+  api_key: "key",
+});
+
+mailersend.getSmsNumbers()
+  .then(response => response.json())
+  .then(data => {
+    console.log(data);
+  });
+```
+
+### Get phone number
+```js
+const MailerSend = require("mailersend");
+
+const mailersend = new MailerSend({
+  api_key: "key",
+});
+
+mailersend.getSmsNumber({
+  sms_number_id: 'xxx'
+})
+  .then(response => response.json())
+  .then(data => {
+    console.log(data);
+  });
+```
+
+### Update phone number
+```js
+const MailerSend = require("mailersend");
+
+const mailersend = new MailerSend({
+  api_key: "key",
+});
+
+mailersend.updateSmsNumber({
+  sms_number_id: 'xxx',
+  paused: false
+})
+  .then(response => response.json())
+  .then(data => {
+    console.log(data);
+  });
+```
+
+### Delete phone number
+```js
+const MailerSend = require("mailersend");
+
+const mailersend = new MailerSend({
+  api_key: "key",
+});
+
+mailersend.deleteSmsNumber({
+  sms_number_id: 'xxx'
+});
+```
+
+## Messages
+
+### Get messages list
+```js
+const MailerSend = require("mailersend");
+
+const mailersend = new MailerSend({
+  api_key: "key",
+});
+
+mailersend.getSmsMessages()
+  .then(response => response.json())
+  .then(data => {
+    console.log(data);
+  });
+```
+
+### Get a message
+```js
+const MailerSend = require("mailersend");
+
+const mailersend = new MailerSend({
+  api_key: "key",
+});
+
+mailersend.getSmsMessage({
+  sms_message_id: 'xxx'
+})
+  .then(response => response.json())
+  .then(data => {
+    console.log(data);
+  });
+```
+
+## Activity
+
+### Get activity list
+```js
+const MailerSend = require("mailersend");
+
+const mailersend = new MailerSend({
+  api_key: "key",
+});
+
+mailersend.getSmsActivities()
+  .then(response => response.json())
+  .then(data => {
+    console.log(data);
+  });
+```
+
+### Get activity of a message
+```js
+const MailerSend = require("mailersend");
+
+const mailersend = new MailerSend({
+  api_key: "key",
+});
+
+mailersend.getSmsActivity({
+  sms_message_id: 'xxx'
+})
+  .then(response => response.json())
+  .then(data => {
+    console.log(data);
+  });
+```
+
+## Recipients
+
+### Get recipient list
+```js
+const MailerSend = require("mailersend");
+
+const mailersend = new MailerSend({
+  api_key: "key",
+});
+
+mailersend.getSmsRecipients()
+  .then(response => response.json())
+  .then(data => {
+    console.log(data);
+  });
+```
+
+### Get recipient
+```js
+const MailerSend = require("mailersend");
+
+const mailersend = new MailerSend({
+  api_key: "key",
+});
+
+mailersend.getSmsRecipient({
+  sms_recipient_id: 'xxx'
+})
+  .then(response => response.json())
+  .then(data => {
+    console.log(data);
+  });
+```
+
+### Update recipient
+```js
+const MailerSend = require("mailersend");
+
+const mailersend = new MailerSend({
+  api_key: "key",
+});
+
+mailersend.updateSmsRecipient({
+  sms_recipient_id: "xxx",
+  status: "active"
+})
+  .then(response => response.json())
+  .then(data => {
+    console.log(data);
+  });
+```
+
+## Webhooks
+
+### Get webhook list for a number
+```js
+const MailerSend = require("mailersend");
+
+const mailersend = new MailerSend({
+  api_key: "key",
+});
+
+mailersend.getSmsWebhooks({
+  sms_number_id: 'xxx',
+  limit: 10
+})
+  .then(response => response.json())
+  .then(data => {
+    console.log(data);
+  });
+```
+
+### Get webhook
+```js
+const MailerSend = require("mailersend");
+
+const mailersend = new MailerSend({
+  api_key: "key",
+});
+
+mailersend.getSmsWebhook({
+  sms_webhook_id: 'xxx'
+})
+  .then(response => response.json())
+  .then(data => {
+    console.log(data);
+  });
+```
+
+### Create webhook
+```js
+const MailerSend = require("mailersend");
+
+const mailersend = new MailerSend({
+  api_key: "key",
+});
+
+mailersend.createSmsWebhook({
+  sms_number_id: "xxx",
+  name: "Webhook",
+  url: "https:://yourapp.com/hook",
+  enabled: ["sms.sent", "sms.delivered", "sms.failed"],
+  enabled: true
+})
+  .then(response => response.json())
+  .then(data => {
+    console.log(data);
+  });
+```
+
+### Update webhook
+```js
+const MailerSend = require("mailersend");
+
+const mailersend = new MailerSend({
+  api_key: "key",
+});
+
+mailersend.updateSmsWebhook({
+  sms_webhook_id: "xxx",
+  name: "Webhook",
+  url: "https:://yourapp.com/hook",
+  enabled: ["sms.sent", "sms.delivered", "sms.failed"],
+  enabled: true
+})
+  .then(response => response.json())
+  .then(data => {
+    console.log(data);
+  });
+```
+
+### Delete webhook
+```js
+const MailerSend = require("mailersend");
+
+const mailersend = new MailerSend({
+  api_key: "key",
+});
+
+mailersend.deleteSmsWebhook({
+  sms_webhook_id: 'xxx'
+});
+```
+
+## Inbound
+
+### Get inbound list
+```js
+const MailerSend = require("mailersend");
+
+const mailersend = new MailerSend({
+  api_key: "key",
+});
+
+mailersend.getSmsInbounds()
+  .then(response => response.json())
+  .then(data => {
+    console.log(data);
+  });
+```
+
+### Get inbound
+```js
+const MailerSend = require("mailersend");
+
+const mailersend = new MailerSend({
+  api_key: "key",
+});
+
+mailersend.getSmsInbound({
+  sms_inbound_id: 'xxx'
+})
+  .then(response => response.json())
+  .then(data => {
+    console.log(data);
+  });
+```
+
+### Add inbound
+```js
+const MailerSend = require("mailersend");
+
+const mailersend = new MailerSend({
+  api_key: "key",
+});
+
+mailersend.createSmsInbound({
+  sms_number_id: "xxx",
+  name: "Inbound",
+  forward_url: "https:://yourapp.com/hook",
+  filter: {
+    comparer: "equal",
+    value: "START"
+  },
+  enabled: true
+})
+  .then(response => response.json())
+  .then(data => {
+    console.log(data);
+  });
+```
+
+### Update inbound
+```js
+const MailerSend = require("mailersend");
+
+const mailersend = new MailerSend({
+  api_key: "key",
+});
+
+mailersend.updateSmsInbound({
+  sms_inbound_id: "xxx",
+  name: "Inbound",
+  forward_url: "https:://yourapp.com/hook",
+  filter: {
+    comparer: "equal",
+    value: "START"
+  },
+  enabled: true
+})
+  .then(response => response.json())
+  .then(data => {
+    console.log(data);
+  });
+```
+
+### Delete inbound
+```js
+const MailerSend = require("mailersend");
+
+const mailersend = new MailerSend({
+  api_key: "key",
+});
+
+mailersend.deleteSmsInbound({
+  sms_inbound_id: 'xxx'
+});
+```
+
 # Support and Feedback
 
 In case you find any bugs, submit an issue directly here in GitHub.
