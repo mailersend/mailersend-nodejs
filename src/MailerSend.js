@@ -11,6 +11,7 @@ const recipients = require("./modules/recipients.js");
 const templates = require("./modules/templates.js");
 const webhooks = require("./modules/webhooks.js");
 const schedules = require("./modules/schedules.js");
+const inbounds = require("./modules/inbounds.js");
 
 //SMS
 const sms = require("./modules/sms.js");
@@ -43,6 +44,7 @@ module.exports = class MailerSend {
       templates,
       webhooks,
       schedules,
+      inbounds,
       sms,
       smsNumbers,
       smsWebhooks,

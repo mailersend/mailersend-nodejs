@@ -670,6 +670,134 @@ mailersend.verifyDomain({
   });
 ```
 
+## Inbound
+
+### Get inbound list
+```js
+const MailerSend = require("mailersend");
+
+const mailersend = new MailerSend({
+    api_key: "key",
+});
+
+mailersend.inboundList()
+  .then(response => response.json())
+  .then(data => {
+    console.log(data);
+  });
+```
+
+### Get inbound
+```js
+const MailerSend = require("mailersend");
+
+const mailersend = new MailerSend({
+    api_key: "key",
+});
+
+mailersend.inbound({
+  inbound_id: 'xxx'
+})
+  .then(response => response.json())
+  .then(data => {
+    console.log(data);
+  });
+```
+
+### Create inbound
+```js
+const MailerSend = require("mailersend");
+
+const mailersend = new MailerSend({
+    api_key: "key",
+});
+
+mailersend.createInbound({
+  domain_id: "xxx",
+  name: "Test name",
+  domain_enabled: true,
+  inbound_domain: "test.yourdomain.com",
+  inbound_address: "test@inbound.yourdomain.com",
+  inbound_subdomain: "inbound",
+  match_filter: {
+    type: "match_all"
+  },
+  catch_filter: {
+    type: "catch_recipient",
+    filters: [
+      {
+        comparer: "equal",
+        value: "test"
+        }
+    ]
+  },
+  forwards: [
+    {
+      type: "webhook",
+      value: "https://www.yourdomain.com/hook"
+    }
+  ]
+})
+  .then(response => response.json())
+  .then(data => {
+    console.log(data);
+  });
+```
+
+### Update inbound
+```js
+const MailerSend = require("mailersend");
+
+const mailersend = new MailerSend({
+    api_key: "key",
+});
+
+mailersend.updateInbound({
+  inbound_id: "xxx",
+  domain_id: "xxx",
+  name: "Test name",
+  domain_enabled: true,
+  inbound_domain: "test.yourdomain.com",
+  inbound_address: "test@inbound.yourdomain.com",
+  inbound_subdomain: "inbound",
+  match_filter: {
+    type: "match_all"
+  },
+  catch_filter: {
+    type: "catch_recipient",
+    filters: [
+      {
+        comparer: "equal",
+        value: "test"
+        }
+    ]
+  },
+  forwards: [
+    {
+      type: "webhook",
+      value: "https://www.yourdomain.com/hook"
+    }
+  ]
+})
+  .then(response => response.json())
+  .then(data => {
+    console.log(data);
+  });
+```
+
+### Delete inbound
+```js
+const MailerSend = require("mailersend");
+
+const mailersend = new MailerSend({
+    api_key: "key",
+});
+
+mailersend.deleteInbound({
+  inbound_id: 'xxx'
+});
+```
+
 ## Messages
 
 ### Get a list of messages
