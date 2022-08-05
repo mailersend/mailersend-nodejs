@@ -834,6 +834,52 @@ mailersend.message({
   });
 ```
 
+## Scheduled Messages
+
+### Get scheduled email list
+```js
+const MailerSend = require("mailersend");
+
+const mailersend = new MailerSend({
+    api_key: "key",
+});
+
+mailersend.scheduleList()
+  .then(response => response.json())
+  .then(data => {
+    console.log(data);
+  });
+```
+
+### Get scheduled email
+```js
+const MailerSend = require("mailersend");
+
+const mailersend = new MailerSend({
+    api_key: "key",
+});
+
+mailersend.schedule({
+  message_id: 'xxx'
+})
+  .then(response => response.json())
+  .then(data => {
+    console.log(data);
+  });
+```
+
+### Delete scheduled email
+```js
+const MailerSend = require("mailersend");
+
+const mailersend = new MailerSend({
+    api_key: "key",
+});
+
+mailersend.deleteSchedule({
+  message_id: 'xxx'
+});
+```
 
 ## Recipients
 
