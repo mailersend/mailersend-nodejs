@@ -1,6 +1,7 @@
 "use strict";
 const fetch = require("isomorphic-unfetch");
 
+//Email
 const email = require("./modules/email.js");
 const tokens = require("./modules/tokens.js");
 const activity = require("./modules/activity.js");
@@ -9,6 +10,9 @@ const messages = require("./modules/messages.js");
 const recipients = require("./modules/recipients.js");
 const templates = require("./modules/templates.js");
 const webhooks = require("./modules/webhooks.js");
+const schedules = require("./modules/schedules.js");
+
+//SMS
 const sms = require("./modules/sms.js");
 const smsNumbers = require("./modules/sms/numbers.js");
 const smsWebhooks = require("./modules/sms/webhooks.js");
@@ -38,6 +42,7 @@ module.exports = class MailerSend {
       recipients,
       templates,
       webhooks,
+      schedules,
       sms,
       smsNumbers,
       smsWebhooks,

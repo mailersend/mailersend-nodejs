@@ -269,6 +269,36 @@ const emailParams = new EmailParams()
 mailersend.send(emailParams);
 ```
 
+### Send a scheduled email
+
+```js
+const fs = require('fs');
+
+const Recipient = require("mailersend").Recipient;
+const EmailParams = require("mailersend").EmailParams;
+const MailerSend = require("mailersend");
+
+const mailersend = new MailerSend({
+    api_key: "key",
+});
+
+const recipients = [
+  new Recipient("your@client.com", "Your Client")
+];
+
+const emailParams = new EmailParams()
+      .setFrom("your@domain.com")
+      .setFromName("Your Name")
+      .setRecipients(recipients)
+      .setAttachments(attachments)
+      .setSubject("Subject")
+      .setSendAt(2443651141) //set sentAt is a timestamp - min: now, max: now + 72hours
+      .setHtml("This is the HTML content")
+      .setText("This is the text content");
+
+mailersend.send(emailParams);
+```
+
 ### Send bulk emails
 ```js
 const Recipient = require("mailersend").Recipient;
