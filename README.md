@@ -24,6 +24,7 @@ MailerSend Node.js SDK
     + [Delete token](#delete-token)
   * [Activity](#activity)
     + [Get activity list](#get-activity-list)
+  * [Analytics](#analytics)
     + [Get activity data by date](#get-activity-data-by-date)
     + [Opens by country](#opens-by-country)
     + [Opens by user-agent](#opens-by-user-agent)
@@ -423,7 +424,6 @@ mailersend.deleteToken({
   });
 ```
 
-
 ## Activity
 
 ### Get activity list
@@ -443,6 +443,8 @@ mailersend.activityList({
     console.log(data);
   });
 ```
+
+## Analytics
 
 ### Get activity data by date
 
