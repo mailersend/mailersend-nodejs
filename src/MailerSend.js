@@ -31,8 +31,7 @@ let headers = {
 module.exports = class MailerSend {
   constructor(config) {
     this.api_key = config.api_key;
-    // this.basePath = "https://api.mailersend.com/v1";
-    this.basePath = "http://localhost:8080/api/v1";
+    this.basePath = "https://api.mailersend.com/v1";
     headers.Authorization = `Bearer ${this.api_key}`;
 
     return Object.assign(
