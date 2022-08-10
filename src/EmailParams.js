@@ -110,4 +110,10 @@ module.exports = class EmailParams {
 
     return this;
   }
+
+  setSendAt(sendAt) {
+    this.sendAt = sendAt;
+
+    return this;
+  }
 };
