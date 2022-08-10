@@ -10,6 +10,7 @@ const messages = require("./modules/messages.js");
 const recipients = require("./modules/recipients.js");
 const templates = require("./modules/templates.js");
 const webhooks = require("./modules/webhooks.js");
+const emailVerification = require("./modules/email-verification");
 const schedules = require("./modules/schedules.js");
 const inbounds = require("./modules/inbounds.js");
 
@@ -30,7 +31,8 @@ let headers = {
 module.exports = class MailerSend {
   constructor(config) {
     this.api_key = config.api_key;
-    this.basePath = "https://api.mailersend.com/v1";
+    // this.basePath = "https://api.mailersend.com/v1";
+    this.basePath = "http://localhost:8080/api/v1";
     headers.Authorization = `Bearer ${this.api_key}`;
 
     return Object.assign(
@@ -43,6 +45,7 @@ module.exports = class MailerSend {
       recipients,
       templates,
       webhooks,
+      emailVerification,
       schedules,
       inbounds,
       sms,
