@@ -255,7 +255,7 @@ const recipients = [
 ];
 
 const attachments = [
-  new Attachment(fs.readFileSync('/path/to/file.pdf', {encoding: 'base64'}), 'file.pdf')
+  new Attachment(fs.readFileSync('/path/to/file.pdf', {encoding: 'base64'}), 'file.pdf', 'attachment')
 ]
 
 const emailParams = new EmailParams()
