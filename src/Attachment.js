@@ -1,7 +1,7 @@
 "use strict";
 
 module.exports = class Attachment {
-  constructor(content, filename, disposition) {
+  constructor(content, filename, disposition = 'attachment') {
     this.setContent(content);
     this.setFilename(filename);
     this.setDisposition(disposition);
