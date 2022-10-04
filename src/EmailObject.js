@@ -22,6 +22,7 @@ module.exports = class EmailObject {
       variables: emailParams.variables,
       personalization: emailParams.personalization,
       tags: emailParams.tags,
+      sendAt: emailParams.sendAt,
     };
   }
 };
