@@ -17,6 +17,7 @@ module.exports = class EmailParams {
     this.variables = config.variables;
     this.personalization = config.personalization;
     this.tags = config.tags;
+    this.sendAt = config.sendAt;
 
     return this;
   }
