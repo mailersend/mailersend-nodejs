@@ -1,6 +1,6 @@
 {
   "name": "mailersend",
-  "version": "1.4.3",
+  "version": "1.4.5",
   "description": "Node.js helper module for MailerSend API",
   "main": "index.js",
   "repository": {
