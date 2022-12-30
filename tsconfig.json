@@ -1,32 +1,17 @@
 {
     "compilerOptions": {
+        "target": "es5",
         "module": "commonjs",
-        "lib": ["es6"],
-        "pretty": true,
-        "noImplicitAny": true,
-        "noImplicitThis": true,
-        "strictNullChecks": true,
-        "strictFunctionTypes": true,
-        "forceConsistentCasingInFileNames": true,
-        "allowSyntheticDefaultImports": true,
-        "noEmit": true, // Do not compile the JS (or TS) files in this project on build
-        "baseUrl": "./",
-        "typeRoots": [
-            "node_modules/@types",
-            "src/local-types"
-        ],
-        "paths": {
-            "@mailersend/nodejs": [
-                "./src/local-types/mailersend__nodejs"
-            ]
-        }
+        "declaration": true,
+        "outDir": "./lib",
+        "strict": true
     },
     "include": [
-        "./src/",
+        "src"
     ],
     "exclude": [
-        "node_modules/**",
-        "node_modules/isomorphic-unfetch/**",
-        "src/local-types/**"
+        "node_modules",
+        "**/__tests__/*",
+        "src/backup/**"
     ]
 }
