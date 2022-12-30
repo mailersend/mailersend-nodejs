@@ -6,3 +6,4 @@ export * from "./Recipient";
 export * from "./Sender";
 export * from "./Activity";
 export * from "./Analytics";
+export * from "./Domain";
