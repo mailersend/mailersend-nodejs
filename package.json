@@ -2,7 +2,14 @@
   "name": "mailersend",
   "version": "1.4.5",
   "description": "Node.js helper module for MailerSend API",
-  "main": "index.js",
+  "main": "./lib/index.js",
+  "typings": "./lib/index.d.ts",
+  "files": [
+    "lib/**/*"
+  ],
+  "directories": {
+    "lib": "./lib"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/mailersend/mailersend-nodejs.git"
@@ -20,6 +27,10 @@
     "url": "https://github.com/mailersend/mailersend-nodejs/issues"
   },
   "homepage": "https://www.mailersend.com/",
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc --watch"
+  },
   "dependencies": {
     "isomorphic-unfetch": "^3.1.0",
     "gaxios": "^5.0.1"
@@ -35,5 +46,6 @@
     "tslint": "^6.1.3",
     "tslint-config-prettier": "^1.18.0",
     "typescript": "^4.4.3"
-  }
+  },
+  "type": "module"
 }
