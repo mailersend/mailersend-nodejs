@@ -1,5 +1,6 @@
 import { request as gRequest } from "gaxios";
 import { GaxiosOptions } from "gaxios/build/src/common";
+var qs = require('qs');
 
 export class RequestService {
   private readonly apiKey: string;
@@ -41,6 +42,9 @@ export class RequestService {
       }
       if (queryParams) {
         requestParams.params = queryParams;
+        requestParams.paramsSerializer = (params) => {
+          return qs.stringify(params);
+        }
       }
 
       const { headers, data, status } = await gRequest<APIResponse>(requestParams);
