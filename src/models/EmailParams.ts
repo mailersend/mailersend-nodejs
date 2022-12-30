@@ -12,6 +12,7 @@ export class EmailParams {
   subject: string;
   text: string;
   html: string;
+  send_at: number; // tslint:disable-line
   attachments?: Attachment[];
   template_id?: string; // tslint:disable-line
   tags?: string[];
@@ -27,6 +28,7 @@ export class EmailParams {
     this.subject = config?.subject;
     this.text = config?.text;
     this.html = config?.html;
+    this.send_at = config?.sendAt;
     this.attachments = config?.attachments;
     this.template_id = config?.template_id;
     this.tags = config?.tags;
@@ -71,6 +73,11 @@ export class EmailParams {
 
   setHtml(html: string): EmailParams {
     this.html = html;
+    return this;
+  }
+
+  setSendAt(sendAt: number): EmailParams {
+    this.send_at = sendAt;
     return this;
   }
 
