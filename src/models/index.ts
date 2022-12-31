@@ -8,3 +8,5 @@ export * from "./Activity";
 export * from "./Analytics";
 export * from "./Domain";
 export * from "./Inbound";
+export * from "./Message";
+export * from "./Schedule";

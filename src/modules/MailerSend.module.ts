@@ -3,6 +3,8 @@ import { ActivityModule } from "./Activity.module";
 import { AnalyticsModule } from "./Analytics.module";
 import { DomainModule } from "./Domain.module";
 import { InboundModule } from "./Inbound.module";
+import { MessageModule } from "./Message.module";
+import { ScheduleModule } from "./Schedule.module";
 
 export class MailerSend {
   private readonly apiKey: string;
@@ -12,6 +14,8 @@ export class MailerSend {
   analytics: AnalyticsModule;
   domain: DomainModule;
   inbound: InboundModule;
+  message: MessageModule;
+  schedule: ScheduleModule;
 
   constructor(config: MailerSendConfig) {
     this.apiKey = config.apiKey;
@@ -20,6 +24,8 @@ export class MailerSend {
     this.analytics = new AnalyticsModule(config.apiKey, this.baseUrl);
     this.domain = new DomainModule(config.apiKey, this.baseUrl);
     this.inbound = new InboundModule(config.apiKey, this.baseUrl);
+    this.message = new MessageModule(config.apiKey, this.baseUrl);
+    this.schedule = new ScheduleModule(config.apiKey, this.baseUrl);
   }
 }
 
