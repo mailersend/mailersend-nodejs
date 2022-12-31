@@ -26,16 +26,16 @@ export class EmailModule extends RequestService {
     return await this.get("/webhooks", { domain_id: domainId });
   }
 
-  async getWebhook(id: string): Promise<APIResponse> {
-    return await this.get(`/webhooks/${id}`);
+  async getWebhook(webhookId: string): Promise<APIResponse> {
+    return await this.get(`/webhooks/${webhookId}`);
   }
 
-  async updateWebhook(id: string, updates: Partial<EmailWebhookUpdateInterface>): Promise<APIResponse> {
-    return await this.put(`/webhooks/${id}`, updates);
+  async updateWebhook(webhookId: string, updates: Partial<EmailWebhookUpdateInterface>): Promise<APIResponse> {
+    return await this.put(`/webhooks/${webhookId}`, updates);
   }
 
-  async deleteWebhook(id: string): Promise<APIResponse> {
-    return await this.deleteReq(`/webhooks/${id}`);
+  async deleteWebhook(webhookId: string): Promise<APIResponse> {
+    return await this.deleteReq(`/webhooks/${webhookId}`);
   }
 }
 
