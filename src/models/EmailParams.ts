@@ -15,25 +15,30 @@ export class EmailParams {
   send_at: number; // tslint:disable-line
   attachments?: Attachment[];
   template_id?: string; // tslint:disable-line
+  in_reply_to?: string; // tslint:disable-line
   tags?: string[];
   variables?: Variable[];
   personalization?: Personalization[];
+  settings?: EmailSettings[];
+  precedence_bulk?: boolean;
 
   constructor(config?: any) {
     this.from = config?.from;
     this.to = config?.to;
     this.cc = config?.cc;
     this.bcc = config?.bcc;
-    this.reply_to = config?.reply_to;
+    this.reply_to = config?.replyTo;
+    this.in_reply_to = config?.inReplyTo;
     this.subject = config?.subject;
     this.text = config?.text;
     this.html = config?.html;
     this.send_at = config?.sendAt;
     this.attachments = config?.attachments;
-    this.template_id = config?.template_id;
+    this.template_id = config?.templateId;
     this.tags = config?.tags;
     this.variables = config?.variables;
     this.personalization = config?.personalization;
+    this.precedence_bulk = config?.precedenceBulk;
   }
 
   setFrom(from: Sender): EmailParams {
@@ -58,6 +63,11 @@ export class EmailParams {
 
   setReplyTo(replyTo: Recipient): EmailParams {
     this.reply_to = replyTo;
+    return this;
+  }
+
+  setInReplyTo(inReplyTo: string): EmailParams {
+    this.in_reply_to = inReplyTo;
     return this;
   }
 
@@ -105,4 +115,20 @@ export class EmailParams {
     this.personalization = personalization;
     return this;
   }
+
+  setPrecedenceBulk(precedenceBulk: boolean): EmailParams {
+    this.precedence_bulk = precedenceBulk;
+    return this;
+  }
+
+  setSettings(settings: EmailSettings[]): EmailParams {
+    this.settings = settings;
+    return this;
+  }
+}
+
+export interface EmailSettings {
+  track_clicks?: boolean;
+  track_opens?: boolean;
+  track_content?: boolean;
 }
