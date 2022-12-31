@@ -10,3 +10,4 @@ export * from "./Domain";
 export * from "./Inbound";
 export * from "./Message";
 export * from "./Schedule";
+export * from "./Template";
