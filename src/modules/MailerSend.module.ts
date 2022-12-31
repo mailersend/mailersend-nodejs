@@ -7,6 +7,7 @@ import { MessageModule } from "./Message.module";
 import { ScheduleModule } from "./Schedule.module";
 import { RecipientModule } from "./Recipient.module";
 import { TemplateModule } from "./Template.module";
+import { TokenModule } from "./Token.module";
 
 export class MailerSend {
   private readonly apiKey: string;
@@ -20,6 +21,7 @@ export class MailerSend {
   schedule: ScheduleModule;
   recipient: RecipientModule;
   template: TemplateModule;
+  token: TokenModule;
 
   constructor(config: MailerSendConfig) {
     this.apiKey = config.apiKey;
@@ -32,6 +34,7 @@ export class MailerSend {
     this.schedule = new ScheduleModule(config.apiKey, this.baseUrl);
     this.recipient = new RecipientModule(config.apiKey, this.baseUrl);
     this.template = new TemplateModule(config.apiKey, this.baseUrl);
+    this.token = new TokenModule(config.apiKey, this.baseUrl);
   }
 }
 

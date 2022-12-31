@@ -11,3 +11,4 @@ export * from "./Inbound";
 export * from "./Message";
 export * from "./Schedule";
 export * from "./Template";
+export * from "./Token";

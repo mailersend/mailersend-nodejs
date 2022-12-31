@@ -1,0 +1,12 @@
+import 'dotenv/config';
+import { MailerSend} from "mailersend";
+
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
+});
+
+mailerSend.token.updateSettings("token_id", {
+  status: "pause",
+})
+  .then((response) => console.log(response.body))
+  .catch((error) => console.log(error.body));
