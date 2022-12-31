@@ -5,6 +5,7 @@ import { DomainModule } from "./Domain.module";
 import { InboundModule } from "./Inbound.module";
 import { MessageModule } from "./Message.module";
 import { ScheduleModule } from "./Schedule.module";
+import { RecipientModule } from "./Recipient.module";
 
 export class MailerSend {
   private readonly apiKey: string;
@@ -16,6 +17,7 @@ export class MailerSend {
   inbound: InboundModule;
   message: MessageModule;
   schedule: ScheduleModule;
+  recipient: RecipientModule;
 
   constructor(config: MailerSendConfig) {
     this.apiKey = config.apiKey;
@@ -26,6 +28,7 @@ export class MailerSend {
     this.inbound = new InboundModule(config.apiKey, this.baseUrl);
     this.message = new MessageModule(config.apiKey, this.baseUrl);
     this.schedule = new ScheduleModule(config.apiKey, this.baseUrl);
+    this.recipient = new RecipientModule(config.apiKey, this.baseUrl);
   }
 }
 
