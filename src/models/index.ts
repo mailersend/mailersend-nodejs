@@ -18,5 +18,6 @@ export * from "./EmailVerification";
 export * from "./sms/Activity";
 export * from "./sms/Message";
 export * from "./sms/Number";
+export * from "./sms/Inbound";
 export * from "./sms/SMSParams";
 export * from "./sms/SMSPersonalization";
