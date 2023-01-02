@@ -9,6 +9,7 @@ import { RecipientModule } from "./Recipient.module";
 import { TemplateModule } from "./Template.module";
 import { TokenModule } from "./Token.module";
 import { EmailVerificationModule } from "./EmailVerification.module";
+import { SMSModule } from "./sms/SMS.module";
 
 export class MailerSend {
   private readonly apiKey: string;
@@ -24,6 +25,7 @@ export class MailerSend {
   template: TemplateModule;
   token: TokenModule;
   emailVerification: EmailVerificationModule;
+  sms: SMSModule;
 
   constructor(config: MailerSendConfig) {
     this.apiKey = config.apiKey;
@@ -38,6 +40,7 @@ export class MailerSend {
     this.template = new TemplateModule(config.apiKey, this.baseUrl);
     this.token = new TokenModule(config.apiKey, this.baseUrl);
     this.emailVerification = new EmailVerificationModule(config.apiKey, this.baseUrl);
+    this.sms = new SMSModule(config.apiKey, this.baseUrl);
   }
 }
 
