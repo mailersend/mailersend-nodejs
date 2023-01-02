@@ -1,5 +1,5 @@
 export class SMSPersonalization {
-  phone_number: string; // tslint:disable-line
+  phone_number: string; 
   data: {
     [key: string]: string;
   };

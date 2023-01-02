@@ -6,14 +6,14 @@ export interface InboundQueryParams extends Pagination {
 
 export class Inbound {
     name: string;
-    domain_enabled: boolean; // tslint:disable-line
-    domain_id?: string; // tslint:disable-line
-    inbound_domain?: string; // tslint:disable-line
-    inbound_address?: string; // tslint:disable-line
-    inbound_subdomain?: string; // tslint:disable-line
+    domain_enabled: boolean; 
+    domain_id?: string; 
+    inbound_domain?: string; 
+    inbound_address?: string; 
+    inbound_subdomain?: string; 
     forwards?: InboundForward[];
-    match_filter?: MatchFilter; // tslint:disable-line
-    catch_filter?: CatchFilter; // tslint:disable-line
+    match_filter?: MatchFilter; 
+    catch_filter?: CatchFilter; 
 
     constructor(
         name: string,

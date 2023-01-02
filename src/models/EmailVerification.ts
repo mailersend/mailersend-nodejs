@@ -1,6 +1,6 @@
 import { Pagination } from "./Pagination";
 
-export interface EmailVerificationQueryParams extends Pagination {} // tslint:disable-line
+export interface EmailVerificationQueryParams extends Pagination {} 
 export interface EmailVerificationResultQueryParams extends Pagination {
     result?: EmailVerificationResultType[];
 }

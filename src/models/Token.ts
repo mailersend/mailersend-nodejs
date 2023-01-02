@@ -1,6 +1,6 @@
 export class Token {
   name: string;
-  domain_id: string; // tslint:disable-line
+  domain_id: string; 
   scopes: TokenScopeType[];
 
   constructor(name: string, domainId: string, scopes: TokenScopeType[]) {

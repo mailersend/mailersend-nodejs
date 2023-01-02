@@ -8,14 +8,14 @@ export class EmailParams {
   to: Recipient[];
   cc?: Recipient[];
   bcc?: Recipient[];
-  reply_to?: Recipient; // tslint:disable-line
+  reply_to?: Recipient; 
   subject: string;
   text: string;
   html: string;
-  send_at: number; // tslint:disable-line
+  send_at: number; 
   attachments?: Attachment[];
-  template_id?: string; // tslint:disable-line
-  in_reply_to?: string; // tslint:disable-line
+  template_id?: string; 
+  in_reply_to?: string; 
   tags?: string[];
   variables?: Variable[];
   personalization?: Personalization[];

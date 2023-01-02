@@ -21,3 +21,4 @@ export * from "./sms/Number";
 export * from "./sms/Inbound";
 export * from "./sms/SMSParams";
 export * from "./sms/SMSPersonalization";
+export * from "./sms/Recipient";

@@ -2,9 +2,9 @@ import { Pagination } from "./Pagination";
 
 export class Domain {
   name: string;
-  return_path_subdomain?: string; // tslint:disable-line
-  custom_tracking_subdomain?: string; // tslint:disable-line
-  inbound_routing_subdomain?: string; // tslint:disable-line
+  return_path_subdomain?: string; 
+  custom_tracking_subdomain?: string; 
+  inbound_routing_subdomain?: string; 
 
   constructor(
     name: string,
@@ -23,9 +23,8 @@ export interface DomainQueryParams extends Pagination {
   verified?: boolean;
 }
 
-export interface DomainRecipientsQueryParams extends Pagination {} // tslint:disable-line
+export interface DomainRecipientsQueryParams extends Pagination {} 
 
-// tslint:disable
 export interface DomainSettings {
   send_paused?: boolean;
   track_clicks?: boolean;
@@ -37,5 +36,3 @@ export interface DomainSettings {
   custom_tracking_enabled?: boolean;
   custom_tracking_subdomain?: string;
 }
-
-// tslint:enable

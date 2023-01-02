@@ -2,7 +2,7 @@ export class EmailWebhook {
   url!: string;
   name!: string;
   events!: EmailWebhookEventType[];
-  domain_id!: string; // tslint:disable-line
+  domain_id!: string; 
   enabled?: boolean;
 
   constructor(config?: EmailWebhookInterface) {
