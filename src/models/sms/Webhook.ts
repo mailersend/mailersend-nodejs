@@ -34,7 +34,7 @@ export class SmsWebhook {
         return this;
     }
 
-    setDomainId(smsNumberId: string): SmsWebhook {
+    setSmsNumberId(smsNumberId: string): SmsWebhook {
         this.sms_number_id = smsNumberId;
         return this;
     }

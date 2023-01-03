@@ -1,9 +1,39 @@
 import { EmailParams, EmailWebhook, IEmailWebhookUpdate } from "../models";
 import { RequestService, APIResponse } from "../services/request.service";
 
+import { ActivityModule } from "./email/Activity.module";
+import { AnalyticsModule } from "./email/Analytics.module";
+import { DomainModule } from "./email/Domain.module";
+import { InboundModule } from "./email/Inbound.module";
+import { MessageModule } from "./email/Message.module";
+import { ScheduleModule } from "./email/Schedule.module";
+import { RecipientModule } from "./email/Recipient.module";
+import { TemplateModule } from "./email/Template.module";
+import { EmailWebhookModule } from "./email/Webhook.module";
+
 export class EmailModule extends RequestService {
+  activity: ActivityModule;
+  analytics: AnalyticsModule;
+  domain: DomainModule;
+  inbound: InboundModule;
+  message: MessageModule;
+  schedule: ScheduleModule;
+  recipient: RecipientModule;
+  template: TemplateModule;
+  webhook: EmailWebhookModule;
+
   constructor(apiKey: string, baseUrl: string) {
     super(apiKey, baseUrl);
+
+    this.activity = new ActivityModule(apiKey, baseUrl);
+    this.analytics = new AnalyticsModule(apiKey, baseUrl);
+    this.domain = new DomainModule(apiKey, baseUrl);
+    this.inbound = new InboundModule(apiKey, baseUrl);
+    this.message = new MessageModule(apiKey, baseUrl);
+    this.schedule = new ScheduleModule(apiKey, baseUrl);
+    this.recipient = new RecipientModule(apiKey, baseUrl);
+    this.template = new TemplateModule(apiKey, baseUrl);
+    this.webhook = new EmailWebhookModule(apiKey, baseUrl);
   }
 
   async send(params: EmailParams): Promise<APIResponse> {
@@ -16,26 +46,6 @@ export class EmailModule extends RequestService {
 
   async getBulkStatus(bulkId: string): Promise<APIResponse> {
     return await this.get(`/bulk-email/${bulkId}`);
-  }
-
-  async createWebhook(params: EmailWebhook): Promise<APIResponse> {
-    return await this.post<EmailWebhook>("/webhooks", params);
-  }
-
-  async listWebhook(domainId: string): Promise<APIResponse> {
-    return await this.get("/webhooks", { domain_id: domainId });
-  }
-
-  async getWebhook(webhookId: string): Promise<APIResponse> {
-    return await this.get(`/webhooks/${webhookId}`);
-  }
-
-  async updateWebhook(webhookId: string, updates: Partial<IEmailWebhookUpdate>): Promise<APIResponse> {
-    return await this.put(`/webhooks/${webhookId}`, updates);
-  }
-
-  async deleteWebhook(webhookId: string): Promise<APIResponse> {
-    return await this.deleteReq(`/webhooks/${webhookId}`);
   }
 }
 

@@ -1,18 +1,20 @@
-export * from "./Attachment";
-export * from "./EmailParams";
-export * from "./EmailWebhook";
-export * from "./Pagination";
-export * from "./Recipient";
-export * from "./Sender";
-export * from "./Activity";
-export * from "./Analytics";
-export * from "./Domain";
-export * from "./Inbound";
-export * from "./Message";
-export * from "./Schedule";
-export * from "./Template";
 export * from "./Token";
 export * from "./EmailVerification";
+
+//Email Models
+export * from "./email/Attachment";
+export * from "./email/EmailParams";
+export * from "./email/EmailWebhook";
+export * from "./email/Pagination";
+export * from "./email/Recipient";
+export * from "./email/Sender";
+export * from "./email/Activity";
+export * from "./email/Analytics";
+export * from "./email/Domain";
+export * from "./email/Inbound";
+export * from "./email/Message";
+export * from "./email/Schedule";
+export * from "./email/Template";
 
 //SMS Models
 export * from "./sms/Activity";
