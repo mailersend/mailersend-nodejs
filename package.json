@@ -16,6 +16,13 @@
   },
   "keywords": [
     "mailersend",
+    "mailersend-ts",
+    "mailer_send",
+    "smtp-sender",
+    "email-sender",
+    "email-api",
+    "transactional-emails",
+    "transactional-sms",
     "typescript",
     "mailer-send",
     "types",
