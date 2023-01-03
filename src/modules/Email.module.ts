@@ -1,4 +1,4 @@
-import { EmailParams, EmailWebhook, EmailWebhookUpdateInterface } from "../models";
+import { EmailParams, EmailWebhook, IEmailWebhookUpdate } from "../models";
 import { RequestService, APIResponse } from "../services/request.service";
 
 export class EmailModule extends RequestService {
@@ -30,7 +30,7 @@ export class EmailModule extends RequestService {
     return await this.get(`/webhooks/${webhookId}`);
   }
 
-  async updateWebhook(webhookId: string, updates: Partial<EmailWebhookUpdateInterface>): Promise<APIResponse> {
+  async updateWebhook(webhookId: string, updates: Partial<IEmailWebhookUpdate>): Promise<APIResponse> {
     return await this.put(`/webhooks/${webhookId}`, updates);
   }
 

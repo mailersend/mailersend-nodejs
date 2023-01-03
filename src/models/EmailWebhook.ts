@@ -5,7 +5,7 @@ export class EmailWebhook {
   domain_id!: string; 
   enabled?: boolean;
 
-  constructor(config?: EmailWebhookInterface) {
+  constructor(config?: IEmailWebhook) {
     if (config) {
       this.url = config.url;
       this.name = config.name;
@@ -56,11 +56,11 @@ export enum EmailWebhookEventType {
   SPAM_COMPLIANT = "activity.spam_complaint",
 }
 
-export interface EmailWebhookInterface extends EmailWebhookUpdateInterface {
+export interface IEmailWebhook extends IEmailWebhookUpdate {
   domain_id: string;
 }
 
-export interface EmailWebhookUpdateInterface {
+export interface IEmailWebhookUpdate {
   url: string;
   name: string;
   events: EmailWebhookEventType[];
