@@ -18,6 +18,7 @@ module.exports = class EmailParams {
     this.personalization = config.personalization;
     this.tags = config.tags;
     this.sendAt = config.sendAt;
+    this.in_reply_to = config.inReplyTO
 
     return this;
   }
@@ -114,6 +115,12 @@ module.exports = class EmailParams {
 
   setSendAt(sendAt) {
     this.sendAt = sendAt;
+
+    return this;
+  }
+
+  setInReplyTo(inReplyTO) {
+    this.in_reply_to = inReplyTO;
 
     return this;
   }
