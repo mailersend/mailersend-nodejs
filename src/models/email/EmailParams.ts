@@ -1,7 +1,7 @@
 import { Recipient } from "./Recipient";
 import { Sender } from "./Sender";
 import { Attachment } from "./Attachment";
-import { Personalization, Variable } from "../modules/Email.module";
+import { Personalization, Variable } from "../../modules/Email.module";
 
 export class EmailParams {
   from: Sender;

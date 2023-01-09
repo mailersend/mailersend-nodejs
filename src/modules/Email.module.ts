@@ -1,4 +1,4 @@
-import { EmailParams, EmailWebhook, IEmailWebhookUpdate } from "../models";
+import { EmailParams } from "../models";
 import { RequestService, APIResponse } from "../services/request.service";
 
 import { ActivityModule } from "./email/Activity.module";

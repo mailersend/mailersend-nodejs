@@ -1,5 +1,5 @@
 import { ActivityEventType } from "./Activity";
-import { Pagination } from "./Pagination";
+import { Pagination } from "../Pagination";
 
 export interface AnalyticsQueryParams extends Pagination {
   date_from: number;

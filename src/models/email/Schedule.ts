@@ -1,4 +1,4 @@
-import { Pagination } from "./Pagination";
+import { Pagination } from "../Pagination";
 
 export interface ScheduleQueryParams extends Pagination {
     domain_id?: string;

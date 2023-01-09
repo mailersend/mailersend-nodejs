@@ -1,5 +1,5 @@
 import 'dotenv/config';
-import { ActivityEventType, MailerSend } from "mailersend";
+import { MailerSend } from "mailersend";
 
 const mailerSend = new MailerSend({
   apiKey: process.env.API_KEY,

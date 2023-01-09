@@ -1,4 +1,4 @@
-import { Pagination } from "./Pagination";
+import { Pagination } from "../Pagination";
 
 export class Domain {
   name: string;

@@ -1,4 +1,4 @@
-import { Pagination } from "./Pagination";
+import { Pagination } from "../Pagination";
 
 export interface ActivityQueryParams extends Pagination {
   date_from?: number;

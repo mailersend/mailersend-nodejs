@@ -1,5 +1,5 @@
 import { Sender } from "./Sender";
-import { Pagination } from "./Pagination";
+import { Pagination } from "../Pagination";
 
 export class Recipient extends Sender {
   constructor(email: string, name?: string) {
