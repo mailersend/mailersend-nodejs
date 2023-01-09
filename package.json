@@ -36,7 +36,8 @@
   "homepage": "https://www.mailersend.com/",
   "scripts": {
     "build": "tsc",
-    "watch": "tsc --watch"
+    "watch": "tsc --watch",
+    "test": "jest --config jestconfig.json"
   },
   "dependencies": {
     "gaxios": "^5.0.1",
