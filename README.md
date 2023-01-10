@@ -77,6 +77,12 @@ MailerSend Node.js SDK
 npm install mailersend
 ```
 
+if you would like to use the env approach as shown in the examples, please run
+
+```bash
+npm install dotenv --save
+```
+
 # Usage
 
 ## Email
