@@ -2,65 +2,72 @@
 
 MailerSend Node.js SDK
 
-[![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE.md)
+[![MIT licensed](https://img.shields.io/npm/l/mailersend)](./LICENSE.md)
+![NPM Version](https://img.shields.io/npm/v/mailersend)
+![Top language](https://img.shields.io/github/languages/top/IARKI/mailer-send-ts)
+
+<br/>
+
+### V1 Documentation can be found [here](https://github.com/mailersend/mailersend-nodejs/tree/v1#readme)
+
+<br/>
 
 # Table of Contents
 
 - [Installation](#installation)
-  * [Setup](#setup)
+  - [Setup](#setup)
 - [Usage](#usage)
-  * [Email](#email)
-    + [Send an email](#send-an-email)
-    + [Add CC, BCC recipients](#add-cc--bcc-recipients)
-    + [Send a template-based email](#send-a-template-based-email)
-    + [Advanced personalization](#advanced-personalization)
-    + [Simple personalization](#simple-personalization)
-    + [Send email with attachment](#send-email-with-attachment)
-    + [Send bulk emails](#send-bulk-emails)
-    + [Get bulk request status](#get-bulk-request-status)
-  * [Tokens](#tokens)
-    + [Create a token](#create-a-token)
-    + [Update token](#update-token)
-    + [Delete token](#delete-token)
-  * [Activity](#activity)
-    + [Get activity list](#get-activity-list)
-  * [Analytics](#analytics)
-    + [Get activity data by date](#get-activity-data-by-date)
-    + [Opens by country](#opens-by-country)
-    + [Opens by user-agent](#opens-by-user-agent)
-    + [Opens by reading environment](#opens-by-reading-environment)
-  * [Domains](#domains)
-    + [Get a list of domains](#get-a-list-of-domains)
-    + [Get domain](#get-domain)
-    + [Delete domain](#delete-domain)
-    + [Get a list of recipients per domain](#get-a-list-of-recipients-per-domain)
-    + [Update domain settings](#update-domain-settings)
-    + [Add a domain](#add-a-domain)
-    + [Get DNS records](#get-dns-records)
-    + [Get verification status](#get-verification-status)
-  * [Messages](#messages)
-    + [Get a list of messages](#get-a-list-of-messages)
-    + [Get info on a message](#get-info-on-a-message)
-  * [Recipients](#recipients)
-    + [Get a list of recipients](#get-a-list-of-recipients)
-    + [Get single recipient](#get-single-recipient)
-    + [Delete recipient](#delete-recipient)
-    + [Add recipients to a suppression list](#add-recipients-to-a-suppression-list)
-    + [Get recipients from a suppression list](#get-recipients-from-a-suppression-list)
-    + [Delete recipients from a suppression list](#delete-recipients-from-a-suppression-list)
-  * [Templates](#templates)
-    + [Get a list of templates](#get-a-list-of-templates)
-    + [Get a single template](#get-a-single-template)
-    + [Delete a template](#delete-a-template)
-  * [Webhooks](#webhooks)
-    + [Get a list of webhooks](#get-a-list-of-webhooks)
-    + [Get webhook](#get-webhook)
-    + [Create webhook](#create-webhook)
-    + [Update webhook](#update-webhook)
-    + [Delete webhook](#delete-webhook)
+  - [Email](#email)
+    - [Send an email](#send-an-email)
+    - [Add CC, BCC recipients](#add-cc--bcc-recipients)
+    - [Send a template-based email](#send-a-template-based-email)
+    - [Advanced personalization](#advanced-personalization)
+    - [Simple personalization](#simple-personalization)
+    - [Send email with attachment](#send-email-with-attachment)
+    - [Send bulk emails](#send-bulk-emails)
+    - [Get bulk request status](#get-bulk-request-status)
+  - [Tokens](#tokens)
+    - [Create a token](#create-a-token)
+    - [Update token](#update-token)
+    - [Delete token](#delete-token)
+  - [Activity](#activity)
+    - [Get activity list](#get-activity-list)
+  - [Analytics](#analytics)
+    - [Get activity data by date](#get-activity-data-by-date)
+    - [Opens by country](#opens-by-country)
+    - [Opens by user-agent](#opens-by-user-agent)
+    - [Opens by reading environment](#opens-by-reading-environment)
+  - [Domains](#domains)
+    - [Get a list of domains](#get-a-list-of-domains)
+    - [Get domain](#get-domain)
+    - [Delete domain](#delete-domain)
+    - [Get a list of recipients per domain](#get-a-list-of-recipients-per-domain)
+    - [Update domain settings](#update-domain-settings)
+    - [Add a domain](#add-a-domain)
+    - [Get DNS records](#get-dns-records)
+    - [Get verification status](#get-verification-status)
+  - [Messages](#messages)
+    - [Get a list of messages](#get-a-list-of-messages)
+    - [Get info on a message](#get-info-on-a-message)
+  - [Recipients](#recipients)
+    - [Get a list of recipients](#get-a-list-of-recipients)
+    - [Get single recipient](#get-single-recipient)
+    - [Delete recipient](#delete-recipient)
+    - [Add recipients to a suppression list](#add-recipients-to-a-suppression-list)
+    - [Get recipients from a suppression list](#get-recipients-from-a-suppression-list)
+    - [Delete recipients from a suppression list](#delete-recipients-from-a-suppression-list)
+  - [Templates](#templates)
+    - [Get a list of templates](#get-a-list-of-templates)
+    - [Get a single template](#get-a-single-template)
+    - [Delete a template](#delete-a-template)
+  - [Webhooks](#webhooks)
+    - [Get a list of webhooks](#get-a-list-of-webhooks)
+    - [Get webhook](#get-webhook)
+    - [Create webhook](#create-webhook)
+    - [Update webhook](#update-webhook)
+    - [Delete webhook](#delete-webhook)
 - [Support and Feedback](#support-and-feedback)
 - [License](#license)
-
 
 # Installation
 
@@ -77,100 +84,103 @@ npm install mailersend
 ### Send an email
 
 ```js
-const Recipient = require("mailersend").Recipient;
-const EmailParams = require("mailersend").EmailParams;
-const MailerSend = require("mailersend");
+import 'dotenv/config';
+import { MailerSend, EmailParams, Sender, Recipient } from "mailersend";
 
-const mailersend = new MailerSend({
-    api_key: "key",
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
 });
+
+const sentFrom = new Sender("you@yourdomain.com", "Your name");
 
 const recipients = [
   new Recipient("your@client.com", "Your Client")
 ];
 
 const emailParams = new EmailParams()
-      .setFrom("your@domain.com")
-      .setFromName("Your Name")
-      .setRecipients(recipients)
-      .setReplyTo("reply@domain.com")
-      .setReplyToName("Reply to name")
-      .setSubject("Subject")
-      .setHtml("This is the HTML content")
-      .setText("This is the text content");
+  .setFrom(sentFrom)
+  .setTo(recipients)
+  .setReplyTo(sentFrom)
+  .setSubject("This is a Subject")
+  .setHtml("<strong>This is the HTML content</strong>")
+  .setText("This is the text content");
 
-mailersend.send(emailParams);
+await mailerSend.email.send(emailParams);
+
 ```
 
 ### Add CC, BCC recipients
 
 ```js
-const Recipient = require("mailersend").Recipient;
-const EmailParams = require("mailersend").EmailParams;
-const MailerSend = require("mailersend");
+import 'dotenv/config';
+import { MailerSend, EmailParams, Sender, Recipient } from "mailersend";
 
-const mailersend = new MailerSend({
-    api_key: "key",
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
 });
+
+const sentFrom = new Sender("bbbb@yourdomain.com", "Your name");
 
 const recipients = [
   new Recipient("your@client.com", "Your Client")
 ];
 const cc = [
-  new Recipient("your_cc@client.com", "Your CC Client")
+  new Recipient("your_cc@client.com", "Your Client CC")
 ];
 const bcc = [
-  new Recipient("your_bcc@client.com", "Your BCC Client")
+  new Recipient("your_bcc@client.com", "Your Client BCC")
 ];
 
 const emailParams = new EmailParams()
-      .setFrom("your@domain.com")
-      .setFromName("Your Name")
-      .setRecipients(recipients)
-      .setCc(cc)
-      .setBcc(bcc)
-      .setSubject("Subject")
-      .setHtml("This is the HTML content")
-      .setText("This is the text content");
+  .setFrom(sentFrom)
+  .setTo(recipients)
+  .setCc(cc)
+  .setBcc(bcc)
+  .setSubject("This is a Subject")
+  .setHtml("<strong>This is the HTML content</strong>")
+  .setText("This is the text content");
 
-mailersend.send(emailParams);
+await mailerSend.email.send(emailParams);
 ```
 
 ### Send a template-based email
 
 ```js
-const Recipient = require("mailersend").Recipient;
-const EmailParams = require("mailersend").EmailParams;
-const MailerSend = require("mailersend");
+import 'dotenv/config';
+import { MailerSend, EmailParams, Sender, Recipient } from "mailersend";
 
-const mailersend = new MailerSend({
-    api_key: "key",
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
 });
+
+const sentFrom = new Sender("you@yourdomain.com", "Your name");
 
 const recipients = [
   new Recipient("your@client.com", "Your Client")
 ];
 
 const emailParams = new EmailParams()
-      .setFrom("your@domain.com")
-      .setFromName("Your Name")
-      .setRecipients(recipients)
-      .setTemplateId('templateId')
-      .setSubject("Subject")
+  .setFrom(sentFrom)
+  .setTo(recipients)
+  .setReplyTo(sentFrom)
+  .setSubject("This is a Subject")
+  .setTemplateId('templateId');
 
-mailersend.send(emailParams);
+await mailerSend.email.send(emailParams);
+
 ```
 
 ### Advanced personalization
 
 ```js
-const Recipient = require("mailersend").Recipient;
-const EmailParams = require("mailersend").EmailParams;
-const MailerSend = require("mailersend");
+import 'dotenv/config';
+import { MailerSend, EmailParams, Sender, Recipient } from "mailersend";
 
-const mailersend = new MailerSend({
-    api_key: "key",
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
 });
+
+const sentFrom = new Sender("you@yourdomain.com", "Your name");
 
 const recipients = [
   new Recipient("your@client.com", "Your Client")
@@ -186,27 +196,29 @@ const personalization = [
 ];
 
 const emailParams = new EmailParams()
-      .setFrom("your@domain.com")
-      .setFromName("Your Name")
-      .setRecipients(recipients)
-      .setPersonalization(personalization)
-      .setSubject("Subject, {{ test }}")
-      .setHtml("This is the HTML content, {{ test }}")
-      .setText("This is the text content, {{ test }}");
+  .setFrom(sentFrom)
+  .setTo(recipients)
+  .setReplyTo(sentFrom)
+  .setPersonalization(personalization)
+  .setSubject("Subject, {{ test }}")
+  .setHtml("This is the HTML content, {{ test }}")
+  .setText("This is the text content, {{ test }}");
 
-mailersend.send(emailParams);
+await mailerSend.email.send(emailParams);
+
 ```
 
 ### Simple personalization
 
 ```js
-const Recipient = require("mailersend").Recipient;
-const EmailParams = require("mailersend").EmailParams;
-const MailerSend = require("mailersend");
+import 'dotenv/config';
+import { MailerSend, EmailParams, Sender, Recipient } from "mailersend";
 
-const mailersend = new MailerSend({
-    api_key: "key",
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
 });
+
+const sentFrom = new Sender("you@yourdomain.com", "Your name");
 
 const recipients = [
   new Recipient("your@client.com", "Your Client")
@@ -225,135 +237,139 @@ const variables = [
 ];
 
 const emailParams = new EmailParams()
-      .setFrom("your@domain.com")
-      .setFromName("Your Name")
-      .setRecipients(recipients)
-      .setVariables(variables)
-      .setSubject("Subject, {$test}")
-      .setHtml("This is the HTML content, {$test}")
-      .setText("This is the text content, {$test}");
+  .setFrom(sentFrom)
+  .setTo(recipients)
+  .setReplyTo(sentFrom)
+  .setVariables(variables)
+  .setSubject("Subject, {$test}")
+  .setHtml("This is the HTML content, {$test}")
+  .setText("This is the text content, {$test}");
 
-mailersend.send(emailParams);
+await mailerSend.email.send(emailParams);
 ```
 
 ### Send email with attachment
 
 ```js
-const fs = require('fs');
+import 'dotenv/config';
+import fs from "fs";
+import { MailerSend, EmailParams, Sender, Recipient, Attachment } from "mailersend";
 
-const Recipient = require("mailersend").Recipient;
-const EmailParams = require("mailersend").EmailParams;
-const Attachment = require("mailersend").Attachment;
-const MailerSend = require("mailersend");
-
-const mailersend = new MailerSend({
-    api_key: "key",
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
 });
+
+const sentFrom = new Sender("you@yourdomain.com", "Your name");
 
 const recipients = [
   new Recipient("your@client.com", "Your Client")
 ];
 
 const attachments = [
-  new Attachment(fs.readFileSync('/path/to/file.pdf', {encoding: 'base64'}), 'file.pdf', 'attachment')
+  new Attachment(
+    fs.readFileSync('/path/to/file.pdf', { encoding: 'base64' }),
+    'file.pdf',
+    'attachment'
+  )
 ]
 
 const emailParams = new EmailParams()
-      .setFrom("your@domain.com")
-      .setFromName("Your Name")
-      .setRecipients(recipients)
-      .setAttachments(attachments)
-      .setSubject("Subject")
-      .setHtml("This is the HTML content")
-      .setText("This is the text content");
+  .setFrom(sentFrom)
+  .setTo(recipients)
+  .setReplyTo(sentFrom)
+  .setAttachments(attachments)
+  .setSubject("This is a Subject")
+  .setHtml("<strong>This is the HTML content</strong>")
+  .setText("This is the text content");
 
-mailersend.send(emailParams);
+await mailerSend.email.send(emailParams);
+
 ```
 
 ### Send a scheduled email
 
 ```js
-const fs = require('fs');
+import 'dotenv/config';
+import { MailerSend, EmailParams, Sender, Recipient } from "mailersend";
 
-const Recipient = require("mailersend").Recipient;
-const EmailParams = require("mailersend").EmailParams;
-const MailerSend = require("mailersend");
-
-const mailersend = new MailerSend({
-    api_key: "key",
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
 });
+
+const sentFrom = new Sender("you@yourdomain.com", "Your name");
 
 const recipients = [
   new Recipient("your@client.com", "Your Client")
 ];
 
 const emailParams = new EmailParams()
-      .setFrom("your@domain.com")
-      .setFromName("Your Name")
-      .setRecipients(recipients)
-      .setAttachments(attachments)
-      .setSubject("Subject")
-      .setSendAt(2443651141) //set sentAt is a timestamp - min: now, max: now + 72hours
-      .setHtml("This is the HTML content")
-      .setText("This is the text content");
+  .setFrom(sentFrom)
+  .setTo(recipients)
+  .setReplyTo(sentFrom)
+  .setSubject("This is a scheduled Subject")
+  .setHtml("<strong>This is a scheduled HTML content</strong>")
+  .setText("This is a scheduled text content")
+  .setSendAt(Math.floor((new Date(Date.now()+ 30*60*1000)).getTime() / 1000)); //send in 30mins NB:param has to be a Unix timestamp e.g 2443651141
 
-mailersend.send(emailParams);
+await mailerSend.email.send(emailParams);
+
 ```
 
 ### Send bulk emails
-```js
-const Recipient = require("mailersend").Recipient;
-const EmailParams = require("mailersend").EmailParams;
-const BulkEmails = require("mailersend").BulkEmails;
-const MailerSend = require("mailersend");
 
-const mailersend = new MailerSend({
-  api_key: "key",
+```js
+import 'dotenv/config';
+import { MailerSend, EmailParams, Sender, Recipient } from "mailersend";
+
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
 });
 
-const bulkEmails = new BulkEmails();
+const sentFrom = new Sender("your@yourdomain.com", "Your name");
 
-const recipients = [
-  new Recipient("your@client.com", "Your Client")
-];
+const bulkEmails = [];
 
 const emailParams = new EmailParams()
-  .setFrom("your@domain.com")
-  .setFromName("Your Name")
-  .setRecipients(recipients)
-  .setSubject("Subject")
-  .setHtml("This is the HTML content")
+  .setFrom(sentFrom)
+  .setTo([
+    new Recipient("your@client.com", "Your Client")
+  ])
+  .setSubject("This is a Subject")
+  .setHtml("<strong>This is the HTML content</strong>")
   .setText("This is the text content");
 
+bulkEmails.push(emailParams);
 
-bulkEmails.addEmail(emailParams)
-bulkEmails.addEmails([
-  emailParams,
-  emailParams
-])
+const emailParams2 = new EmailParams()
+  .setFrom(sentFrom)
+  .setTo([
+    new Recipient("your_2@client.com", "Your Client 2")
+  ])
+  .setSubject("This is a Subject 2")
+  .setHtml("<strong>This is the HTML content 2</strong>")
+  .setText("This is the text content 2");
 
-mailersend.sendBulk(bulkEmails)
-  .then((response) => response.json())
-  .then((data) => {
-    console.log(data);
-  });
+bulkEmails.push(emailParams2);
+
+await mailerSend.email.sendBulk(bulkEmails);
+
 ```
 
 ### Get bulk request status
-```js
-const MailerSend = require("mailersend");
 
-const mailersend = new MailerSend({
-  api_key: "key",
+```js
+import 'dotenv/config';
+import { MailerSend } from "mailersend";
+
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
 });
 
-mailersend.getBulkEmailRequestStatus({
-  bulk_email_id: 'xxx'
-})
-  .then((response) => response.json())
-  .then((data) => {
-    console.log(data);
+mailerSend.email.getBulkStatus('bulk_email_id') // bulk email Id e.g 63af1fdb790d97105a090001
+  .then((response) => {
+    console.log(response.body);
   });
+
 ```
 
 ## Tokens
@@ -361,16 +377,17 @@ mailersend.getBulkEmailRequestStatus({
 ### Create a token
 
 ```js
-const MailerSend = require("mailersend");
+import 'dotenv/config';
+import { MailerSend, Token} from "mailersend";
 
-const mailersend = new MailerSend({
-    api_key: "key",
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
 });
 
-mailersend.createToken({
-  name: "Token name",
-  domain_id: "xxx",
-  scopes: [
+const token = new Token()
+  .setName("Token name")
+  .setDomainId("domain_id")
+  .setScopes([
     "email_full",
     "domains_read",
     "domains_full",
@@ -379,49 +396,46 @@ mailersend.createToken({
     "analytics_read",
     "analytics_full",
     "tokens_full",
-  ]
-})
-  .then(response => response.json())
-  .then(data => {
-    console.log(data);
-  });
+  ]);
+
+mailerSend.token.create(token)
+  .then((response) => console.log(response.body))
+  .catch((error) => console.log(error.body));
+
 ```
 
 ### Update token
 
 ```js
-const MailerSend = require("mailersend");
+import 'dotenv/config';
+import { MailerSend} from "mailersend";
 
-const mailersend = new MailerSend({
-    api_key: "key",
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
 });
 
-mailersend.updateToken({
-  token_id: "xxx",
-  status: "pause"
+mailerSend.token.updateSettings("token_id", {
+  status: "pause",
 })
-  .then(response => response.json())
-  .then(data => {
-    console.log(data);
-  });
+  .then((response) => console.log(response.body))
+  .catch((error) => console.log(error.body));
+
 ```
 
 ### Delete token
 
 ```js
-const MailerSend = require("mailersend");
+import 'dotenv/config';
+import { MailerSend} from "mailersend";
 
-const mailersend = new MailerSend({
-    api_key: "key",
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
 });
 
-mailersend.deleteToken({
-  token_id: "xxx"
-})
-  .then(response => response.json())
-  .then(data => {
-    console.log(data);
-  });
+mailerSend.token.delete("token_id")
+  .then((response) => console.log(response.body))
+  .catch((error) => console.log(error.body));
+
 ```
 
 ## Activity
@@ -429,19 +443,25 @@ mailersend.deleteToken({
 ### Get activity list
 
 ```js
-const MailerSend = require("mailersend");
+import 'dotenv/config';
+import { MailerSend, ActivityEventType } from "mailersend";
 
-const mailersend = new MailerSend({
-    api_key: "key",
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
 });
 
-mailersend.activityList({
-  domain_id: "xxx",
-})
-  .then(response => response.json())
-  .then(data => {
-    console.log(data);
-  });
+const queryParams = {
+  limit: 10, // Min: 10, Max: 100, Default: 25
+  page: 2,
+  date_from: 1443651141, // Unix timestamp
+  date_to: 1443651141, // Unix timestamp
+  event: [ActivityEventType.SENT, ActivityEventType.SOFT_BOUNCED]
+}
+
+mailerSend.email.activity.domain("domain_id", queryParams)
+  .then((response) => console.log(response.body))
+  .catch((error) => console.log(error));
+
 ```
 
 ## Analytics
@@ -449,355 +469,346 @@ mailersend.activityList({
 ### Get activity data by date
 
 ```js
-const MailerSend = require("mailersend");
+import 'dotenv/config';
+import { ActivityEventType, MailerSend } from "mailersend";
 
-const mailersend = new MailerSend({
-    api_key: "key",
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
 });
 
-mailersend.activityByDate({
+mailerSend.email.analytics.byDate({
   date_from: 1443651141,
   date_to: 2443651141,
-  event: ["processed"]
-})
-  .then(response => response.json())
-  .then(data => {
-    console.log(data);
-  });
+  event: [ActivityEventType.CLICKED, ActivityEventType.OPENED],
+}).then(response => {
+  console.log(response.body);
+}).catch(error => {
+  console.log(error.body);
+});
+
 ```
 
 ### Opens by country
 
 ```js
-const MailerSend = require("mailersend");
+import 'dotenv/config';
+import { ActivityEventType, MailerSend } from "mailersend";
 
-const mailersend = new MailerSend({
-    api_key: "key",
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
 });
 
-mailersend.activityByCountry({
+mailerSend.email.analytics.byCountry({
   date_from: 1443651141,
-  date_to: 2443651141
-})
-  .then(response => response.json())
-  .then(data => {
-    console.log(data);
-  });
+  date_to: 2443651141,
+}).then(response => {
+  console.log(response.body);
+}).catch(error => {
+  console.log(error.body);
+});
+
 ```
 
 ### Opens by user-agent
 
 ```js
-const MailerSend = require("mailersend");
+import 'dotenv/config';
+import { ActivityEventType, MailerSend } from "mailersend";
 
-const mailersend = new MailerSend({
-    api_key: "key",
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
 });
 
-mailersend.activityByUserAgent({
+mailerSend.email.analytics.byUserAgent({
   date_from: 1443651141,
-  date_to: 2443651141
-})
-  .then(response => response.json())
-  .then(data => {
-    console.log(data);
-  });
+  date_to: 2443651141,
+}).then(response => {
+  console.log(response.body);
+}).catch(error => {
+  console.log(error.body);
+});
+
 ```
 
 ### Opens by reading environment
 
 ```js
-const MailerSend = require("mailersend");
+import 'dotenv/config';
+import { ActivityEventType, MailerSend } from "mailersend";
 
-const mailersend = new MailerSend({
-    api_key: "key",
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
 });
 
-mailersend.activityByReadingEnvironment({
+mailerSend.email.analytics.byReadingEnvironment({
   date_from: 1443651141,
-  date_to: 2443651141
-})
-  .then(response => response.json())
-  .then(data => {
-    console.log(data);
-  });
-```
+  date_to: 2443651141,
+}).then(response => {
+  console.log(response.body);
+}).catch(error => {
+  console.log(error.body);
+});
 
+```
 
 ## Domains
 
 ### Get a list of domains
 
 ```js
-const MailerSend = require("mailersend");
+import 'dotenv/config';
+import { MailerSend } from "mailersend";
 
-const mailersend = new MailerSend({
-    api_key: "key",
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
 });
 
-mailersend.domainList({
-})
-  .then(response => response.json())
-  .then(data => {
-    console.log(data);
-  });
+mailerSend.email.domain.list()
+  .then((response) => console.log(response.body))
+  .catch((error) => console.log(error.body));
+
 ```
 
 ### Get domain
 
 ```js
-const MailerSend = require("mailersend");
+import 'dotenv/config';
+import { MailerSend } from "mailersend";
 
-const mailersend = new MailerSend({
-    api_key: "key",
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
 });
 
-mailersend.domain({
-  domain_id: 'xxx'
-})
-  .then(response => response.json())
-  .then(data => {
-    console.log(data);
-  });
+mailerSend.email.domain.single("domain_id")
+  .then((response) => console.log(response.body))
+  .catch((error) => console.log(error.body));
+
 ```
 
 ### Delete domain
 
 ```js
-const MailerSend = require("mailersend");
+import 'dotenv/config';
+import { MailerSend } from "mailersend";
 
-const mailersend = new MailerSend({
-    api_key: "key",
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
 });
 
-mailersend.deleteDomain({
-  domain_id: 'xxx'
-})
-  .then(response => response.json())
-  .then(data => {
-    console.log(data);
-  });
+mailerSend.email.domain.delete("domain_id")
+  .then((response) => console.log(response.body))
+  .catch((error) => console.log(error.body));
+
 ```
 
 ### Get a list of recipients per domain
 
 ```js
-const MailerSend = require("mailersend");
+import 'dotenv/config';
+import { MailerSend } from "mailersend";
 
-const mailersend = new MailerSend({
-    api_key: "key",
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
 });
 
-mailersend.domainRecipients({
-  domain_id: 'xxx'
+mailerSend.email.domain.recipients("domain_id", {
+  page: 1,
+  limit: 10
 })
-  .then(response => response.json())
-  .then(data => {
-    console.log(data);
-  });
+  .then((response) => console.log(response.body))
+  .catch((error) => console.log(error.body));
+
 ```
 
 ### Update domain settings
 
 ```js
-const MailerSend = require("mailersend");
+import 'dotenv/config';
+import { MailerSend } from "mailersend";
 
-const mailersend = new MailerSend({
-    api_key: "key",
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
 });
 
-mailersend.domainSettings({
-  domain_id: 'xxx',
-  send_paused: false
+mailerSend.email.domain.updateSettings("domain_id", {
+  send_paused: 1,
+  track_clicks: 1,
+  track_opens: 1,
+  track_unsubscribe: 1,
+  track_unsubscribe_html: "<strong> Unsubscribe now </strong>",
+  track_unsubscribe_plain: "Unsubscribe now",
+  track_content: 1,
+  custom_tracking_enabled: 1,
+  custom_tracking_subdomain: "subdomain",
 })
-  .then(response => response.json())
-  .then(data => {
-    console.log(data);
-  });
+  .then((response) => console.log(response.body))
+  .catch((error) => console.log(error.body));
+
 ```
+
 ### Add a domain
 
 ```js
-const MailerSend = require("mailersend");
+import 'dotenv/config';
+import { MailerSend, Domain } from "mailersend";
 
-const mailersend = new MailerSend({
-    api_key: "key",
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
 });
 
-mailersend.addDomain({
-    name: "example.com",
-    return_path_subdomain: "rp_subdomain",
-    custom_tracking_subdomain: "ct_subdomain",
-    inbound_routing_subdomain: "ir_subdomain",
-  })
-  .then((response) => response.json())
-  .then((data) => {
-    console.log(data);
-  });
+const domain = new Domain({
+  name: "example.com",
+  returnPathSubdomain: "rp_subdomain",
+  customTrackingSubdomain: "ct_subdomain",
+  inboundRoutingSubdomain: "ir_subdomain",
+})
+
+mailerSend.email.domain.create(domain)
+  .then((response) => console.log(response.body))
+  .catch((error) => console.log(error.body));
+
 ```
 
 ### Get DNS records
 
 ```js
-const MailerSend = require("mailersend");
+import 'dotenv/config';
+import { MailerSend } from "mailersend";
 
-const mailersend = new MailerSend({
-    api_key: "key",
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
 });
 
-mailersend.getDNS({
-    domain_id: "xxx",
-  })
-  .then((response) => response.json())
-  .then((data) => {
-    console.log(data);
-  });
+mailerSend.email.domain.dns("domain_id")
+  .then((response) => console.log(response.body))
+  .catch((error) => console.log(error.body));
+
 ```
 
 ### Get verification status
 
 ```js
-const MailerSend = require("mailersend");
+import 'dotenv/config';
+import { MailerSend } from "mailersend";
 
-const mailersend = new MailerSend({
-    api_key: "key",
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
 });
 
-mailersend.verifyDomain({
-    domain_id: "xxx",
-  })
-  .then((response) => response.json())
-  .then((data) => {
-    console.log(data);
-  });
+mailerSend.email.domain.verify("domain_id")
+  .then((response) => console.log(response.body))
+  .catch((error) => console.log(error.body));
+
 ```
 
 ## Inbound
 
 ### Get inbound list
-```js
-const MailerSend = require("mailersend");
 
-const mailersend = new MailerSend({
-    api_key: "key",
+```js
+iimport 'dotenv/config';
+import { MailerSend } from "mailersend";
+
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
 });
 
-mailersend.inboundList()
-  .then(response => response.json())
-  .then(data => {
-    console.log(data);
-  });
+mailerSend.email.inbound.list()
+  .then((response) => console.log(response.body))
+  .catch((error) => console.log(error.body));
+
 ```
 
 ### Get inbound
-```js
-const MailerSend = require("mailersend");
 
-const mailersend = new MailerSend({
-    api_key: "key",
+```js
+import 'dotenv/config';
+import { MailerSend } from "mailersend";
+
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
 });
 
-mailersend.inbound({
-  inbound_id: 'xxx'
-})
-  .then(response => response.json())
-  .then(data => {
-    console.log(data);
-  });
+mailerSend.email.inbound.single("inbound_id")
+  .then((response) => console.log(response.body))
+  .catch((error) => console.log(error.body));
+
 ```
 
 ### Create inbound
-```js
-const MailerSend = require("mailersend");
 
-const mailersend = new MailerSend({
-    api_key: "key",
+```js
+import 'dotenv/config';
+import { MailerSend, Inbound, InboundFilterType } from "mailersend";
+
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
 });
 
-mailersend.createInbound({
-  domain_id: "xxx",
-  name: "Test name",
-  domain_enabled: true,
-  inbound_domain: "test.yourdomain.com",
-  inbound_address: "test@inbound.yourdomain.com",
-  inbound_subdomain: "inbound",
-  match_filter: {
-    type: "match_all"
-  },
-  catch_filter: {
-    type: "catch_recipient",
-    filters: [
-      {
-        comparer: "equal",
-        value: "test"
-        }
-    ]
-  },
-  forwards: [
+const inbound = new Inbound()
+  .setDomainId('domain_id')
+  .setName('inbound test')
+  .setDomainEnabled(true)
+  .setMatchFilter({
+    type: InboundFilterType.MATCH_ALL,
+  })
+  .setForwards([
     {
       type: "webhook",
       value: "https://www.yourdomain.com/hook"
     }
-  ]
-})
-  .then(response => response.json())
-  .then(data => {
-    console.log(data);
-  });
+  ]);
+
+mailerSend.email.inbound.create(inbound)
+  .then((response) => console.log(response.body))
+  .catch((error) => console.log(error.body));
+
 ```
 
 ### Update inbound
-```js
-const MailerSend = require("mailersend");
 
-const mailersend = new MailerSend({
-    api_key: "key",
+```js
+import 'dotenv/config';
+import { MailerSend, Inbound, InboundFilterType } from "mailersend";
+
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
 });
 
-mailersend.updateInbound({
-  inbound_id: "xxx",
-  domain_id: "xxx",
-  name: "Test name",
-  domain_enabled: true,
-  inbound_domain: "test.yourdomain.com",
-  inbound_address: "test@inbound.yourdomain.com",
-  inbound_subdomain: "inbound",
-  match_filter: {
-    type: "match_all"
-  },
-  catch_filter: {
-    type: "catch_recipient",
-    filters: [
-      {
-        comparer: "equal",
-        value: "test"
-        }
-    ]
-  },
-  forwards: [
+const inbound = new Inbound()
+  .setDomainId('domain_id')
+  .setName('inbound test 2')
+  .setDomainEnabled(false)
+  .setMatchFilter({
+    type: InboundFilterType.MATCH_ALL,
+  })
+  .setForwards([
     {
       type: "webhook",
       value: "https://www.yourdomain.com/hook"
     }
-  ]
-})
-  .then(response => response.json())
-  .then(data => {
-    console.log(data);
-  });
+  ]);
+
+mailerSend.email.inbound.update('inbound_id', inbound)
+  .then((response) => console.log(response.body))
+  .catch((error) => console.log(error.body));
+
 ```
 
 ### Delete inbound
+
 ```js
-const MailerSend = require("mailersend");
+import 'dotenv/config';
+import { MailerSend } from "mailersend";
 
-const mailersend = new MailerSend({
-    api_key: "key",
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
 });
 
-mailersend.deleteInbound({
-  inbound_id: 'xxx'
-});
+mailerSend.email.inbound.delete("inbound_id")
+  .then((response) => console.log(response.body))
+  .catch((error) => console.log(error.body));
+  
 ```
 
 ## Messages
@@ -805,82 +816,84 @@ mailersend.deleteInbound({
 ### Get a list of messages
 
 ```js
-const MailerSend = require("mailersend");
+import 'dotenv/config';
+import { MailerSend} from "mailersend";
 
-const mailersend = new MailerSend({
-    api_key: "key",
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
 });
 
-mailersend.messagesList()
-  .then(response => response.json())
-  .then(data => {
-    console.log(data);
-  });
+
+mailerSend.email.message.list()
+  .then((response) => console.log(response.body))
+  .catch((error) => console.log(error.body));
+
 ```
 
 ### Get info on a message
 
 ```js
-const MailerSend = require("mailersend");
+import 'dotenv/config';
+import { MailerSend} from "mailersend";
 
-const mailersend = new MailerSend({
-    api_key: "key",
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
 });
 
-mailersend.message({
-  message_id: 'xxx'
-})
-  .then(response => response.json())
-  .then(data => {
-    console.log(data);
-  });
+mailerSend.email.message.single("message_id")
+  .then((response) => console.log(response.body))
+  .catch((error) => console.log(error.body));
+
 ```
 
 ## Scheduled Messages
 
 ### Get scheduled email list
-```js
-const MailerSend = require("mailersend");
 
-const mailersend = new MailerSend({
-    api_key: "key",
+```js
+import 'dotenv/config';
+import { MailerSend} from "mailersend";
+
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
 });
 
-mailersend.scheduleList()
-  .then(response => response.json())
-  .then(data => {
-    console.log(data);
-  });
+mailerSend.email.schedule.list()
+  .then((response) => console.log(response.body))
+  .catch((error) => console.log(error.body));
+
 ```
 
 ### Get scheduled email
-```js
-const MailerSend = require("mailersend");
 
-const mailersend = new MailerSend({
-    api_key: "key",
+```js
+import 'dotenv/config';
+import { MailerSend} from "mailersend";
+
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
 });
 
-mailersend.schedule({
-  message_id: 'xxx'
-})
-  .then(response => response.json())
-  .then(data => {
-    console.log(data);
-  });
+mailerSend.email.schedule.single("message_id")
+  .then((response) => console.log(response.body))
+  .catch((error) => console.log(error.body));
+
 ```
 
 ### Delete scheduled email
+
 ```js
-const MailerSend = require("mailersend");
+import 'dotenv/config';
+import { MailerSend} from "mailersend";
 
-const mailersend = new MailerSend({
-    api_key: "key",
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
 });
 
-mailersend.deleteSchedule({
-  message_id: 'xxx'
-});
+mailerSend.email.schedule.delete("message_id")
+  .then((response) => console.log(response.body))
+  .catch((error) => console.log(error.body));
+
 ```
 
 ## Recipients
@@ -888,267 +901,294 @@ mailersend.deleteSchedule({
 ### Get a list of recipients
 
 ```js
-const MailerSend = require("mailersend");
+import 'dotenv/config';
+import { MailerSend } from "mailersend";
 
-const mailersend = new MailerSend({
-    api_key: "key",
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
 });
 
-mailersend.recipientsList()
-  .then(response => response.json())
-  .then(data => {
-    console.log(data);
-  });
+mailerSend.email.recipient.list({
+  domain_id: "domain_id",
+  limit: 10,
+})
+  .then((response) => console.log(response.body))
+  .catch((error) => console.log(error.body));
+
 ```
 
 ### Get single recipient
 
 ```js
-const MailerSend = require("mailersend");
+import 'dotenv/config';
+import { MailerSend} from "mailersend";
 
-const mailersend = new MailerSend({
-    api_key: "key",
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
 });
 
-mailersend.recipient({
-  recipient_id: 'xxx'
-})
-  .then(response => response.json())
-  .then(data => {
-    console.log(data);
-  });
+mailerSend.email.recipient.single("recipient_id")
+  .then((response) => console.log(response.body))
+  .catch((error) => console.log(error.body));
+
 ```
 
 ### Delete recipient
 
 ```js
-const MailerSend = require("mailersend");
+import 'dotenv/config';
+import { MailerSend} from "mailersend";
 
-const mailersend = new MailerSend({
-    api_key: "key",
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
 });
 
-mailersend.deleteRecipient({
-  recipient_id: 'xxx'
-});
+mailerSend.email.recipient.delete("recipient_id")
+  .then((response) => console.log(response.body))
+  .catch((error) => console.log(error.body));
+
 ```
 
 ### Add recipients to a suppression list
 
 #### Blocklist
-```js
-const MailerSend = require("mailersend");
 
-const mailersend = new MailerSend({
-    api_key: "key",
+```js
+import 'dotenv/config';
+import { BlockListType, MailerSend } from "mailersend";
+
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
 });
 
-mailersend.addRecipientsToBlocklist({
-  domain_id: 'xxx',
+mailerSend.email.recipient.blockRecipients({
+  domain_id: 'domain_id',
   recipients: [
     "test@example.com"
   ]
-})
-  .then(response => response.json())
-  .then(data => {
-    console.log(data);
-  });
+}, BlockListType.BLOCK_LIST)
+  .then((response) => console.log(response.body))
+  .catch((error) => console.log(error.body));
+
 ```
 
 #### Hard Bounces
-```js
-const MailerSend = require("mailersend");
 
-const mailersend = new MailerSend({
-    api_key: "key",
+```js
+import 'dotenv/config';
+import { BlockListType, MailerSend } from "mailersend";
+
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
 });
 
-mailersend.addRecipientsToHardBounceList({
-  domain_id: 'xxx',
+mailerSend.email.recipient.blockRecipients({
+  domain_id: 'domain_id',
   recipients: [
     "test@example.com"
   ]
-})
-  .then(response => response.json())
-  .then(data => {
-    console.log(data);
-  });
+}, BlockListType.HARD_BOUNCES_LIST)
+  .then((response) => console.log(response.body))
+  .catch((error) => console.log(error.body));
+
 ```
 
 #### Spam Complaints
-```js
-const MailerSend = require("mailersend");
 
-const mailersend = new MailerSend({
-    api_key: "key",
+```js
+import 'dotenv/config';
+import { BlockListType, MailerSend } from "mailersend";
+
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
 });
 
-mailersend.addRecipientsToSpamComplaintList({
-  domain_id: 'xxx',
+mailerSend.email.recipient.blockRecipients({
+  domain_id: 'domain_id',
   recipients: [
     "test@example.com"
   ]
-})
-  .then(response => response.json())
-  .then(data => {
-    console.log(data);
-  });
+}, BlockListType.SPAM_COMPLAINTS_LIST)
+  .then((response) => console.log(response.body))
+  .catch((error) => console.log(error.body));
+
 ```
 
 #### Unsubscribe
-```js
-const MailerSend = require("mailersend");
 
-const mailersend = new MailerSend({
-    api_key: "key",
+```js
+import 'dotenv/config';
+import { BlockListType, MailerSend } from "mailersend";
+
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
 });
 
-mailersend.addRecipientsToUnsubscribeList({
-  domain_id: 'xxx',
+mailerSend.email.recipient.blockRecipients({
+  domain_id: 'domain_id',
   recipients: [
     "test@example.com"
   ]
-})
-  .then(response => response.json())
-  .then(data => {
-    console.log(data);
-  });
+}, BlockListType.UNSUBSCRIBES_LIST)
+  .then((response) => console.log(response.body))
+  .catch((error) => console.log(error.body));
+
 ```
 
 ### Get recipients from a suppression list
 
 #### Blocklist
-```js
-const MailerSend = require("mailersend");
 
-const mailersend = new MailerSend({
-    api_key: "key",
+```js
+import 'dotenv/config';
+import { BlockListType, MailerSend} from "mailersend";
+
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
 });
 
-mailersend.getRecipientsFromBlocklist({
-  domain_id: 'xxx'
-})
-  .then(response => response.json())
-  .then(data => {
-    console.log(data);
-  });
+mailerSend.email.recipient.blockList(
+  { domain_id: "domain_id", },
+  BlockListType.BLOCK_LIST
+)
+  .then((response) => console.log(response.body))
+  .catch((error) => console.log(error.body));
+
 ```
 
 #### Hard Bounce
-```js
-const MailerSend = require("mailersend");
 
-const mailersend = new MailerSend({
-    api_key: "key",
+```js
+import 'dotenv/config';
+import { BlockListType, MailerSend } from "mailersend";
+
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
 });
 
-mailersend.getRecipientsFromHardBounceList({
-  domain_id: 'xxx'
-})
-  .then(response => response.json())
-  .then(data => {
-    console.log(data);
-  });
+mailerSend.email.recipient.blockList(
+  { domain_id: "domain_id", },
+  BlockListType.HARD_BOUNCES_LIST
+)
+  .then((response) => console.log(response.body))
+  .catch((error) => console.log(error.body));
+
 ```
 
 #### Spam Complaint
-```js
-const MailerSend = require("mailersend");
 
-const mailersend = new MailerSend({
-    api_key: "key",
+```js
+import 'dotenv/config';
+import { BlockListType, MailerSend} from "mailersend";
+
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
 });
 
-mailersend.getRecipientsFromSpamComplaintList({
-  domain_id: 'xxx'
-})
-  .then(response => response.json())
-  .then(data => {
-    console.log(data);
-  });
+mailerSend.email.recipient.blockList(
+  { domain_id: "domain_id", },
+  BlockListType.SPAM_COMPLAINTS_LIST
+)
+  .then((response) => console.log(response.body))
+  .catch((error) => console.log(error.body));
+
 ```
 
 #### Unsubscribe
-```js
-const MailerSend = require("mailersend");
 
-const mailersend = new MailerSend({
-    api_key: "key",
+```js
+import 'dotenv/config';
+import { BlockListType, MailerSend} from "mailersend";
+
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
 });
 
-mailersend.getRecipientsFromUnsubscribeList({
-  domain_id: 'xxx'
-})
-  .then(response => response.json())
-  .then(data => {
-    console.log(data);
-  });
+mailerSend.email.recipient.blockList(
+  { domain_id: "domain_id", },
+  BlockListType.UNSUBSCRIBES_LIST
+)
+  .then((response) => console.log(response.body))
+  .catch((error) => console.log(error.body));
+
 ```
 
 ### Delete recipients from a suppression list
 
 #### Blocklist
+
 ```js
-const MailerSend = require("mailersend");
+import 'dotenv/config';
+import { BlockListType, MailerSend } from "mailersend";
 
-const mailersend = new MailerSend({
-    api_key: "key",
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
 });
 
-mailersend.deleteRecipientsFromBlocklist({
-  ids: [
-    "xxxxxxxxxxx",
-    "yyyyyyyyyyy"
-  ]
-});
+mailerSend.email.recipient.delBlockListRecipients(
+  ["recipient_id", "recipient_id"],
+  BlockListType.BLOCK_LIST
+)
+  .then((response) => console.log(response.body))
+  .catch((error) => console.log(error.body));
+
 ```
 
 #### Hard Bounce
+
 ```js
-const MailerSend = require("mailersend");
+import 'dotenv/config';
+import { BlockListType, MailerSend } from "mailersend";
 
-const mailersend = new MailerSend({
-    api_key: "key",
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
 });
 
-mailersend.deleteRecipientsFromHardBounceList({
-  ids: [
-    "xxxxxxxxxxx",
-    "yyyyyyyyyyy"
-  ]
-});
+mailerSend.email.recipient.delBlockListRecipients(
+  ["recipient_id", "recipient_id"],
+  BlockListType.HARD_BOUNCES_LIST
+)
+  .then((response) => console.log(response.body))
+  .catch((error) => console.log(error.body));
+
 ```
 
 #### Spam Complaint
+
 ```js
-const MailerSend = require("mailersend");
+import 'dotenv/config';
+import { BlockListType, MailerSend } from "mailersend";
 
-const mailersend = new MailerSend({
-    api_key: "key",
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
 });
 
-mailersend.deleteRecipientsFromSpamComplaintList({
-  ids: [
-    "xxxxxxxxxxx",
-    "yyyyyyyyyyy"
-  ]
-});
+mailerSend.email.recipient.delBlockListRecipients(
+  ["recipient_id", "recipient_id"],
+  BlockListType.SPAM_COMPLAINTS_LIST
+)
+  .then((response) => console.log(response.body))
+  .catch((error) => console.log(error.body));
+
 ```
 
 #### Unsubscribe
+
 ```js
-const MailerSend = require("mailersend");
+import 'dotenv/config';
+import { BlockListType, MailerSend } from "mailersend";
 
-const mailersend = new MailerSend({
-    api_key: "key",
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
 });
 
-mailersend.deleteRecipientsFromUnsubscribeList({
-  ids: [
-    "xxxxxxxxxxx",
-    "yyyyyyyyyyy"
-  ]
-});
+mailerSend.email.recipient.delBlockListRecipients(
+  ["recipient_id", "recipient_id"],
+  BlockListType.UNSUBSCRIBES_LIST
+)
+  .then((response) => console.log(response.body))
+  .catch((error) => console.log(error.body));
+
 ```
 
 ## Templates
@@ -1156,49 +1196,51 @@ mailersend.deleteRecipientsFromUnsubscribeList({
 ### Get a list of templates
 
 ```js
-const MailerSend = require("mailersend");
+import 'dotenv/config';
+import { MailerSend} from "mailersend";
 
-const mailersend = new MailerSend({
-    api_key: "key",
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
 });
 
-mailersend.templateList()
-  .then(response => response.json())
-  .then(data => {
-    console.log(data);
-  });
+mailerSend.email.template.list({
+    domain_id: "domain_id"
+})
+  .then((response) => console.log(response.body))
+  .catch((error) => console.log(error.body));
+
 ```
 
 ### Get a single template
 
 ```js
-const MailerSend = require("mailersend");
+import 'dotenv/config';
+import { MailerSend} from "mailersend";
 
-const mailersend = new MailerSend({
-    api_key: "key",
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
 });
 
-mailersend.template({
-  template_id: 'xxx'
-})
-  .then(response => response.json())
-  .then(data => {
-    console.log(data);
-  });
+mailerSend.email.template.single("domain_id")
+  .then((response) => console.log(response.body))
+  .catch((error) => console.log(error.body));
+
 ```
 
 ### Delete a template
 
 ```js
-const MailerSend = require("mailersend");
+import 'dotenv/config';
+import { MailerSend} from "mailersend";
 
-const mailersend = new MailerSend({
-    api_key: "key",
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
 });
 
-mailersend.deleteTemplate({
-  template_id: 'xxx'
-});
+mailerSend.email.template.single("domain_id")
+  .then((response) => console.log(response.body))
+  .catch((error) => console.log(error.body));
+
 ```
 
 ## Webhooks
@@ -1206,125 +1248,140 @@ mailersend.deleteTemplate({
 ### Get a list of webhooks
 
 ```js
-const MailerSend = require("mailersend");
+import 'dotenv/config';
+import { MailerSend} from "mailersend";
 
-const mailersend = new MailerSend({
-    api_key: "key",
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
 });
 
-mailersend.webhooksList({
-  domain_id: "xxx"
-})
-  .then(response => response.json())
-  .then(data => {
-    console.log(data);
-  });
+mailerSend.email.webhook.list("domain_id")
+  .then((response) => console.log(response.body))
+  .catch((error) => console.log(error.body));
+
 ```
 
 ### Get webhook
 
 ```js
-const MailerSend = require("mailersend");
+import 'dotenv/config';
+import { MailerSend} from "mailersend";
 
-const mailersend = new MailerSend({
-    api_key: "key",
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
 });
 
-mailersend.webhook({
-  webhook_id: 'xxx'
-})
-  .then(response => response.json())
-  .then(data => {
-    console.log(data);
-  });
+mailerSend.email.webhook.single("webhook_id")
+  .then((response) => console.log(response.body))
+  .catch((error) => console.log(error.body));
+
 ```
 
 ### Create webhook
 
 ```js
-const MailerSend = require("mailersend");
+import 'dotenv/config';
+import { EmailWebhook, EmailWebhookEventType, MailerSend } from "mailersend";
 
-const mailersend = new MailerSend({
-    api_key: "key",
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
 });
 
-mailersend.createWebhook({
-  url: "https://example.com",
-  name: "Webhook name",
-  events: ["activity.sent"],
-  domain_id: "xxx"
-})
-  .then(response => response.json())
-  .then(data => {
-    console.log(data);
-  });
+const emailWebhook = new EmailWebhook()
+  .setName("Webhook Name")
+  .setUrl("https://example.com")
+  .setDomainId("domain_id")
+  .setEnabled(true)
+  .setEvents([EmailWebhookEventType.SENT, EmailWebhookEventType.OPENED]);
+
+mailerSend.email.webhook.create(emailWebhook)
+  .then((response) => console.log(response.body))
+  .catch((error) => console.log(error.body));
+
 ```
 
 ### Update webhook
 
 ```js
-const MailerSend = require("mailersend");
+import 'dotenv/config';
+import { EmailWebhook, EmailWebhookEventType, MailerSend } from "mailersend";
 
-const mailersend = new MailerSend({
-    api_key: "key",
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
 });
 
-mailersend.updateWebhook({
-  webhook_id: "xxx",
-  name: "New name"
-})
-  .then(response => response.json())
-  .then(data => {
-    console.log(data);
-  });
+const emailWebhook = new EmailWebhook()
+  .setName("Webhook Name 2")
+  .setEnabled(false)
+  .setEvents([EmailWebhookEventType.SENT, EmailWebhookEventType.OPENED]);
+
+mailerSend.email.webhook.update("webhook_id", emailWebhook)
+  .then((response) => console.log(response.body))
+  .catch((error) => console.log(error.body));
+
 ```
 
 ### Delete webhook
 
 ```js
-const MailerSend = require("mailersend");
+import 'dotenv/config';
+import { MailerSend} from "mailersend";
 
-const mailersend = new MailerSend({
-    api_key: "key",
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
 });
 
-mailersend.deleteWebhook({
-  webhook_id: 'xxx'
-});
+mailerSend.email.webhook.delete("webhook_id")
+  .then((response) => console.log(response.body))
+  .catch((error) => console.log(error.body));
+
 ```
 
 # SMS
 
 ### Send SMS
+
 ```js
-const MailerSend = require("mailersend");
-const SmsParams  = require("mailersend").SmsParams;
+"use strict";
+require('dotenv').config()
+
+const MailerSend = require("../../src/MailerSend");
+const SmsParams = require("../../src/SmsParams");
 
 const mailersend = new MailerSend({
-  api_key: "key",
+  api_key: process.env.API_KEY,
+});
+
+const recipients = [
+  "+18332647501"
+];
+
+const smsParams = new SmsParams()
+  .setFrom("+18332647501")
+  .setRecipients(recipients)
+  .setText("This is the text content");
+
+mailersend.sendSms(smsParams);
+
+```
+
+### SMS personalization
+
+```js
+"use strict";
+require('dotenv').config()
+
+const MailerSend = require("../../src/MailerSend");
+const SmsParams = require("../../src/SmsParams");
+
+const mailersend = new MailerSend({
+  api_key: process.env.API_KEY,
 });
 
 const recipients = [
   "+18332647501",
-  "+18332647500",
+  "+18332647502"
 ];
-
-const smsParams = new SmsParams()
-      .setFrom("+18332647501")
-      .setRecipients(recipients)
-      .setText("This is the text content");
-
-mailersend.sendSms(smsParams);
-```
-
-### SMS personalization
-```js
-const MailerSend = require("mailersend");
-const SmsParams  = require("mailersend").SmsParams;
-
-const mailersend = new MailerSend({
-  api_key: "key",
-});
 
 const personalization = [
   {
@@ -1348,378 +1405,409 @@ const smsParams = new SmsParams()
   .setText("Hey {{name}} welcome to our organization");
 
 mailersend.sendSms(smsParams);
+
 ```
 
 ## Phone Numbers
 
 ### Get phone number list
-```js
-const MailerSend = require("mailersend");
 
-const mailersend = new MailerSend({
-  api_key: "key",
+```js
+import 'dotenv/config';
+import { MailerSend } from "mailersend";
+
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
 });
 
-mailersend.getSmsNumbers()
-  .then(response => response.json())
-  .then(data => {
-    console.log(data);
-  });
+mailerSend.sms.number.list({
+  paused: false,
+  limit: 10,
+  page: 1
+})
+  .then((response) => console.log(response.body))
+  .catch((error) => console.log(error.body));
+
 ```
 
 ### Get phone number
-```js
-const MailerSend = require("mailersend");
 
-const mailersend = new MailerSend({
-  api_key: "key",
+```js
+import 'dotenv/config';
+import { MailerSend } from "mailersend";
+
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
 });
 
-mailersend.getSmsNumber({
-  sms_number_id: 'xxx'
-})
-  .then(response => response.json())
-  .then(data => {
-    console.log(data);
-  });
+mailerSend.sms.number.single("sms_number_id")
+  .then((response) => console.log(response.body))
+  .catch((error) => console.log(error.body));
+
 ```
 
 ### Update phone number
-```js
-const MailerSend = require("mailersend");
 
-const mailersend = new MailerSend({
-  api_key: "key",
+```js
+import 'dotenv/config';
+import { MailerSend } from "mailersend";
+
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
 });
 
-mailersend.updateSmsNumber({
-  sms_number_id: 'xxx',
-  paused: false
-})
-  .then(response => response.json())
-  .then(data => {
-    console.log(data);
-  });
+mailerSend.sms.number.update("sms_number_id", true)
+  .then((response) => console.log(response.body))
+  .catch((error) => console.log(error.body));
+
 ```
 
 ### Delete phone number
+
 ```js
-const MailerSend = require("mailersend");
+import 'dotenv/config';
+import { MailerSend } from "mailersend";
 
-const mailersend = new MailerSend({
-  api_key: "key",
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
 });
 
-mailersend.deleteSmsNumber({
-  sms_number_id: 'xxx'
-});
+mailerSend.sms.number.delete("sms_number_id")
+  .then((response) => console.log(response.body))
+  .catch((error) => console.log(error.body));
+
 ```
 
 ## Messages
 
 ### Get messages list
-```js
-const MailerSend = require("mailersend");
 
-const mailersend = new MailerSend({
-  api_key: "key",
+```js
+import 'dotenv/config';
+import { MailerSend } from "mailersend";
+
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
 });
 
-mailersend.getSmsMessages()
-  .then(response => response.json())
-  .then(data => {
-    console.log(data);
-  });
+mailerSend.sms.message.list({
+  limit: 10,
+  page: 1
+})
+  .then((response) => console.log(response.body))
+  .catch((error) => console.log(error.body));
+
 ```
 
 ### Get a message
-```js
-const MailerSend = require("mailersend");
 
-const mailersend = new MailerSend({
-  api_key: "key",
+```js
+import 'dotenv/config';
+import { MailerSend } from "mailersend";
+
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
 });
 
-mailersend.getSmsMessage({
-  sms_message_id: 'xxx'
-})
-  .then(response => response.json())
-  .then(data => {
-    console.log(data);
-  });
+mailerSend.sms.message.single("sms_message_id")
+  .then((response) => console.log(response.body))
+  .catch((error) => console.log(error.body));
+
 ```
 
 ## Activity
 
 ### Get activity list
-```js
-const MailerSend = require("mailersend");
 
-const mailersend = new MailerSend({
-  api_key: "key",
+```js
+import 'dotenv/config';
+import { MailerSend, SmsActivityStatusType } from "mailersend";
+
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
 });
 
-mailersend.getSmsActivities()
-  .then(response => response.json())
-  .then(data => {
-    console.log(data);
-  });
+mailerSend.sms.activity.list({
+  sms_number_id: "number_id",
+  status: [SmsActivityStatusType.SENT, SmsActivityStatusType.DELIVERED],
+  limit: 10,
+  page: 1
+})
+  .then((response) => console.log(response.body))
+  .catch((error) => console.log(error.body));
+
 ```
 
 ### Get activity of a message
-```js
-const MailerSend = require("mailersend");
 
-const mailersend = new MailerSend({
-  api_key: "key",
+```js
+import 'dotenv/config';
+import { MailerSend } from "mailersend";
+
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
 });
 
-mailersend.getSmsActivity({
-  sms_message_id: 'xxx'
-})
-  .then(response => response.json())
-  .then(data => {
-    console.log(data);
-  });
+mailerSend.sms.activity.single("sms_message_id")
+  .then((response) => console.log(response.body))
+  .catch((error) => console.log(error.body));
+
 ```
 
 ## Recipients
 
 ### Get recipient list
-```js
-const MailerSend = require("mailersend");
 
-const mailersend = new MailerSend({
-  api_key: "key",
+```js
+import 'dotenv/config';
+import { MailerSend } from "mailersend";
+
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
 });
 
-mailersend.getSmsRecipients()
-  .then(response => response.json())
-  .then(data => {
-    console.log(data);
-  });
+mailerSend.sms.recipient.list({
+  sms_number_id: "sms_number_id",
+  status: "active",
+  limit: 10,
+  page: 1,
+})
+  .then((response) => console.log(response.body))
+  .catch((error) => console.log(error.body));
+
 ```
 
 ### Get recipient
-```js
-const MailerSend = require("mailersend");
 
-const mailersend = new MailerSend({
-  api_key: "key",
+```js
+import 'dotenv/config';
+import { MailerSend } from "mailersend";
+
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
 });
 
-mailersend.getSmsRecipient({
-  sms_recipient_id: 'xxx'
-})
-  .then(response => response.json())
-  .then(data => {
-    console.log(data);
-  });
+mailerSend.sms.recipient.single("sms_recipient_id")
+  .then((response) => console.log(response.body))
+  .catch((error) => console.log(error.body));
+
 ```
 
 ### Update recipient
-```js
-const MailerSend = require("mailersend");
 
-const mailersend = new MailerSend({
-  api_key: "key",
+```js
+import 'dotenv/config';
+import { MailerSend } from "mailersend";
+
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
 });
 
-mailersend.updateSmsRecipient({
-  sms_recipient_id: "xxx",
-  status: "active"
-})
-  .then(response => response.json())
-  .then(data => {
-    console.log(data);
-  });
+mailerSend.sms.recipient.update("sms_recipient_id", "active")
+  .then((response) => console.log(response.body))
+  .catch((error) => console.log(error.body));
+
 ```
 
 ## Webhooks
 
 ### Get webhook list for a number
-```js
-const MailerSend = require("mailersend");
 
-const mailersend = new MailerSend({
-  api_key: "key",
+```js
+import 'dotenv/config';
+import { MailerSend } from "mailersend";
+
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
 });
 
-mailersend.getSmsWebhooks({
-  sms_number_id: 'xxx',
-  limit: 10
-})
-  .then(response => response.json())
-  .then(data => {
-    console.log(data);
-  });
+mailerSend.sms.webhook.list("sms_number_id")
+  .then((response) => console.log(response.body))
+  .catch((error) => console.log(error.body));
+
 ```
 
 ### Get webhook
-```js
-const MailerSend = require("mailersend");
 
-const mailersend = new MailerSend({
-  api_key: "key",
+```js
+import 'dotenv/config';
+import { MailerSend } from "mailersend";
+
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
 });
 
-mailersend.getSmsWebhook({
-  sms_webhook_id: 'xxx'
-})
-  .then(response => response.json())
-  .then(data => {
-    console.log(data);
-  });
+mailerSend.sms.webhook.single("sms_webhook_id")
+  .then((response) => console.log(response.body))
+  .catch((error) => console.log(error.body));
+
 ```
 
 ### Create webhook
-```js
-const MailerSend = require("mailersend");
 
-const mailersend = new MailerSend({
-  api_key: "key",
+```js
+import 'dotenv/config';
+import { MailerSend, SmsWebhook, SmsWebhookEventType } from "mailersend";
+
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
 });
 
-mailersend.createSmsWebhook({
-  sms_number_id: "xxx",
-  name: "Webhook",
-  url: "https:://yourapp.com/hook",
-  enabled: ["sms.sent", "sms.delivered", "sms.failed"],
-  enabled: true
-})
-  .then(response => response.json())
-  .then(data => {
-    console.log(data);
-  });
+const smsWebhook = new SmsWebhook()
+  .setName("Sms Webhook")
+  .setUrl("https:://yourapp.com/hook")
+  .setSmsNumberId("sms_number_id")
+  .setEnabled(true)
+  .setEvents([SmsWebhookEventType.SENT, SmsWebhookEventType.DELIVERED])
+
+mailerSend.sms.webhook.create(smsWebhook)
+  .then((response) => console.log(response.body))
+  .catch((error) => console.log(error.body));
+
 ```
 
 ### Update webhook
-```js
-const MailerSend = require("mailersend");
 
-const mailersend = new MailerSend({
-  api_key: "key",
+```js
+import 'dotenv/config';
+import { MailerSend } from "mailersend";
+
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
 });
 
-mailersend.updateSmsWebhook({
-  sms_webhook_id: "xxx",
+mailerSend.sms.webhook.update("sms_webhook_id", {
   name: "Webhook",
   url: "https:://yourapp.com/hook",
   enabled: ["sms.sent", "sms.delivered", "sms.failed"],
   enabled: true
 })
-  .then(response => response.json())
-  .then(data => {
-    console.log(data);
-  });
+  .then((response) => console.log(response.body))
+  .catch((error) => console.log(error.body));
+
 ```
 
 ### Delete webhook
+
 ```js
-const MailerSend = require("mailersend");
+import 'dotenv/config';
+import { MailerSend } from "mailersend";
 
-const mailersend = new MailerSend({
-  api_key: "key",
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
 });
 
-mailersend.deleteSmsWebhook({
-  sms_webhook_id: 'xxx'
-});
+mailerSend.sms.webhook.delete("sms_webhook_id")
+  .then((response) => console.log(response.body))
+  .catch((error) => console.log(error.body));
+
 ```
 
 ## Inbound
 
 ### Get inbound list
-```js
-const MailerSend = require("mailersend");
 
-const mailersend = new MailerSend({
-  api_key: "key",
+```js
+import 'dotenv/config';
+import { MailerSend } from "mailersend";
+
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
 });
 
-mailersend.getSmsInbounds()
-  .then(response => response.json())
-  .then(data => {
-    console.log(data);
-  });
+mailerSend.sms.inbound.list({
+  enabled: 1,
+  sms_number_id: "sms_number_id",
+  limit: 10,
+  page: 1,
+})
+  .then((response) => console.log(response.body))
+  .catch((error) => console.log(error.body));
+
 ```
 
 ### Get inbound
-```js
-const MailerSend = require("mailersend");
 
-const mailersend = new MailerSend({
-  api_key: "key",
+```js
+import 'dotenv/config';
+import { MailerSend } from "mailersend";
+
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
 });
 
-mailersend.getSmsInbound({
-  sms_inbound_id: 'xxx'
-})
-  .then(response => response.json())
-  .then(data => {
-    console.log(data);
-  });
+mailerSend.sms.inbound.single("sms_inbound_id")
+  .then((response) => console.log(response.body))
+  .catch((error) => console.log(error.body));
+
 ```
 
 ### Add inbound
-```js
-const MailerSend = require("mailersend");
 
-const mailersend = new MailerSend({
-  api_key: "key",
+```js
+import 'dotenv/config';
+import { MailerSend, SmsInbound } from "mailersend";
+
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
 });
 
-mailersend.createSmsInbound({
-  sms_number_id: "xxx",
-  name: "Inbound",
-  forward_url: "https:://yourapp.com/hook",
-  filter: {
+const smsInbound = new SmsInbound()
+  .setSmsNumberId("sms_number_id")
+  .setEnabled(true)
+  .setName("Inbound Name")
+  .setForwardUrl("yourapp.com/hook")
+  .setFilter({
     comparer: "equal",
     value: "START"
-  },
-  enabled: true
-})
-  .then(response => response.json())
-  .then(data => {
-    console.log(data);
   });
+
+mailerSend.sms.inbound.create(smsInbound)
+  .then((response) => console.log(response.body))
+  .catch((error) => console.log(error.body));
+
 ```
 
 ### Update inbound
-```js
-const MailerSend = require("mailersend");
 
-const mailersend = new MailerSend({
-  api_key: "key",
+```js
+import 'dotenv/config';
+import { MailerSend, SmsInbound } from "mailersend";
+
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
 });
 
-mailersend.updateSmsInbound({
-  sms_inbound_id: "xxx",
-  name: "Inbound",
-  forward_url: "https:://yourapp.com/hook",
-  filter: {
+const smsInbound = new SmsInbound()
+  .setSmsNumberId("sms_number_id")
+  .setEnabled(true)
+  .setName("Inbound Name Update")
+  .setForwardUrl("yourapp.com/hook")
+  .setFilter({
     comparer: "equal",
     value: "START"
-  },
-  enabled: true
-})
-  .then(response => response.json())
-  .then(data => {
-    console.log(data);
   });
+
+mailerSend.sms.inbound.update("sms_inbound_id", {...smsInbound})
+  .then((response) => console.log(response.body))
+  .catch((error) => console.log(error.body));
+
 ```
 
 ### Delete inbound
+
 ```js
-const MailerSend = require("mailersend");
+import 'dotenv/config';
+import { MailerSend } from "mailersend";
 
-const mailersend = new MailerSend({
-  api_key: "key",
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
 });
 
-mailersend.deleteSmsInbound({
-  sms_inbound_id: 'xxx'
-});
+mailerSend.sms.inbound.delete("sms_inbound_id")
+  .then((response) => console.log(response.body))
+  .catch((error) => console.log(error.body));
+
 ```
 
 # Support and Feedback
