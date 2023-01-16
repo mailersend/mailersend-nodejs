@@ -62,6 +62,6 @@ export interface VariableSubstitution {
 export interface Personalization {
   email: string;
   data: {
-    [key: string]: string;
+    [key: string]: any;
   };
 }
