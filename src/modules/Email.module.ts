@@ -10,6 +10,7 @@ import { ScheduleModule } from "./email/Schedule.module";
 import { RecipientModule } from "./email/Recipient.module";
 import { TemplateModule } from "./email/Template.module";
 import { EmailWebhookModule } from "./email/Webhook.module";
+import { IdentityModule } from "./email/Identity.module";
 
 export class EmailModule extends RequestService {
   activity: ActivityModule;
@@ -21,6 +22,7 @@ export class EmailModule extends RequestService {
   recipient: RecipientModule;
   template: TemplateModule;
   webhook: EmailWebhookModule;
+  identity: IdentityModule;
 
   constructor(apiKey: string, baseUrl: string) {
     super(apiKey, baseUrl);
@@ -34,6 +36,7 @@ export class EmailModule extends RequestService {
     this.recipient = new RecipientModule(apiKey, baseUrl);
     this.template = new TemplateModule(apiKey, baseUrl);
     this.webhook = new EmailWebhookModule(apiKey, baseUrl);
+    this.identity = new IdentityModule(apiKey, baseUrl);
   }
 
   async send(params: EmailParams): Promise<APIResponse> {

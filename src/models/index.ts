@@ -15,6 +15,7 @@ export * from "./email/Inbound";
 export * from "./email/Message";
 export * from "./email/Schedule";
 export * from "./email/Template";
+export * from "./email/Identity";
 
 //SMS Models
 export * from "./sms/Activity";
