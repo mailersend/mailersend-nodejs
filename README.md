@@ -46,6 +46,18 @@ MailerSend Node.js SDK
     - [Add a domain](#add-a-domain)
     - [Get DNS records](#get-dns-records)
     - [Get verification status](#get-verification-status)
+  - [Identity](#identity)
+    - [Get identity list](#get-identity-list)
+    - [Get identity](#get-identity)
+    - [Create identity](#create-identity)
+    - [Update identity](#update-identity)
+    - [Delete identity](#delete-identity)
+  - [Inbounds](#inbound)
+    - [Get inbound list](#get-inbound-list)
+    - [Get inbound](#get-inbound)
+    - [Create inbound](#create-inbound)
+    - [Update inbound](#update-inbound)
+    - [Delete inbound](#delete-inbound)
   - [Messages](#messages)
     - [Get a list of messages](#get-a-list-of-messages)
     - [Get info on a message](#get-info-on-a-message)
@@ -705,6 +717,106 @@ mailerSend.email.domain.verify("domain_id")
   .then((response) => console.log(response.body))
   .catch((error) => console.log(error.body));
 
+```
+
+## Identity
+
+### Get identity list
+
+```js
+iimport 'dotenv/config';
+import { MailerSend } from "mailersend";
+
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
+});
+
+mailerSend.email.identity.list()
+  .then((response) => console.log(response.body))
+  .catch((error) => console.log(error.body));
+
+```
+
+### Get identity
+
+```js
+import 'dotenv/config';
+import { MailerSend } from "mailersend";
+
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
+});
+
+mailerSend.email.identity.single("identity_id")
+  .then((response) => console.log(response.body))
+  .catch((error) => console.log(error.body));
+
+```
+
+### Create identity
+
+```js
+import 'dotenv/config';
+import { MailerSend, Inbound, InboundFilterType } from "mailersend";
+
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
+});
+
+const identity = new Identity()
+  .setDomainId('domain_id')
+  .setEmail('identity@yourdomain.com')
+  .setName('Name')
+  .setReplyToEmail('reply_identity@yourdomain.com')
+  .setReplyToName('Reply Name')
+  .setAddNote(false);
+
+mailerSend.email.identity.create(identity)
+  .then((response) => console.log(response.body))
+  .catch((error) => console.log(error.body));
+
+```
+
+### Update identity
+
+```js
+import 'dotenv/config';
+import { MailerSend, Inbound, InboundFilterType } from "mailersend";
+
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
+});
+
+const data = {
+  domain_id: 'string',
+  email: 'email@yourdomain.com',
+  name: 'name',
+  personal_note: 'Personal note',
+  reply_to_name: 'Reply Name',
+  reply_to_email: 'repy@yourdomain.com',
+  add_note: true,
+};
+
+mailerSend.email.identity.update('identiy_id', data)
+  .then((response) => console.log(response.body))
+  .catch((error) => console.log(error.body));
+
+```
+
+### Delete identity
+
+```js
+import 'dotenv/config';
+import { MailerSend } from "mailersend";
+
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
+});
+
+mailerSend.email.identity.delete("identity_id")
+  .then((response) => console.log(response.body))
+  .catch((error) => console.log(error.body));
+  
 ```
 
 ## Inbound
