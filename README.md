@@ -19,11 +19,12 @@ MailerSend Node.js SDK
 - [Usage](#usage)
   - [Email](#email)
     - [Send an email](#send-an-email)
-    - [Add CC, BCC recipients](#add-cc--bcc-recipients)
+    - [Add CC, BCC recipients](#add-cc-bcc-recipients)
     - [Send a template-based email](#send-a-template-based-email)
     - [Advanced personalization](#advanced-personalization)
     - [Simple personalization](#simple-personalization)
     - [Send email with attachment](#send-email-with-attachment)
+    - [Send email with inline attachment](#send-email-with-inline-attachment)
     - [Send bulk emails](#send-bulk-emails)
     - [Get bulk request status](#get-bulk-request-status)
   - [Tokens](#tokens)
@@ -298,6 +299,45 @@ const emailParams = new EmailParams()
   .setAttachments(attachments)
   .setSubject("This is a Subject")
   .setHtml("<strong>This is the HTML content</strong>")
+  .setText("This is the text content");
+
+await mailerSend.email.send(emailParams);
+
+```
+
+### Send email with inline attachment
+
+```js
+import 'dotenv/config';
+import fs from "fs";
+import { MailerSend, EmailParams, Sender, Recipient, Attachment } from "mailersend";
+
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
+});
+
+const sentFrom = new Sender("you@yourdomain.com", "Your name");
+
+const recipients = [
+  new Recipient("your@client.com", "Your Client")
+];
+
+const attachments = [
+  new Attachment(
+    fs.readFileSync('/path/to/file.png', { encoding: 'base64' }),
+    'file.png',
+    'inline',
+    '0123456789'
+  )
+]
+
+const emailParams = new EmailParams()
+  .setFrom(sentFrom)
+  .setTo(recipients)
+  .setReplyTo(sentFrom)
+  .setAttachments(attachments)
+  .setSubject("This is a Subject")
+  .setHtml("<strong>This is the HTML content with an inline image attachment <img src=\"cid:0123456789\"/></strong>")
   .setText("This is the text content");
 
 await mailerSend.email.send(emailParams);
