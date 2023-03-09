@@ -764,7 +764,7 @@ mailerSend.email.domain.verify("domain_id")
 ### Get identity list
 
 ```js
-iimport 'dotenv/config';
+import 'dotenv/config';
 import { MailerSend } from "mailersend";
 
 const mailerSend = new MailerSend({
@@ -864,7 +864,7 @@ mailerSend.email.identity.delete("identity_id")
 ### Get inbound list
 
 ```js
-iimport 'dotenv/config';
+import 'dotenv/config';
 import { MailerSend } from "mailersend";
 
 const mailerSend = new MailerSend({
