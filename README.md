@@ -1722,6 +1722,27 @@ mailersend.deleteSmsInbound({
 });
 ```
 
+## Others
+
+### Get Api Quota
+
+```js
+"use strict";
+require('dotenv').config()
+
+const MailerSend = require("../../src/MailerSend");
+
+const mailersend = new MailerSend({
+  api_key: process.env.API_KEY,
+});
+
+mailersend.getApiQuota()
+  .then(response => response.json())
+  .then(data => {
+    console.log(data);
+  });
+
+```
 # Support and Feedback
 
 In case you find any bugs, submit an issue directly here in GitHub.

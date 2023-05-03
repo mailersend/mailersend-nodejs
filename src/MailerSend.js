@@ -23,6 +23,9 @@ const smsActivities = require("./modules/sms/activities.js");
 const smsMessages = require("./modules/sms/messages.js");
 const smsRecipients = require("./modules/sms/recipients.js");
 
+//Others
+const others = require("./modules/others.js");
+
 let headers = {
   "X-Requested-With": "XMLHttpRequest",
   "Content-type": "application/json",
@@ -54,6 +57,7 @@ module.exports = class MailerSend {
       smsActivities,
       smsMessages,
       smsRecipients,
+      others,
     )
   }
 
