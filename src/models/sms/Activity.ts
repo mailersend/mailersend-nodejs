@@ -8,7 +8,6 @@ export interface SmsActivityQueryParams extends Pagination {
 }
 
 export enum SmsActivityStatusType {
-  PROCESSED = "processed",
   QUEUED = "queued",
   SENT = "sent",
   DELIVERED = "delivered",

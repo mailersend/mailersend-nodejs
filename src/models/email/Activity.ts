@@ -7,7 +7,6 @@ export interface ActivityQueryParams extends Pagination {
 }
 
 export enum ActivityEventType {
-  PROCESSED = "processed",
   QUEUED = "queued",
   SENT = "sent",
   DELIVERED = "delivered",
