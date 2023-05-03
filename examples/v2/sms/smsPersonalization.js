@@ -8,7 +8,7 @@ const mailersend = new MailerSend({
   api_key: process.env.API_KEY,
 });
 
-const recipients = [
+const to = [
   "+18332647501",
   "+18332647502"
 ];
@@ -30,7 +30,7 @@ const personalization = [
 
 const smsParams = new SmsParams()
   .setFrom("+18332647501")
-  .setRecipients(recipients)
+  .setTo(to)
   .setPersonalization(personalization)
   .setText("Hey {{name}} welcome to our organization");
 
