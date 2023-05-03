@@ -79,6 +79,8 @@ MailerSend Node.js SDK
     - [Create webhook](#create-webhook)
     - [Update webhook](#update-webhook)
     - [Delete webhook](#delete-webhook)
+  - [Others](#others)
+    - [Get API Quota](#get-api-quota)
 - [Support and Feedback](#support-and-feedback)
 - [License](#license)
 
@@ -1963,6 +1965,24 @@ const mailerSend = new MailerSend({
 });
 
 mailerSend.sms.inbound.delete("sms_inbound_id")
+  .then((response) => console.log(response.body))
+  .catch((error) => console.log(error.body));
+
+```
+
+## Others
+
+### Get Api Quota
+
+```js
+import 'dotenv/config';
+import { MailerSend} from "mailersend";
+
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
+});
+
+mailerSend.others.getApiQuota()
   .then((response) => console.log(response.body))
   .catch((error) => console.log(error.body));
 
