@@ -10,7 +10,7 @@ const mailersend = new MailerSend({
 mailersend.activityByDate({
   date_from: 1443651141,
   date_to: 2443651141,
-  event: ["processed"]
+  event: ["sent"]
 })
   .then(response => response.json())
   .then(data => {
