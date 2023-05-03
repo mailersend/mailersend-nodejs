@@ -305,10 +305,13 @@ mailersend.send(emailParams);
 const Recipient = require("mailersend").Recipient;
 const EmailParams = require("mailersend").EmailParams;
 const BulkEmails = require("mailersend").BulkEmails;
-const MailerSend = require("mailersend");
+"use strict";
+require('dotenv').config()
+
+const MailerSend = require("../../src/MailerSend");
 
 const mailersend = new MailerSend({
-  api_key: "key",
+  api_key: process.env.API_KEY,
 });
 
 const bulkEmails = new BulkEmails();
@@ -341,10 +344,13 @@ mailersend.sendBulk(bulkEmails)
 
 ### Get bulk request status
 ```js
-const MailerSend = require("mailersend");
+"use strict";
+require('dotenv').config()
+
+const MailerSend = require("../../src/MailerSend");
 
 const mailersend = new MailerSend({
-  api_key: "key",
+  api_key: process.env.API_KEY,
 });
 
 mailersend.getBulkEmailRequestStatus({
@@ -1354,10 +1360,13 @@ mailersend.sendSms(smsParams);
 
 ### Get phone number list
 ```js
-const MailerSend = require("mailersend");
+"use strict";
+require('dotenv').config()
+
+const MailerSend = require("../../src/MailerSend");
 
 const mailersend = new MailerSend({
-  api_key: "key",
+  api_key: process.env.API_KEY,
 });
 
 mailersend.getSmsNumbers()
@@ -1369,10 +1378,13 @@ mailersend.getSmsNumbers()
 
 ### Get phone number
 ```js
-const MailerSend = require("mailersend");
+"use strict";
+require('dotenv').config()
+
+const MailerSend = require("../../src/MailerSend");
 
 const mailersend = new MailerSend({
-  api_key: "key",
+  api_key: process.env.API_KEY,
 });
 
 mailersend.getSmsNumber({
@@ -1386,10 +1398,13 @@ mailersend.getSmsNumber({
 
 ### Update phone number
 ```js
-const MailerSend = require("mailersend");
+"use strict";
+require('dotenv').config()
+
+const MailerSend = require("../../src/MailerSend");
 
 const mailersend = new MailerSend({
-  api_key: "key",
+  api_key: process.env.API_KEY,
 });
 
 mailersend.updateSmsNumber({
@@ -1404,10 +1419,13 @@ mailersend.updateSmsNumber({
 
 ### Delete phone number
 ```js
-const MailerSend = require("mailersend");
+"use strict";
+require('dotenv').config()
+
+const MailerSend = require("../../src/MailerSend");
 
 const mailersend = new MailerSend({
-  api_key: "key",
+  api_key: process.env.API_KEY,
 });
 
 mailersend.deleteSmsNumber({
@@ -1419,10 +1437,13 @@ mailersend.deleteSmsNumber({
 
 ### Get messages list
 ```js
-const MailerSend = require("mailersend");
+"use strict";
+require('dotenv').config()
+
+const MailerSend = require("../../src/MailerSend");
 
 const mailersend = new MailerSend({
-  api_key: "key",
+  api_key: process.env.API_KEY,
 });
 
 mailersend.getSmsMessages()
@@ -1434,10 +1455,13 @@ mailersend.getSmsMessages()
 
 ### Get a message
 ```js
-const MailerSend = require("mailersend");
+"use strict";
+require('dotenv').config()
+
+const MailerSend = require("../../src/MailerSend");
 
 const mailersend = new MailerSend({
-  api_key: "key",
+  api_key: process.env.API_KEY,
 });
 
 mailersend.getSmsMessage({
@@ -1453,10 +1477,13 @@ mailersend.getSmsMessage({
 
 ### Get activity list
 ```js
-const MailerSend = require("mailersend");
+"use strict";
+require('dotenv').config()
+
+const MailerSend = require("../../src/MailerSend");
 
 const mailersend = new MailerSend({
-  api_key: "key",
+  api_key: process.env.API_KEY,
 });
 
 mailersend.getSmsActivities()
@@ -1468,10 +1495,13 @@ mailersend.getSmsActivities()
 
 ### Get activity of a message
 ```js
-const MailerSend = require("mailersend");
+"use strict";
+require('dotenv').config()
+
+const MailerSend = require("../../src/MailerSend");
 
 const mailersend = new MailerSend({
-  api_key: "key",
+  api_key: process.env.API_KEY,
 });
 
 mailersend.getSmsActivity({
@@ -1487,10 +1517,13 @@ mailersend.getSmsActivity({
 
 ### Get recipient list
 ```js
-const MailerSend = require("mailersend");
+"use strict";
+require('dotenv').config()
+
+const MailerSend = require("../../src/MailerSend");
 
 const mailersend = new MailerSend({
-  api_key: "key",
+  api_key: process.env.API_KEY,
 });
 
 mailersend.getSmsRecipients()
@@ -1502,10 +1535,13 @@ mailersend.getSmsRecipients()
 
 ### Get recipient
 ```js
-const MailerSend = require("mailersend");
+"use strict";
+require('dotenv').config()
+
+const MailerSend = require("../../src/MailerSend");
 
 const mailersend = new MailerSend({
-  api_key: "key",
+  api_key: process.env.API_KEY,
 });
 
 mailersend.getSmsRecipient({
@@ -1519,10 +1555,13 @@ mailersend.getSmsRecipient({
 
 ### Update recipient
 ```js
-const MailerSend = require("mailersend");
+"use strict";
+require('dotenv').config()
+
+const MailerSend = require("../../src/MailerSend");
 
 const mailersend = new MailerSend({
-  api_key: "key",
+  api_key: process.env.API_KEY,
 });
 
 mailersend.updateSmsRecipient({
@@ -1539,10 +1578,13 @@ mailersend.updateSmsRecipient({
 
 ### Get webhook list for a number
 ```js
-const MailerSend = require("mailersend");
+"use strict";
+require('dotenv').config()
+
+const MailerSend = require("../../src/MailerSend");
 
 const mailersend = new MailerSend({
-  api_key: "key",
+  api_key: process.env.API_KEY,
 });
 
 mailersend.getSmsWebhooks({
@@ -1557,10 +1599,13 @@ mailersend.getSmsWebhooks({
 
 ### Get webhook
 ```js
-const MailerSend = require("mailersend");
+"use strict";
+require('dotenv').config()
+
+const MailerSend = require("../../src/MailerSend");
 
 const mailersend = new MailerSend({
-  api_key: "key",
+  api_key: process.env.API_KEY,
 });
 
 mailersend.getSmsWebhook({
@@ -1574,10 +1619,13 @@ mailersend.getSmsWebhook({
 
 ### Create webhook
 ```js
-const MailerSend = require("mailersend");
+"use strict";
+require('dotenv').config()
+
+const MailerSend = require("../../src/MailerSend");
 
 const mailersend = new MailerSend({
-  api_key: "key",
+  api_key: process.env.API_KEY,
 });
 
 mailersend.createSmsWebhook({
@@ -1595,10 +1643,13 @@ mailersend.createSmsWebhook({
 
 ### Update webhook
 ```js
-const MailerSend = require("mailersend");
+"use strict";
+require('dotenv').config()
+
+const MailerSend = require("../../src/MailerSend");
 
 const mailersend = new MailerSend({
-  api_key: "key",
+  api_key: process.env.API_KEY,
 });
 
 mailersend.updateSmsWebhook({
@@ -1616,10 +1667,13 @@ mailersend.updateSmsWebhook({
 
 ### Delete webhook
 ```js
-const MailerSend = require("mailersend");
+"use strict";
+require('dotenv').config()
+
+const MailerSend = require("../../src/MailerSend");
 
 const mailersend = new MailerSend({
-  api_key: "key",
+  api_key: process.env.API_KEY,
 });
 
 mailersend.deleteSmsWebhook({
@@ -1631,10 +1685,13 @@ mailersend.deleteSmsWebhook({
 
 ### Get inbound list
 ```js
-const MailerSend = require("mailersend");
+"use strict";
+require('dotenv').config()
+
+const MailerSend = require("../../src/MailerSend");
 
 const mailersend = new MailerSend({
-  api_key: "key",
+  api_key: process.env.API_KEY,
 });
 
 mailersend.getSmsInbounds()
@@ -1646,10 +1703,13 @@ mailersend.getSmsInbounds()
 
 ### Get inbound
 ```js
-const MailerSend = require("mailersend");
+"use strict";
+require('dotenv').config()
+
+const MailerSend = require("../../src/MailerSend");
 
 const mailersend = new MailerSend({
-  api_key: "key",
+  api_key: process.env.API_KEY,
 });
 
 mailersend.getSmsInbound({
@@ -1663,10 +1723,13 @@ mailersend.getSmsInbound({
 
 ### Add inbound
 ```js
-const MailerSend = require("mailersend");
+"use strict";
+require('dotenv').config()
+
+const MailerSend = require("../../src/MailerSend");
 
 const mailersend = new MailerSend({
-  api_key: "key",
+  api_key: process.env.API_KEY,
 });
 
 mailersend.createSmsInbound({
@@ -1687,10 +1750,13 @@ mailersend.createSmsInbound({
 
 ### Update inbound
 ```js
-const MailerSend = require("mailersend");
+"use strict";
+require('dotenv').config()
+
+const MailerSend = require("../../src/MailerSend");
 
 const mailersend = new MailerSend({
-  api_key: "key",
+  api_key: process.env.API_KEY,
 });
 
 mailersend.updateSmsInbound({
@@ -1711,10 +1777,13 @@ mailersend.updateSmsInbound({
 
 ### Delete inbound
 ```js
-const MailerSend = require("mailersend");
+"use strict";
+require('dotenv').config()
+
+const MailerSend = require("../../src/MailerSend");
 
 const mailersend = new MailerSend({
-  api_key: "key",
+  api_key: process.env.API_KEY,
 });
 
 mailersend.deleteSmsInbound({
