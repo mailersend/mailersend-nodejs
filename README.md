@@ -700,6 +700,8 @@ mailerSend.email.domain.updateSettings("domain_id", {
   track_content: 1,
   custom_tracking_enabled: 1,
   custom_tracking_subdomain: "subdomain",
+  precedence_bulk: 1,
+  ignore_duplicated_recipients: 1,
 })
   .then((response) => console.log(response.body))
   .catch((error) => console.log(error.body));
