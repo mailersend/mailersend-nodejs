@@ -2,9 +2,9 @@ import { Pagination } from "../Pagination";
 
 export class Domain {
   name: string;
-  return_path_subdomain?: string; 
-  custom_tracking_subdomain?: string; 
-  inbound_routing_subdomain?: string; 
+  return_path_subdomain?: string;
+  custom_tracking_subdomain?: string;
+  inbound_routing_subdomain?: string;
 
   constructor(
     name: string,
@@ -23,7 +23,7 @@ export interface DomainQueryParams extends Pagination {
   verified?: boolean;
 }
 
-export interface DomainRecipientsQueryParams extends Pagination {} 
+export interface DomainRecipientsQueryParams extends Pagination {}
 
 export interface DomainSettings {
   send_paused?: boolean;
@@ -35,4 +35,6 @@ export interface DomainSettings {
   track_content?: boolean;
   custom_tracking_enabled?: boolean;
   custom_tracking_subdomain?: string;
+  precedence_bulk?: boolean;
+  ignore_duplicated_recipients?: boolean;
 }
