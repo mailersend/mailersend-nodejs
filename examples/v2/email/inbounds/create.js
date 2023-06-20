@@ -9,6 +9,7 @@ const inbound = new Inbound()
   .setDomainId('domain_id')
   .setName('inbound test')
   .setDomainEnabled(true)
+  .setInboundPriority(100)
   .setMatchFilter({
     type: InboundFilterType.MATCH_ALL,
   })

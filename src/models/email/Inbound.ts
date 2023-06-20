@@ -11,6 +11,7 @@ export class Inbound {
     inbound_domain?: string; 
     inbound_address?: string; 
     inbound_subdomain?: string; 
+    inbound_priority?: number;
     forwards?: InboundForward[];
     match_filter?: MatchFilter; 
     catch_filter?: CatchFilter; 
@@ -22,6 +23,7 @@ export class Inbound {
         inboundDomain?: string,
         inboundAddress?: string,
         inboundSubdomain?: string,
+        inboundPriority?: number,
         forwards?: InboundForward[],
         matchFilter?: MatchFilter,
         catchFilter?: CatchFilter,
@@ -32,6 +34,7 @@ export class Inbound {
         this.inbound_domain = inboundDomain;
         this.inbound_address = inboundAddress;
         this.inbound_subdomain = inboundSubdomain;
+        this.inbound_priority = inboundPriority;
         this.forwards = forwards;
         this.match_filter = matchFilter;
         this.catch_filter = catchFilter;
@@ -59,6 +62,11 @@ export class Inbound {
 
     setInboundSubDomain(inboundSubdomain: string): Inbound {
       this.inbound_subdomain = inboundSubdomain;
+      return this;
+    }
+
+    setInboundPriority(inboundPriority: number): Inbound {
+      this.inbound_priority = inboundPriority;
       return this;
     }
 

@@ -15,6 +15,7 @@ mailersend.updateInbound({
   inbound_domain: "test.yourdomain.com",
   inbound_address: "test@inbound.yourdomain.com",
   inbound_subdomain: "inbound",
+  inbound_priority: 100,
   match_filter: {
     type: "match_all"
   },
