@@ -50,9 +50,12 @@ MailerSend Node.js SDK
   - [Identity](#identity)
     - [Get identity list](#get-identity-list)
     - [Get identity](#get-identity)
+    - [Get identity by email](#get-identity-by-email-address)
     - [Create identity](#create-identity)
     - [Update identity](#update-identity)
+    - [Update identity by email](#update-identity-by-email-address)
     - [Delete identity](#delete-identity)
+    - [Delete identity by email](#delete-identity-by-email-address)
   - [Inbounds](#inbound)
     - [Get inbound list](#get-inbound-list)
     - [Get inbound](#get-inbound)
@@ -797,6 +800,22 @@ mailerSend.email.identity.single("identity_id")
 
 ```
 
+### Get identity by email address
+
+```js
+import 'dotenv/config';
+import { MailerSend } from "mailersend";
+
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
+});
+
+mailerSend.email.identity.singleByEmail('email_address')
+  .then((response) => console.log(response.body))
+  .catch((error) => console.log(error.body));
+
+```
+
 ### Create identity
 
 ```js
@@ -847,6 +866,32 @@ mailerSend.email.identity.update('identiy_id', data)
 
 ```
 
+### Update identity by email address
+
+```js
+import 'dotenv/config';
+import { MailerSend, Inbound, InboundFilterType } from "mailersend";
+
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
+});
+
+const data = {
+  domain_id: 'string',
+  email: 'email@yourdomain.com',
+  name: 'name',
+  personal_note: 'Personal note',
+  reply_to_name: 'Reply Name',
+  reply_to_email: 'repy@yourdomain.com',
+  add_note: true,
+};
+
+mailerSend.email.identity.updateByEmail('email_address', data)
+  .then((response) => console.log(response.body))
+  .catch((error) => console.log(error.body));
+
+```
+
 ### Delete identity
 
 ```js
@@ -858,6 +903,22 @@ const mailerSend = new MailerSend({
 });
 
 mailerSend.email.identity.delete("identity_id")
+  .then((response) => console.log(response.body))
+  .catch((error) => console.log(error.body));
+  
+```
+
+### Delete identity by email address
+
+```js
+import 'dotenv/config';
+import { MailerSend } from "mailersend";
+
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
+});
+
+mailerSend.email.identity.deleteByEmail('email_address')
   .then((response) => console.log(response.body))
   .catch((error) => console.log(error.body));
   
