@@ -2,7 +2,7 @@ export class EmailWebhook {
   url!: string;
   name!: string;
   events!: EmailWebhookEventType[];
-  domain_id!: string; 
+  domain_id!: string;
   enabled?: boolean;
 
   constructor(config?: IEmailWebhook) {
@@ -51,9 +51,16 @@ export enum EmailWebhookEventType {
   SOFT_BOUNCED = "activity.soft_bounced",
   HARD_BOUNCED = "activity.hard_bounced",
   OPENED = "activity.opened",
+  OPENED_UNIQUE = "activity.opened_unique",
   CLICKED = "activity.clicked",
+  CLICKED_UNIQUE = "activity.clicked_unique",
   UNSUBSCRIBED = "activity.unsubscribed",
   SPAM_COMPLIANT = "activity.spam_complaint",
+  SURVEY_OPENED = "activity.survey_opened",
+  SURVEY_SUBMITTED = "activity.survey_submitted",
+  IDENTITY_VERIFIED = "sender_identity.verified",
+  MAINTENANCE_START = "maintenance.start",
+  MAINTENANCE_END = "maintenance.end",
 }
 
 export interface IEmailWebhook extends IEmailWebhookUpdate {
