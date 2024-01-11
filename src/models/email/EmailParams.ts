@@ -121,7 +121,7 @@ export class EmailParams {
     return this;
   }
 
-  setSettings(settings: EmailSettings[]): EmailParams {
+  setSettings(settings: EmailSettings): EmailParams {
     this.settings = settings;
     return this;
   }
