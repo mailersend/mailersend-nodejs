@@ -52,16 +52,6 @@ export class EmailModule extends RequestService {
   }
 }
 
-export interface Variable {
-  email: string;
-  substitutions: VariableSubstitution[];
-}
-
-export interface VariableSubstitution {
-  var: string;
-  value: string;
-}
-
 export interface Personalization {
   email: string;
   data: {

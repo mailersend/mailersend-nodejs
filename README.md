@@ -33,8 +33,7 @@ For more info, you can:
     - [Send an email](#send-an-email)
     - [Add CC, BCC recipients](#add-cc-bcc-recipients)
     - [Send a template-based email](#send-a-template-based-email)
-    - [Advanced personalization](#advanced-personalization)
-    - [Simple personalization](#simple-personalization)
+    - [Personalization](#advanced-personalization)
     - [Send email with attachment](#send-email-with-attachment)
     - [Send email with inline attachment](#send-email-with-inline-attachment)
     - [Send bulk emails](#send-bulk-emails)
@@ -206,7 +205,7 @@ await mailerSend.email.send(emailParams);
 
 ```
 
-### Advanced personalization
+### Personalization
 
 ```js
 import 'dotenv/config';
@@ -242,46 +241,6 @@ const emailParams = new EmailParams()
 
 await mailerSend.email.send(emailParams);
 
-```
-
-### Simple personalization
-
-```js
-import 'dotenv/config';
-import { MailerSend, EmailParams, Sender, Recipient } from "mailersend";
-
-const mailerSend = new MailerSend({
-  apiKey: process.env.API_KEY,
-});
-
-const sentFrom = new Sender("you@yourdomain.com", "Your name");
-
-const recipients = [
-  new Recipient("your@client.com", "Your Client")
-];
-
-const variables = [
-  {
-    email: "your@client.com",
-    substitutions: [
-      {
-        var: 'test',
-        value: 'Test Value'
-      }
-    ],
-  }
-];
-
-const emailParams = new EmailParams()
-  .setFrom(sentFrom)
-  .setTo(recipients)
-  .setReplyTo(sentFrom)
-  .setVariables(variables)
-  .setSubject("Subject, {$test}")
-  .setHtml("This is the HTML content, {$test}")
-  .setText("This is the text content, {$test}");
-
-await mailerSend.email.send(emailParams);
 ```
 
 ### Send email with attachment
@@ -917,7 +876,7 @@ const mailerSend = new MailerSend({
 mailerSend.email.identity.delete("identity_id")
   .then((response) => console.log(response.body))
   .catch((error) => console.log(error.body));
-  
+
 ```
 
 ### Delete identity by email address
@@ -933,7 +892,7 @@ const mailerSend = new MailerSend({
 mailerSend.email.identity.deleteByEmail('email_address')
   .then((response) => console.log(response.body))
   .catch((error) => console.log(error.body));
-  
+
 ```
 
 ## Inbound
@@ -1043,7 +1002,7 @@ const mailerSend = new MailerSend({
 mailerSend.email.inbound.delete("inbound_id")
   .then((response) => console.log(response.body))
   .catch((error) => console.log(error.body));
-  
+
 ```
 
 ## Messages
