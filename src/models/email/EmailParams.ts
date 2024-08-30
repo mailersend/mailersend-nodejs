@@ -1,23 +1,22 @@
 import { Recipient } from "./Recipient";
 import { Sender } from "./Sender";
 import { Attachment } from "./Attachment";
-import { Personalization, Variable } from "../../modules/Email.module";
+import { Personalization } from "../../modules/Email.module";
 
 export class EmailParams {
   from: Sender;
   to: Recipient[];
   cc?: Recipient[];
   bcc?: Recipient[];
-  reply_to?: Recipient; 
+  reply_to?: Recipient;
   subject: string;
   text: string;
   html: string;
-  send_at: number; 
+  send_at: number;
   attachments?: Attachment[];
-  template_id?: string; 
-  in_reply_to?: string; 
+  template_id?: string;
+  in_reply_to?: string;
   tags?: string[];
-  variables?: Variable[];
   personalization?: Personalization[];
   settings?: EmailSettings[];
   precedence_bulk?: boolean;
@@ -36,7 +35,6 @@ export class EmailParams {
     this.attachments = config?.attachments;
     this.template_id = config?.templateId;
     this.tags = config?.tags;
-    this.variables = config?.variables;
     this.personalization = config?.personalization;
     this.precedence_bulk = config?.precedenceBulk;
   }
@@ -106,11 +104,6 @@ export class EmailParams {
     return this;
   }
 
-  setVariables(variables: Variable[]): EmailParams {
-    this.variables = variables;
-    return this;
-  }
-
   setPersonalization(personalization: Personalization[]): EmailParams {
     this.personalization = personalization;
     return this;
@@ -121,7 +114,7 @@ export class EmailParams {
     return this;
   }
 
-  setSettings(settings: EmailSettings): EmailParams {
+  setSettings(settings: EmailSettings[]): EmailParams {
     this.settings = settings;
     return this;
   }

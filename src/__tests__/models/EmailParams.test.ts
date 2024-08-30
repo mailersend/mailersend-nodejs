@@ -15,10 +15,9 @@ describe("EmailParams Model", () => {
       attachments: [{ content: "base64", fileName: "name", id: "some_id" }],
       templateId: "some_template_id",
       tags: ["tag1", "tag2"],
-      variables: [{ email: "to@email.com", substitutions: [{ var: "var_1", value: "value_1" }] }],
       personalization: [{ email: "cc@email.com", data: { key1: "value_1" } }],
     });
-    
+
     expect(params?.from?.email).toBe("from@email.com");
     expect(params?.from?.name).toBe("FromSender");
     expect(Array.isArray(params.to)).toBe(true);
@@ -37,12 +36,10 @@ describe("EmailParams Model", () => {
     expect(params?.attachments?.length).toBe(1);
     expect(Array.isArray(params?.tags)).toBe(true);
     expect(params?.tags?.length).toBe(2);
-    expect(Array.isArray(params?.variables)).toBe(true);
-    expect(params?.variables?.length).toBe(1);
     expect(Array.isArray(params?.personalization)).toBe(true);
     expect(params?.personalization?.length).toBe(1);
   });
-  
+
   it("Setters", () => {
     const params = new EmailParams()
       .setFrom({ email: "from@email.com", name: "FromSender" })
@@ -57,7 +54,6 @@ describe("EmailParams Model", () => {
       .setAttachments([{ content: "base64", filename: "name", disposition: "attachment" }])
       .setTemplateId("some_template_id")
       .setTags(["tag1", "tag2"])
-      .setVariables([{ email: "to@email.com", substitutions: [{ var: "var_1", value: "value_1" }] }])
       .setPersonalization([{ email: "cc@email.com", data: { key1: "value_1" } }]);
     expect(params?.from?.email).toBe("from@email.com");
     expect(params?.from?.name).toBe("FromSender");
@@ -77,8 +73,6 @@ describe("EmailParams Model", () => {
     expect(params?.attachments?.length).toBe(1);
     expect(Array.isArray(params?.tags)).toBe(true);
     expect(params?.tags?.length).toBe(2);
-    expect(Array.isArray(params?.variables)).toBe(true);
-    expect(params?.variables?.length).toBe(1);
     expect(Array.isArray(params?.personalization)).toBe(true);
     expect(params?.personalization?.length).toBe(1);
   });
