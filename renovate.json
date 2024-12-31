@@ -1,0 +1,3 @@
+{
+  "extends": ["github>mailerlite/renovate-config:base"]
+}
