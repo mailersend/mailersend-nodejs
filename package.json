@@ -55,7 +55,7 @@
     "jest-coverage-badges": "^1.1.2",
     "nock": "^14.0.0",
     "prettier": "^3.0.0",
-    "ts-jest": "^27.0.5",
+    "ts-jest": "^29.0.0",
     "typescript": "^4.4.3"
   }
 }
