@@ -44,7 +44,7 @@
     "postversion": "git push && git push --tags"
   },
   "dependencies": {
-    "gaxios": "^5.0.1",
+    "gaxios": "^6.0.0",
     "isomorphic-unfetch": "^3.1.0",
     "qs": "^6.11.0"
   },
