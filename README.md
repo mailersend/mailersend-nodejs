@@ -1536,40 +1536,34 @@ mailerSend.email.webhook.delete("webhook_id")
 ### Send SMS
 
 ```js
-"use strict";
-require('dotenv').config()
-
-const MailerSend = require("../../src/MailerSend");
-const SmsParams = require("../../src/SmsParams");
+import 'dotenv/config';
+import { MailerSend, SMSParams } from "mailersend";
 
 const mailersend = new MailerSend({
-  api_key: process.env.API_KEY,
+  apiKey: process.env.API_KEY,
 });
 
 const recipients = [
   "+18332647501"
 ];
 
-const smsParams = new SmsParams()
+const smsParams = new SMSParams()
   .setFrom("+18332647501")
-  .setRecipients(recipients)
+  .setTo(recipients)
   .setText("This is the text content");
 
-mailersend.sendSms(smsParams);
+await mailersend.sms.send(smsParams);
 
 ```
 
 ### SMS personalization
 
 ```js
-"use strict";
-require('dotenv').config()
-
-const MailerSend = require("../../src/MailerSend");
-const SmsParams = require("../../src/SmsParams");
+import 'dotenv/config';
+import { MailerSend, SMSParams, SMSPersonalization } from "mailersend";
 
 const mailersend = new MailerSend({
-  api_key: process.env.API_KEY,
+  apiKey: process.env.API_KEY,
 });
 
 const recipients = [
@@ -1578,27 +1572,21 @@ const recipients = [
 ];
 
 const personalization = [
-  {
-    "phone_number": "+18332647501",
-    "data": {
-      "name": "Dummy"
-    }
-  },
-  {
-    "phone_number": "+18332647502",
-    "data": {
-      "name": "Not Dummy"
-    }
-  }
+  new SMSPersonalization("+18332647501", {
+    "name": "Dummy"
+  }),
+  new SMSPersonalization("+18332647502", {
+    "name": "Not Dummy"
+  }),
 ];
 
-const smsParams = new SmsParams()
+const smsParams = new SMSParams()
   .setFrom("+18332647501")
-  .setRecipients(recipients)
+  .setTo(recipients)
   .setPersonalization(personalization)
   .setText("Hey {{name}} welcome to our organization");
 
-mailersend.sendSms(smsParams);
+await mailersend.sms.send(smsParams);
 
 ```
 
