@@ -16,6 +16,7 @@ describe("EmailParams Model", () => {
       templateId: "some_template_id",
       tags: ["tag1", "tag2"],
       personalization: [{ email: "cc@email.com", data: { key1: "value_1" } }],
+      listUnsubscribe: "https://www.mailersend.com/unsubscribe",
     });
 
     expect(params?.from?.email).toBe("from@email.com");
@@ -38,6 +39,7 @@ describe("EmailParams Model", () => {
     expect(params?.tags?.length).toBe(2);
     expect(Array.isArray(params?.personalization)).toBe(true);
     expect(params?.personalization?.length).toBe(1);
+    expect(params?.list_unsubscribe).toBe("https://www.mailersend.com/unsubscribe");
   });
 
   it("Setters", () => {
@@ -54,7 +56,8 @@ describe("EmailParams Model", () => {
       .setAttachments([{ content: "base64", filename: "name", disposition: "attachment" }])
       .setTemplateId("some_template_id")
       .setTags(["tag1", "tag2"])
-      .setPersonalization([{ email: "cc@email.com", data: { key1: "value_1" } }]);
+      .setPersonalization([{ email: "cc@email.com", data: { key1: "value_1" } }])
+      .setListUnsubscribe("https://www.mailersend.com/unsubscribe");
     expect(params?.from?.email).toBe("from@email.com");
     expect(params?.from?.name).toBe("FromSender");
     expect(Array.isArray(params.to)).toBe(true);
@@ -75,5 +78,6 @@ describe("EmailParams Model", () => {
     expect(params?.tags?.length).toBe(2);
     expect(Array.isArray(params?.personalization)).toBe(true);
     expect(params?.personalization?.length).toBe(1);
+    expect(params?.list_unsubscribe).toBe("https://www.mailersend.com/unsubscribe");
   });
 });

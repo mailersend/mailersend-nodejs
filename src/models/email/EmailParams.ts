@@ -20,6 +20,7 @@ export class EmailParams {
   personalization?: Personalization[];
   settings?: EmailSettings[];
   precedence_bulk?: boolean;
+  list_unsubscribe?: string;
 
   constructor(config?: any) {
     this.from = config?.from;
@@ -37,6 +38,7 @@ export class EmailParams {
     this.tags = config?.tags;
     this.personalization = config?.personalization;
     this.precedence_bulk = config?.precedenceBulk;
+    this.list_unsubscribe = config?.listUnsubscribe;
   }
 
   setFrom(from: Sender): EmailParams {
@@ -116,6 +118,11 @@ export class EmailParams {
 
   setSettings(settings: EmailSettings[]): EmailParams {
     this.settings = settings;
+    return this;
+  }
+
+  setListUnsubscribe(listUnsubscribe: string): EmailParams {
+    this.list_unsubscribe = listUnsubscribe;
     return this;
   }
 }
