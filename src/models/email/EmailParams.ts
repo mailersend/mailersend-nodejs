@@ -18,7 +18,7 @@ export class EmailParams {
   in_reply_to?: string;
   tags?: string[];
   personalization?: Personalization[];
-  settings?: EmailSettings[];
+  settings?: EmailSettings;
   precedence_bulk?: boolean;
   list_unsubscribe?: string;
 
@@ -116,7 +116,7 @@ export class EmailParams {
     return this;
   }
 
-  setSettings(settings: EmailSettings[]): EmailParams {
+  setSettings(settings: EmailSettings): EmailParams {
     this.settings = settings;
     return this;
   }
