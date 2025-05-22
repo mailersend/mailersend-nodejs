@@ -93,6 +93,7 @@ For more info, you can:
     - [Create webhook](#create-webhook)
     - [Update webhook](#update-webhook)
     - [Delete webhook](#delete-webhook)
+    - [Verify a webhook signature](#verify-webhook-signature)
   - [Others](#others)
     - [Get API Quota](#get-api-quota)
 - [Support and Feedback](#support-and-feedback)
@@ -1883,6 +1884,26 @@ mailerSend.sms.webhook.delete("sms_webhook_id")
   .then((response) => console.log(response.body))
   .catch((error) => console.log(error.body));
 
+```
+
+### Verify webhook signature
+
+```js
+import crypto from 'crypto'
+
+const requestContent = '{request payload from webhook}';
+const receivedSignature = 'signature from webhook header';
+const signingSecret = 'your-secret-key';
+
+const computedSignature = crypto
+  .createHmac('sha256', signingSecret)
+  .update(requestContent, 'utf8')
+  .digest('hex');
+
+return crypto.timingSafeEqual(
+  Buffer.from(receivedSignature, 'hex'),
+  Buffer.from(computedSignature, 'hex')
+);
 ```
 
 ## Inbound
