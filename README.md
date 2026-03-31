@@ -1532,6 +1532,58 @@ mailerSend.email.webhook.delete("webhook_id")
 
 ```
 
+# WhatsApp
+
+### Send a WhatsApp message
+
+```js
+import 'dotenv/config';
+import { MailerSend, WhatsAppParams } from "mailersend";
+
+const mailersend = new MailerSend({
+  apiKey: process.env.API_KEY,
+});
+
+const whatsappParams = new WhatsAppParams()
+  .setFrom("12345678901")
+  .setTo(["19191234567"])
+  .setTemplateId("template_id_123");
+
+await mailersend.whatsapp.send(whatsappParams);
+
+```
+
+### WhatsApp personalization
+
+```js
+import 'dotenv/config';
+import { MailerSend, WhatsAppParams, WhatsAppPersonalization } from "mailersend";
+
+const mailersend = new MailerSend({
+  apiKey: process.env.API_KEY,
+});
+
+const personalization = [
+  new WhatsAppPersonalization("19191234567")
+    .setHeader(["John"])
+    .setBody(["order #1234", "tomorrow"])
+    .setButtons(["https://example.com/track/1234"]),
+  new WhatsAppPersonalization("19199876543")
+    .setHeader(["Jane"])
+    .setBody(["order #5678", "Friday"])
+    .setButtons(["https://example.com/track/5678"]),
+];
+
+const whatsappParams = new WhatsAppParams()
+  .setFrom("12345678901")
+  .setTo(["19191234567", "19199876543"])
+  .setTemplateId("template_id_123")
+  .setPersonalization(personalization);
+
+await mailersend.whatsapp.send(whatsappParams);
+
+```
+
 # SMS
 
 ### Send SMS
