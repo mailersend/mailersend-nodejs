@@ -37,8 +37,8 @@ export class RequestService {
   private async request(method: "POST" | "GET" | "DELETE" | "PUT", path: string, body?: any, queryParams?: any) {
     try {
       const requestParams: GaxiosOptions = {
-        url: path,
-        baseURL: this.baseUrl,
+        url: path.replace(/^\//, ''),
+        baseURL: this.baseUrl.endsWith('/') ? this.baseUrl : this.baseUrl + '/',
         method,
         headers: { Authorization: `Bearer ${this.apiKey}` },
         responseType: "json",
