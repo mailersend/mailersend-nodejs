@@ -1,5 +1,5 @@
 import { request as gRequest } from "gaxios";
-import { GaxiosOptions } from "gaxios/build/src/common";
+import { GaxiosOptions } from "gaxios";
 var qs = require('qs');
 
 export class RequestService {
@@ -9,6 +9,13 @@ export class RequestService {
   constructor(apiKey: string, baseUrl: string) {
     this.apiKey = apiKey;
     this.baseUrl = baseUrl;
+  }
+
+  private normalizeHeaders(headers: any): Record<string, string> {
+    if (headers instanceof Headers) {
+      return Object.fromEntries(headers.entries());
+    }
+    return headers;
   }
 
   protected async post<T>(path: string, data: T): Promise<APIResponse> {
@@ -35,25 +42,23 @@ export class RequestService {
         method,
         headers: { Authorization: `Bearer ${this.apiKey}` },
         responseType: "json",
+        fetchImplementation: globalThis.fetch,
       } as any;
 
       if (body) {
         requestParams.data = body;
       }
       if (queryParams) {
-        requestParams.params = queryParams;
-        requestParams.paramsSerializer = (params) => {
-          return qs.stringify(params);
-        }
+        requestParams.params = new URLSearchParams(qs.stringify(queryParams));
       }
 
       const { headers, data, status } = await gRequest<APIResponse>(requestParams);
 
-      return { headers, body: data, statusCode: status };
+      return { headers: this.normalizeHeaders(headers), body: data, statusCode: status };
     } catch (e: any) {
       if (e?.response) {
         const { headers, data, status } = e.response;
-        throw { headers, body: data, statusCode: status };
+        throw { headers: this.normalizeHeaders(headers), body: data, statusCode: status };
       } else {
         throw e;
       }
