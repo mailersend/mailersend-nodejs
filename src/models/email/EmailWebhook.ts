@@ -61,6 +61,13 @@ export enum EmailWebhookEventType {
   IDENTITY_VERIFIED = "sender_identity.verified",
   MAINTENANCE_START = "maintenance.start",
   MAINTENANCE_END = "maintenance.end",
+  DEFERRED = "activity.deferred",
+  INBOUND_FORWARD_FAILED = "inbound_forward.failed",
+  EMAIL_SINGLE_VERIFIED = "email_single.verified",
+  EMAIL_LIST_VERIFIED = "email_list.verified",
+  BULK_EMAIL_COMPLETED = "bulk_email.completed",
+  RECIPIENT_ON_HOLD_ADDED = "recipient.on_hold_added",
+  RECIPIENT_ON_HOLD_REMOVED = "recipient.on_hold_removed",
 }
 
 export interface IEmailWebhook extends IEmailWebhookUpdate {
