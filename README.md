@@ -94,6 +94,16 @@ For more info, you can:
     - [Update webhook](#update-webhook)
     - [Delete webhook](#delete-webhook)
     - [Verify a webhook signature](#verify-webhook-signature)
+  - [DMARC Monitoring](#dmarc-monitoring)
+    - [List monitors](#list-monitors)
+    - [Create monitor](#create-monitor)
+    - [Update monitor](#update-monitor)
+    - [Delete monitor](#delete-monitor)
+    - [Get aggregated reports](#get-aggregated-reports)
+    - [Get IP-specific reports](#get-ip-specific-reports)
+    - [Get report sources](#get-report-sources)
+    - [Mark IP as favorite](#mark-ip-as-favorite)
+    - [Remove IP from favorites](#remove-ip-from-favorites)
   - [Others](#others)
     - [Get API Quota](#get-api-quota)
 - [Support and Feedback](#support-and-feedback)
@@ -2011,6 +2021,145 @@ mailerSend.sms.inbound.delete("sms_inbound_id")
   .then((response) => console.log(response.body))
   .catch((error) => console.log(error.body));
 
+```
+
+## DMARC Monitoring
+
+### List monitors
+
+```js
+import 'dotenv/config';
+import { MailerSend } from "mailersend";
+
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
+});
+
+mailerSend.dmarc.list({ page: 1, limit: 25 })
+  .then((response) => console.log(response.body))
+  .catch((error) => console.log(error.body));
+```
+
+### Create monitor
+
+```js
+import 'dotenv/config';
+import { MailerSend, Dmarc } from "mailersend";
+
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
+});
+
+const dmarc = new Dmarc("domain_id");
+
+mailerSend.dmarc.create(dmarc)
+  .then((response) => console.log(response.body))
+  .catch((error) => console.log(error.body));
+```
+
+### Update monitor
+
+```js
+import 'dotenv/config';
+import { MailerSend } from "mailersend";
+
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
+});
+
+mailerSend.dmarc.update("monitor_id", { wanted_dmarc_record: "v=DMARC1; p=reject;" })
+  .then((response) => console.log(response.body))
+  .catch((error) => console.log(error.body));
+```
+
+### Delete monitor
+
+```js
+import 'dotenv/config';
+import { MailerSend } from "mailersend";
+
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
+});
+
+mailerSend.dmarc.delete("monitor_id")
+  .then((response) => console.log(response.body))
+  .catch((error) => console.log(error.body));
+```
+
+### Get aggregated reports
+
+```js
+import 'dotenv/config';
+import { MailerSend } from "mailersend";
+
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
+});
+
+mailerSend.dmarc.report("monitor_id", { page: 1, limit: 25 })
+  .then((response) => console.log(response.body))
+  .catch((error) => console.log(error.body));
+```
+
+### Get IP-specific reports
+
+```js
+import 'dotenv/config';
+import { MailerSend } from "mailersend";
+
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
+});
+
+mailerSend.dmarc.reportByIp("monitor_id", "1.2.3.4", { page: 1, limit: 25 })
+  .then((response) => console.log(response.body))
+  .catch((error) => console.log(error.body));
+```
+
+### Get report sources
+
+```js
+import 'dotenv/config';
+import { MailerSend } from "mailersend";
+
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
+});
+
+mailerSend.dmarc.reportSources("monitor_id")
+  .then((response) => console.log(response.body))
+  .catch((error) => console.log(error.body));
+```
+
+### Mark IP as favorite
+
+```js
+import 'dotenv/config';
+import { MailerSend } from "mailersend";
+
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
+});
+
+mailerSend.dmarc.addFavorite("monitor_id", "1.2.3.4")
+  .then((response) => console.log(response.body))
+  .catch((error) => console.log(error.body));
+```
+
+### Remove IP from favorites
+
+```js
+import 'dotenv/config';
+import { MailerSend } from "mailersend";
+
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
+});
+
+mailerSend.dmarc.removeFavorite("monitor_id", "1.2.3.4")
+  .then((response) => console.log(response.body))
+  .catch((error) => console.log(error.body));
 ```
 
 ## Others
