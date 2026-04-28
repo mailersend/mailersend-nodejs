@@ -12,12 +12,14 @@ export class EmailParams {
   subject: string;
   text: string;
   html: string;
-  send_at: number;
+  send_at: number | string;
   attachments?: Attachment[];
   template_id?: string;
   in_reply_to?: string;
+  references?: string[];
   tags?: string[];
   personalization?: Personalization[];
+  headers?: EmailHeader[];
   settings?: EmailSettings;
   precedence_bulk?: boolean;
   list_unsubscribe?: string;
@@ -37,6 +39,8 @@ export class EmailParams {
     this.template_id = config?.templateId;
     this.tags = config?.tags;
     this.personalization = config?.personalization;
+    this.references = config?.references;
+    this.headers = config?.headers;
     this.precedence_bulk = config?.precedenceBulk;
     this.list_unsubscribe = config?.listUnsubscribe;
   }
@@ -86,7 +90,7 @@ export class EmailParams {
     return this;
   }
 
-  setSendAt(sendAt: number): EmailParams {
+  setSendAt(sendAt: number | string): EmailParams {
     this.send_at = sendAt;
     return this;
   }
@@ -121,6 +125,16 @@ export class EmailParams {
     return this;
   }
 
+  setReferences(references: string[]): EmailParams {
+    this.references = references;
+    return this;
+  }
+
+  setHeaders(headers: EmailHeader[]): EmailParams {
+    this.headers = headers;
+    return this;
+  }
+
   setListUnsubscribe(listUnsubscribe: string): EmailParams {
     this.list_unsubscribe = listUnsubscribe;
     return this;
@@ -131,4 +145,9 @@ export interface EmailSettings {
   track_clicks?: boolean;
   track_opens?: boolean;
   track_content?: boolean;
+}
+
+export interface EmailHeader {
+  name: string;
+  value: string;
 }

@@ -36,6 +36,9 @@ For more info, you can:
     - [Personalization](#advanced-personalization)
     - [Send email with attachment](#send-email-with-attachment)
     - [Send email with inline attachment](#send-email-with-inline-attachment)
+    - [Send a scheduled email](#send-a-scheduled-email)
+    - [Send email with custom headers](#send-email-with-custom-headers)
+    - [Send email with references (threading)](#send-email-with-references-threading)
     - [Send bulk emails](#send-bulk-emails)
     - [Get bulk request status](#get-bulk-request-status)
   - [Tokens](#tokens)
@@ -354,7 +357,80 @@ const emailParams = new EmailParams()
   .setSubject("This is a scheduled Subject")
   .setHtml("<strong>This is a scheduled HTML content</strong>")
   .setText("This is a scheduled text content")
-  .setSendAt(Math.floor((new Date(Date.now()+ 30*60*1000)).getTime() / 1000)); //send in 30mins NB:param has to be a Unix timestamp e.g 2443651141
+  // Accepts a Unix timestamp (integer) or an ISO 8601 date string
+  .setSendAt(Math.floor((new Date(Date.now() + 30 * 60 * 1000)).getTime() / 1000)); // Unix timestamp – send in 30 mins
+  // .setSendAt("2040-11-21T14:00:00+00:00"); // ISO 8601 alternative
+
+await mailerSend.email.send(emailParams);
+
+```
+
+### Send email with custom headers
+
+> **Note:** Custom headers are available on Professional and Enterprise accounts only.
+
+```js
+import 'dotenv/config';
+import { MailerSend, EmailParams, Sender, Recipient } from "mailersend";
+
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
+});
+
+const sentFrom = new Sender("you@yourdomain.com", "Your name");
+
+const recipients = [
+  new Recipient("your@client.com", "Your Client")
+];
+
+const headers = [
+  { name: "X-Custom-Header", value: "custom-value" },
+  { name: "X-Another-Header", value: "another-value" },
+];
+
+const emailParams = new EmailParams()
+  .setFrom(sentFrom)
+  .setTo(recipients)
+  .setReplyTo(sentFrom)
+  .setSubject("This is a Subject")
+  .setHtml("<strong>This is the HTML content</strong>")
+  .setText("This is the text content")
+  .setHeaders(headers);
+
+await mailerSend.email.send(emailParams);
+
+```
+
+### Send email with references (threading)
+
+> **Note:** The `references` field is available on paid plan accounts only.
+
+```js
+import 'dotenv/config';
+import { MailerSend, EmailParams, Sender, Recipient } from "mailersend";
+
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
+});
+
+const sentFrom = new Sender("you@yourdomain.com", "Your name");
+
+const recipients = [
+  new Recipient("your@client.com", "Your Client")
+];
+
+const emailParams = new EmailParams()
+  .setFrom(sentFrom)
+  .setTo(recipients)
+  .setReplyTo(sentFrom)
+  .setSubject("Re: This is a Subject")
+  .setHtml("<strong>This is the HTML content</strong>")
+  .setText("This is the text content")
+  .setInReplyTo("<original-message-id@yourdomain.com>")
+  .setReferences([
+    "<original-message-id@yourdomain.com>",
+    "<another-message-id@yourdomain.com>",
+  ]);
 
 await mailerSend.email.send(emailParams);
 
