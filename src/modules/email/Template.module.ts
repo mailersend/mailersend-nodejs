@@ -1,5 +1,5 @@
 import { RequestService, APIResponse } from "../../services/request.service";
-import { TemplateQueryParams, TemplateParams } from "../../models";
+import { TemplateQueryParams, TemplateParams, TemplateUpdateParams } from "../../models";
 
 export class TemplateModule extends RequestService {
   constructor(apiKey: string, baseUrl: string) {
@@ -22,7 +22,7 @@ export class TemplateModule extends RequestService {
     return await this.post<TemplateParams>(`/templates`, params);
   }
 
-  async update(templateId: string, params: Partial<TemplateParams>): Promise<APIResponse> {
+  async update(templateId: string, params: TemplateUpdateParams): Promise<APIResponse> {
     return await this.put(`/templates/${templateId}`, params);
   }
 }

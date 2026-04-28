@@ -1678,9 +1678,10 @@ const mailerSend = new MailerSend({
 
 mailerSend.email.template.create({
   name: "My Template",
-  text: "Hello, {{name}}!",
   html: "<p>Hello, {{name}}!</p>",
+  text: "Hello, {{name}}!",
   tags: ["welcome"],
+  auto_generate: false,
 })
   .then((response) => console.log(response.body))
   .catch((error) => console.log(error.body));
@@ -1699,8 +1700,8 @@ const mailerSend = new MailerSend({
 
 mailerSend.email.template.update("template_id", {
   name: "Updated Template Name",
-  text: "Hello, {{name}}! Updated.",
   html: "<p>Hello, {{name}}! Updated.</p>",
+  auto_generate: true,
 })
   .then((response) => console.log(response.body))
   .catch((error) => console.log(error.body));
