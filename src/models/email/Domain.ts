@@ -46,9 +46,4 @@ export interface SmtpUserParams {
   enabled?: boolean;
 }
 
-export interface SmtpUserUpdateParams {
-  name?: string;
-  enabled?: boolean;
-}
-
 export interface SmtpUserQueryParams extends Pagination {}

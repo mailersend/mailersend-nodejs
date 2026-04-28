@@ -21,4 +21,5 @@ export enum BlockListType {
   HARD_BOUNCES_LIST = 'hard-bounces',
   SPAM_COMPLAINTS_LIST = 'spam-complaints',
   UNSUBSCRIBES_LIST = 'unsubscribes',
+  ON_HOLD_LIST = 'on-hold-list',
 }

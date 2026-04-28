@@ -4,6 +4,8 @@ export class EmailWebhook {
   events!: EmailWebhookEventType[];
   domain_id!: string;
   enabled?: boolean;
+  version?: number;
+  editable?: boolean;
 
   constructor(config?: IEmailWebhook) {
     if (config) {
@@ -12,6 +14,8 @@ export class EmailWebhook {
       this.events = config.events;
       this.domain_id = config.domain_id;
       this.enabled = config.enabled;
+      this.version = config.version;
+      this.editable = config.editable;
     }
   }
 
@@ -55,7 +59,7 @@ export enum EmailWebhookEventType {
   CLICKED = "activity.clicked",
   CLICKED_UNIQUE = "activity.clicked_unique",
   UNSUBSCRIBED = "activity.unsubscribed",
-  SPAM_COMPLIANT = "activity.spam_complaint",
+  SPAM_COMPLAINT = "activity.spam_complaint",
   SURVEY_OPENED = "activity.survey_opened",
   SURVEY_SUBMITTED = "activity.survey_submitted",
   IDENTITY_VERIFIED = "sender_identity.verified",
@@ -68,6 +72,7 @@ export enum EmailWebhookEventType {
   BULK_EMAIL_COMPLETED = "bulk_email.completed",
   RECIPIENT_ON_HOLD_ADDED = "recipient.on_hold_added",
   RECIPIENT_ON_HOLD_REMOVED = "recipient.on_hold_removed",
+  EMAIL_LIST_CREATED = "email_list.created",
 }
 
 export interface IEmailWebhook extends IEmailWebhookUpdate {
@@ -79,4 +84,14 @@ export interface IEmailWebhookUpdate {
   name: string;
   events: EmailWebhookEventType[];
   enabled?: boolean;
+  version?: number;
+  editable?: boolean;
+}
+
+export interface IEmailWebhookUpdateParams {
+  url?: string;
+  name?: string;
+  events?: EmailWebhookEventType[];
+  enabled?: boolean;
+  version?: number;
 }

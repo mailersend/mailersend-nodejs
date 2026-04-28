@@ -3,7 +3,7 @@ import { TokenModule } from "../../modules/Token.module";
 import { Token, TokenScopeType } from "../../models";
 
 describe("Token Module", () => {
-  const token = new Token("token1", "domain_id_test", [TokenScopeType.EMAIL_FULL, TokenScopeType.ANALYTICS_FULL]);
+  const token = new Token("token1", [TokenScopeType.EMAIL_FULL, TokenScopeType.ANALYTICS_FULL], "domain_id_test");
   const tokenModule = new TokenModule("test_key", "http://test.com");
 
   it("settings", async () => {

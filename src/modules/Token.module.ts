@@ -6,8 +6,20 @@ export class TokenModule extends RequestService {
     super(apiKey, baseUrl);
   }
 
+  async list(params?: { page?: number; limit?: number }): Promise<APIResponse> {
+    return await this.get(`/token`, params);
+  }
+
+  async single(tokenId: string): Promise<APIResponse> {
+    return await this.get(`/token/${tokenId}`);
+  }
+
   async create(token: Token): Promise<APIResponse> {
     return await this.post<Token>("/token", token);
+  }
+
+  async update(tokenId: string, data: { name: string }): Promise<APIResponse> {
+    return await this.put(`/token/${tokenId}`, data);
   }
 
   async updateSettings(tokenId: string, updates: TokenUpdates): Promise<APIResponse> {

@@ -1,12 +1,12 @@
 export class Token {
   name: string;
-  domain_id: string; 
+  domain_id?: string;
   scopes: TokenScopeType[];
 
-  constructor(name: string, domainId: string, scopes: TokenScopeType[]) {
+  constructor(name: string, scopes: TokenScopeType[], domainId?: string) {
     this.name = name;
-    this.domain_id = domainId;
     this.scopes = scopes;
+    this.domain_id = domainId;
   }
 
   setName(name: string): Token {
@@ -44,6 +44,18 @@ export enum TokenScopeType {
   INBOUNDS_FULL = 'inbounds_full',
   RECIPIENTS_READ = 'recipients_read',
   RECIPIENTS_FULL = 'recipients_full',
+  DOMAINS_READ = "domains_read",
+  SENDER_IDENTITY_READ = "sender_identity_read",
+  SENDER_IDENTITY_FULL = "sender_identity_full",
+  USERS_READ = "users_read",
+  USERS_FULL = "users_full",
+  SMTP_USERS_READ = "smtp_users_read",
+  SMTP_USERS_FULL = "smtp_users_full",
+  DMARC_MONITORING_READ = "dmarc_monitoring_read",
+  DMARC_MONITORING_FULL = "dmarc_monitoring_full",
+  BLOCKLIST_MONITORING_READ = "blocklist_monitoring_read",
+  BLOCKLIST_MONITORING_FULL = "blocklist_monitoring_full",
+  WHATSAPP_FULL = "whatsapp_full",
 }
 
 export interface TokenUpdates {

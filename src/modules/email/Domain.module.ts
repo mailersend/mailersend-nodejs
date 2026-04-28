@@ -1,5 +1,5 @@
 import { RequestService, APIResponse } from "../../services/request.service";
-import { Domain, DomainQueryParams, DomainRecipientsQueryParams, DomainSettings, SmtpUserParams, SmtpUserUpdateParams, SmtpUserQueryParams } from "../../models";
+import { Domain, DomainQueryParams, DomainRecipientsQueryParams, DomainSettings, SmtpUserParams, SmtpUserQueryParams } from "../../models";
 
 export class DomainModule extends RequestService {
   constructor(apiKey: string, baseUrl: string) {
@@ -50,7 +50,7 @@ export class DomainModule extends RequestService {
     return await this.post<SmtpUserParams>(`/domains/${domainId}/smtp-users`, data);
   }
 
-  async updateSmtpUser(domainId: string, smtpUserId: string, data: SmtpUserUpdateParams): Promise<APIResponse> {
+  async updateSmtpUser(domainId: string, smtpUserId: string, data: Partial<SmtpUserParams>): Promise<APIResponse> {
     return await this.put(`/domains/${domainId}/smtp-users/${smtpUserId}`, data);
   }
 
