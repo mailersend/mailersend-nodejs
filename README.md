@@ -96,6 +96,7 @@ For more info, you can:
     - [Add recipients to a suppression list](#add-recipients-to-a-suppression-list)
     - [Get recipients from a suppression list](#get-recipients-from-a-suppression-list)
     - [Delete recipients from a suppression list](#delete-recipients-from-a-suppression-list)
+    - [Delete all recipients from a suppression list](#delete-all-recipients-from-a-suppression-list)
   - [Templates](#templates)
     - [Get a list of templates](#get-a-list-of-templates)
     - [Get a single template](#get-a-single-template)
@@ -109,6 +110,48 @@ For more info, you can:
     - [Update webhook](#update-webhook)
     - [Delete webhook](#delete-webhook)
     - [Verify a webhook signature](#verify-webhook-signature)
+  - [Email Verification](#email-verification)
+    - [Get all email verification lists](#get-all-email-verification-lists)
+    - [Get an email verification list](#get-an-email-verification-list)
+    - [Create an email verification list](#create-an-email-verification-list)
+    - [Verify an email list](#verify-an-email-list)
+    - [Get email verification list results](#get-email-verification-list-results)
+    - [Verify a single email](#verify-a-single-email)
+  - [Scheduled Messages](#scheduled-messages)
+    - [Get scheduled email list](#get-scheduled-email-list)
+    - [Get scheduled email](#get-scheduled-email)
+    - [Delete scheduled email](#delete-scheduled-email)
+  - [SMS](#sms)
+    - [Send SMS](#send-sms)
+    - [SMS personalization](#sms-personalization)
+  - [Phone Numbers](#phone-numbers)
+    - [Get phone number list](#get-phone-number-list)
+    - [Get phone number](#get-phone-number)
+    - [Update phone number](#update-phone-number)
+    - [Delete phone number](#delete-phone-number)
+  - [SMS Messages](#messages-1)
+    - [Get messages list](#get-messages-list)
+    - [Get a message](#get-a-message)
+  - [SMS Activity](#activity-1)
+    - [Get activity list](#get-activity-list-1)
+    - [Get activity of a message](#get-activity-of-a-message)
+  - [SMS Recipients](#recipients-1)
+    - [Get recipient list](#get-recipient-list)
+    - [Get recipient](#get-recipient)
+    - [Update recipient](#update-recipient)
+  - [SMS Webhooks](#webhooks-1)
+    - [Get webhook list for a number](#get-webhook-list-for-a-number)
+    - [Get webhook](#get-webhook-1)
+    - [Create webhook](#create-webhook-1)
+    - [Update webhook](#update-webhook-1)
+    - [Delete webhook](#delete-webhook-1)
+    - [Verify webhook signature](#verify-webhook-signature-1)
+  - [SMS Inbound](#inbound-1)
+    - [Get inbound list](#get-inbound-list-1)
+    - [Get inbound](#get-inbound-1)
+    - [Add inbound](#add-inbound)
+    - [Update inbound](#update-inbound-1)
+    - [Delete inbound](#delete-inbound-1)
   - [DMARC Monitoring](#dmarc-monitoring)
     - [List monitors](#list-monitors)
     - [Create monitor](#create-monitor)
@@ -1633,6 +1676,22 @@ mailerSend.email.recipient.delBlockListRecipients(
 
 ```
 
+### Delete all recipients from a suppression list
+
+```js
+import 'dotenv/config';
+import { BlockListType, MailerSend } from "mailersend";
+
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
+});
+
+mailerSend.email.recipient.delAllBlockListRecipients(BlockListType.BLOCK_LIST)
+  .then((response) => console.log(response.body))
+  .catch((error) => console.log(error.body));
+
+```
+
 ## Templates
 
 ### Get a list of templates
@@ -1815,6 +1874,113 @@ const mailerSend = new MailerSend({
 });
 
 mailerSend.email.webhook.delete("webhook_id")
+  .then((response) => console.log(response.body))
+  .catch((error) => console.log(error.body));
+
+```
+
+## Email Verification
+
+### Get all email verification lists
+
+```js
+import 'dotenv/config';
+import { MailerSend } from "mailersend";
+
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
+});
+
+mailerSend.emailVerification.list({ page: 1, limit: 25 })
+  .then((response) => console.log(response.body))
+  .catch((error) => console.log(error.body));
+
+```
+
+### Get an email verification list
+
+```js
+import 'dotenv/config';
+import { MailerSend } from "mailersend";
+
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
+});
+
+mailerSend.emailVerification.single("email_verification_id")
+  .then((response) => console.log(response.body))
+  .catch((error) => console.log(error.body));
+
+```
+
+### Create an email verification list
+
+```js
+import 'dotenv/config';
+import { MailerSend, EmailVerification } from "mailersend";
+
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
+});
+
+const emailVerification = new EmailVerification("My List", [
+  "test1@example.com",
+  "test2@example.com",
+]);
+
+mailerSend.emailVerification.create(emailVerification)
+  .then((response) => console.log(response.body))
+  .catch((error) => console.log(error.body));
+
+```
+
+### Verify an email list
+
+```js
+import 'dotenv/config';
+import { MailerSend } from "mailersend";
+
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
+});
+
+mailerSend.emailVerification.verifyList("email_verification_id")
+  .then((response) => console.log(response.body))
+  .catch((error) => console.log(error.body));
+
+```
+
+### Get email verification list results
+
+```js
+import 'dotenv/config';
+import { MailerSend, EmailVerificationResultType } from "mailersend";
+
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
+});
+
+mailerSend.emailVerification.getListResult("email_verification_id", {
+  page: 1,
+  limit: 25,
+  result: [EmailVerificationResultType.VALID, EmailVerificationResultType.CATCH_ALL],
+})
+  .then((response) => console.log(response.body))
+  .catch((error) => console.log(error.body));
+
+```
+
+### Verify a single email
+
+```js
+import 'dotenv/config';
+import { MailerSend } from "mailersend";
+
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
+});
+
+mailerSend.emailVerification.verifyEmail("test@example.com")
   .then((response) => console.log(response.body))
   .catch((error) => console.log(error.body));
 
