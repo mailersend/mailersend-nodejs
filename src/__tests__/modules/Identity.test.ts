@@ -70,4 +70,12 @@ describe("Identity Module", () => {
     expect(result.body).toMatchObject({ key1: "identity_deleted_by_email" });
     expect(result.statusCode).toBe(200);
   });
+
+  it("resend", async () => {
+    nock("http://test.com").post("/identities/test_identity_id/resend").reply(200, { key1: "identity_resent" }, { header1: "test" });
+    const result = await identityModule.resend("test_identity_id");
+    expect(result.headers).toMatchObject({ header1: "test", "content-type": "application/json" });
+    expect(result.body).toMatchObject({ key1: "identity_resent" });
+    expect(result.statusCode).toBe(200);
+  });
 });

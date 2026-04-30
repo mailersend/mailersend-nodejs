@@ -29,4 +29,12 @@ export class EmailVerificationModule extends RequestService {
     async verifyEmail(email: string): Promise<APIResponse> {
         return await this.post<{ email: string }>(`/email-verification/verify`, { email: email });
     }
+
+    async verifyEmailAsync(email: string): Promise<APIResponse> {
+        return await this.post<{ email: string }>(`/email-verification/verify-async`, { email: email });
+    }
+
+    async getVerifyEmailAsyncStatus(id: string): Promise<APIResponse> {
+        return await this.get(`/email-verification/verify-async/${id}`);
+    }
 }

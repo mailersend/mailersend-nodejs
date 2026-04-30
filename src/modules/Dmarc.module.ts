@@ -1,5 +1,5 @@
 import { RequestService, APIResponse } from "../services/request.service";
-import { Dmarc, DmarcQueryParams, DmarcUpdate } from "../models";
+import { Dmarc, DmarcQueryParams, DmarcReportQueryParams, DmarcReportSourcesQueryParams, DmarcUpdate } from "../models";
 
 export class DmarcModule extends RequestService {
   constructor(apiKey: string, baseUrl: string) {
@@ -22,16 +22,16 @@ export class DmarcModule extends RequestService {
     return await this.deleteReq(`/dmarc-monitoring/${monitorId}`);
   }
 
-  async report(monitorId: string, queryParams?: DmarcQueryParams): Promise<APIResponse> {
+  async report(monitorId: string, queryParams?: DmarcReportQueryParams): Promise<APIResponse> {
     return await this.get(`/dmarc-monitoring/${monitorId}/report`, queryParams);
   }
 
-  async reportByIp(monitorId: string, ip: string, queryParams?: DmarcQueryParams): Promise<APIResponse> {
+  async reportByIp(monitorId: string, ip: string, queryParams?: DmarcReportQueryParams): Promise<APIResponse> {
     return await this.get(`/dmarc-monitoring/${monitorId}/report/${ip}`, queryParams);
   }
 
-  async reportSources(monitorId: string): Promise<APIResponse> {
-    return await this.get(`/dmarc-monitoring/${monitorId}/report-sources`);
+  async reportSources(monitorId: string, queryParams: DmarcReportSourcesQueryParams): Promise<APIResponse> {
+    return await this.get(`/dmarc-monitoring/${monitorId}/report-sources`, queryParams);
   }
 
   async addFavorite(monitorId: string, ip: string): Promise<APIResponse> {

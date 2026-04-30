@@ -80,6 +80,7 @@ For more info, you can:
     - [Update identity by email](#update-identity-by-email-address)
     - [Delete identity](#delete-identity)
     - [Delete identity by email](#delete-identity-by-email-address)
+    - [Resend identity verification](#resend-identity-verification)
   - [Inbounds](#inbound)
     - [Get inbound list](#get-inbound-list)
     - [Get inbound](#get-inbound)
@@ -117,6 +118,8 @@ For more info, you can:
     - [Verify an email list](#verify-an-email-list)
     - [Get email verification list results](#get-email-verification-list-results)
     - [Verify a single email](#verify-a-single-email)
+    - [Verify a single email asynchronously](#verify-a-single-email-asynchronously)
+    - [Get async email verification status](#get-async-email-verification-status)
   - [Scheduled Messages](#scheduled-messages)
     - [Get scheduled email list](#get-scheduled-email-list)
     - [Get scheduled email](#get-scheduled-email)
@@ -134,7 +137,6 @@ For more info, you can:
     - [Get a message](#get-a-message)
   - [SMS Activity](#activity-1)
     - [Get activity list](#get-activity-list-1)
-    - [Get activity of a message](#get-activity-of-a-message)
   - [SMS Recipients](#recipients-1)
     - [Get recipient list](#get-recipient-list)
     - [Get recipient](#get-recipient)
@@ -162,6 +164,23 @@ For more info, you can:
     - [Get report sources](#get-report-sources)
     - [Mark IP as favorite](#mark-ip-as-favorite)
     - [Remove IP from favorites](#remove-ip-from-favorites)
+  - [Users](#users)
+    - [Get user list](#get-user-list)
+    - [Get single user](#get-single-user)
+    - [Invite a user](#invite-a-user)
+    - [Update user](#update-user)
+    - [Delete user](#delete-user)
+  - [Invites](#invites)
+    - [Get invite list](#get-invite-list)
+    - [Get single invite](#get-single-invite)
+    - [Resend invite](#resend-invite)
+    - [Delete invite](#delete-invite)
+  - [Blocklist Monitoring](#blocklist-monitoring)
+    - [List blocklist monitors](#list-blocklist-monitors)
+    - [Get single blocklist monitor](#get-single-blocklist-monitor)
+    - [Create blocklist monitor](#create-blocklist-monitor)
+    - [Update blocklist monitor](#update-blocklist-monitor)
+    - [Delete blocklist monitor](#delete-blocklist-monitor)
   - [Others](#others)
     - [Get API Quota](#get-api-quota)
 - [Support and Feedback](#support-and-feedback)
@@ -1106,23 +1125,19 @@ mailerSend.email.identity.create(identity)
 
 ```js
 import 'dotenv/config';
-import { MailerSend, Inbound, InboundFilterType } from "mailersend";
+import { MailerSend } from "mailersend";
 
 const mailerSend = new MailerSend({
   apiKey: process.env.API_KEY,
 });
 
 const data = {
-  domain_id: 'string',
-  email: 'email@yourdomain.com',
   name: 'name',
-  personal_note: 'Personal note',
   reply_to_name: 'Reply Name',
-  reply_to_email: 'repy@yourdomain.com',
-  add_note: true,
+  reply_to_email: 'reply@yourdomain.com',
 };
 
-mailerSend.email.identity.update('identiy_id', data)
+mailerSend.email.identity.update('identity_id', data)
   .then((response) => console.log(response.body))
   .catch((error) => console.log(error.body));
 
@@ -1132,20 +1147,16 @@ mailerSend.email.identity.update('identiy_id', data)
 
 ```js
 import 'dotenv/config';
-import { MailerSend, Inbound, InboundFilterType } from "mailersend";
+import { MailerSend } from "mailersend";
 
 const mailerSend = new MailerSend({
   apiKey: process.env.API_KEY,
 });
 
 const data = {
-  domain_id: 'string',
-  email: 'email@yourdomain.com',
   name: 'name',
-  personal_note: 'Personal note',
   reply_to_name: 'Reply Name',
-  reply_to_email: 'repy@yourdomain.com',
-  add_note: true,
+  reply_to_email: 'reply@yourdomain.com',
 };
 
 mailerSend.email.identity.updateByEmail('email_address', data)
@@ -1181,6 +1192,22 @@ const mailerSend = new MailerSend({
 });
 
 mailerSend.email.identity.deleteByEmail('email_address')
+  .then((response) => console.log(response.body))
+  .catch((error) => console.log(error.body));
+
+```
+
+### Resend identity verification
+
+```js
+import 'dotenv/config';
+import { MailerSend } from "mailersend";
+
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
+});
+
+mailerSend.email.identity.resend("identity_id")
   .then((response) => console.log(response.body))
   .catch((error) => console.log(error.body));
 
@@ -1986,6 +2013,38 @@ mailerSend.emailVerification.verifyEmail("test@example.com")
 
 ```
 
+### Verify a single email asynchronously
+
+```js
+import 'dotenv/config';
+import { MailerSend } from "mailersend";
+
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
+});
+
+mailerSend.emailVerification.verifyEmailAsync("test@example.com")
+  .then((response) => console.log(response.body))
+  .catch((error) => console.log(error.body));
+
+```
+
+### Get async email verification status
+
+```js
+import 'dotenv/config';
+import { MailerSend } from "mailersend";
+
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
+});
+
+mailerSend.emailVerification.getVerifyEmailAsyncStatus("verification_job_id")
+  .then((response) => console.log(response.body))
+  .catch((error) => console.log(error.body));
+
+```
+
 # SMS
 
 ### Send SMS
@@ -2170,22 +2229,6 @@ mailerSend.sms.activity.list({
   limit: 10,
   page: 1
 })
-  .then((response) => console.log(response.body))
-  .catch((error) => console.log(error.body));
-
-```
-
-### Get activity of a message
-
-```js
-import 'dotenv/config';
-import { MailerSend } from "mailersend";
-
-const mailerSend = new MailerSend({
-  apiKey: process.env.API_KEY,
-});
-
-mailerSend.sms.activity.single("sms_message_id")
   .then((response) => console.log(response.body))
   .catch((error) => console.log(error.body));
 
@@ -2571,7 +2614,11 @@ const mailerSend = new MailerSend({
   apiKey: process.env.API_KEY,
 });
 
-mailerSend.dmarc.reportSources("monitor_id")
+mailerSend.dmarc.reportSources("monitor_id", {
+  date_from: 1700000000,
+  date_to: 1700100000,
+  status: "accepted", // optional: "accepted" | "rejected" | "quarantined"
+})
   .then((response) => console.log(response.body))
   .catch((error) => console.log(error.body));
 ```
@@ -2604,6 +2651,254 @@ const mailerSend = new MailerSend({
 mailerSend.dmarc.removeFavorite("monitor_id", "1.2.3.4")
   .then((response) => console.log(response.body))
   .catch((error) => console.log(error.body));
+```
+
+## Users
+
+### Get user list
+
+```js
+import 'dotenv/config';
+import { MailerSend } from "mailersend";
+
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
+});
+
+mailerSend.user.list({ page: 1, limit: 25 })
+  .then((response) => console.log(response.body))
+  .catch((error) => console.log(error.body));
+
+```
+
+### Get single user
+
+```js
+import 'dotenv/config';
+import { MailerSend } from "mailersend";
+
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
+});
+
+mailerSend.user.single("user_id")
+  .then((response) => console.log(response.body))
+  .catch((error) => console.log(error.body));
+
+```
+
+### Invite a user
+
+```js
+import 'dotenv/config';
+import { MailerSend } from "mailersend";
+
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
+});
+
+mailerSend.user.create({
+  email: "user@example.com",
+  role: "manager",
+  // For role "custom", permissions is required:
+  // permissions: ["read-activity", "read-analytics"],
+  // templates: ["template_id"],
+  // domains: ["domain_id"],
+})
+  .then((response) => console.log(response.body))
+  .catch((error) => console.log(error.body));
+
+```
+
+### Update user
+
+```js
+import 'dotenv/config';
+import { MailerSend } from "mailersend";
+
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
+});
+
+mailerSend.user.update("user_id", {
+  role: "designer",
+})
+  .then((response) => console.log(response.body))
+  .catch((error) => console.log(error.body));
+
+```
+
+### Delete user
+
+```js
+import 'dotenv/config';
+import { MailerSend } from "mailersend";
+
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
+});
+
+mailerSend.user.delete("user_id")
+  .then((response) => console.log(response.body))
+  .catch((error) => console.log(error.body));
+
+```
+
+## Invites
+
+### Get invite list
+
+```js
+import 'dotenv/config';
+import { MailerSend } from "mailersend";
+
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
+});
+
+mailerSend.user.listInvites({ page: 1, limit: 25 })
+  .then((response) => console.log(response.body))
+  .catch((error) => console.log(error.body));
+
+```
+
+### Get single invite
+
+```js
+import 'dotenv/config';
+import { MailerSend } from "mailersend";
+
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
+});
+
+mailerSend.user.singleInvite("invite_id")
+  .then((response) => console.log(response.body))
+  .catch((error) => console.log(error.body));
+
+```
+
+### Resend invite
+
+```js
+import 'dotenv/config';
+import { MailerSend } from "mailersend";
+
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
+});
+
+mailerSend.user.resendInvite("invite_id")
+  .then((response) => console.log(response.body))
+  .catch((error) => console.log(error.body));
+
+```
+
+### Delete invite
+
+```js
+import 'dotenv/config';
+import { MailerSend } from "mailersend";
+
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
+});
+
+mailerSend.user.deleteInvite("invite_id")
+  .then((response) => console.log(response.body))
+  .catch((error) => console.log(error.body));
+
+```
+
+## Blocklist Monitoring
+
+### List blocklist monitors
+
+```js
+import 'dotenv/config';
+import { MailerSend } from "mailersend";
+
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
+});
+
+mailerSend.blocklistMonitor.list({ page: 1, limit: 25 })
+  .then((response) => console.log(response.body))
+  .catch((error) => console.log(error.body));
+
+```
+
+### Get single blocklist monitor
+
+```js
+import 'dotenv/config';
+import { MailerSend } from "mailersend";
+
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
+});
+
+mailerSend.blocklistMonitor.single("monitor_id")
+  .then((response) => console.log(response.body))
+  .catch((error) => console.log(error.body));
+
+```
+
+### Create blocklist monitor
+
+```js
+import 'dotenv/config';
+import { MailerSend, BlocklistMonitor } from "mailersend";
+
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
+});
+
+const monitor = new BlocklistMonitor("example.com")
+  .setName("My Domain Monitor")
+  .setNotify(true)
+  .setNotifyEmail("alerts@example.com");
+
+mailerSend.blocklistMonitor.create(monitor)
+  .then((response) => console.log(response.body))
+  .catch((error) => console.log(error.body));
+
+```
+
+### Update blocklist monitor
+
+```js
+import 'dotenv/config';
+import { MailerSend } from "mailersend";
+
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
+});
+
+mailerSend.blocklistMonitor.update("monitor_id", {
+  name: "Updated Monitor Name",
+  notify: true,
+  notify_email: "alerts@example.com",
+})
+  .then((response) => console.log(response.body))
+  .catch((error) => console.log(error.body));
+
+```
+
+### Delete blocklist monitor
+
+```js
+import 'dotenv/config';
+import { MailerSend } from "mailersend";
+
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
+});
+
+mailerSend.blocklistMonitor.delete("monitor_id")
+  .then((response) => console.log(response.body))
+  .catch((error) => console.log(error.body));
+
 ```
 
 ## Others

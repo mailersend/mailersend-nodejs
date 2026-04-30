@@ -54,7 +54,7 @@ export class SmsInbound {
 
 export enum SmsComparerType {
   EQUAL = 'equal',
-  NOT_EQUQL = 'not-equal',
+  NOT_EQUAL = 'not-equal',
   CONTAINS = 'contains',
   NOT_CONTAINS = 'not-contains',
   STARTS_WITH = 'starts-with',

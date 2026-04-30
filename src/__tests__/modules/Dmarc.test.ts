@@ -56,8 +56,9 @@ describe("Dmarc Module", () => {
   });
 
   it("reportSources", async () => {
-    nock("http://test.com").get("/dmarc-monitoring/test_id/report-sources").reply(200, { key1: "key1_value" }, { header1: "test" });
-    const response = await dmarcModule.reportSources("test_id");
+    const params = { date_from: 1700000000, date_to: 1700100000 };
+    nock("http://test.com").get("/dmarc-monitoring/test_id/report-sources").query(params).reply(200, { key1: "key1_value" }, { header1: "test" });
+    const response = await dmarcModule.reportSources("test_id", params);
     expect(response.headers).toMatchObject({ header1: "test", "content-type": "application/json" });
     expect(response.body).toMatchObject({ key1: "key1_value" });
     expect(response.statusCode).toBe(200);

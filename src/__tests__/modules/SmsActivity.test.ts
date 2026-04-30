@@ -13,11 +13,4 @@ describe("SMS Activity Module", () => {
     expect(result.statusCode).toBe(200);
   });
 
-  it("single", async () => {
-    nock("http://test.com").get("/sms-activity/test_sms_message_id").reply(200, { key1: "sms_activity_value" }, { header1: "test" });
-    const result = await smsActivityModule.single("test_sms_message_id");
-    expect(result.headers).toMatchObject({ header1: "test", "content-type": "application/json" });
-    expect(result.body).toMatchObject({ key1: "sms_activity_value" });
-    expect(result.statusCode).toBe(200);
-  });
 });

@@ -3,7 +3,7 @@ import { Pagination } from "../Pagination";
 export class Identity {
     domain_id: string;
     email: string;
-    name: string;
+    name?: string;
     personal_note?: string;
     reply_to_name?: string;
     reply_to_email?: string;
@@ -12,7 +12,7 @@ export class Identity {
     constructor(
         domainId: string,
         email: string,
-        name: string,
+        name?: string,
         personalNote?: string,
         replyToName?: string,
         replyToEmail?: string,
@@ -65,14 +65,13 @@ export class Identity {
 
 export interface IdentityQueryParams extends Pagination {
     domain_id?: string;
+    query?: string;
+    order_by?: 'email' | 'created_at' | 'verified_at';
+    order?: 'asc' | 'desc';
 }
 
 export interface IdentityUpdate {
-    domain_id?: string;
-    email?: string;
     name?: string;
-    personal_note?: string;
-    reply_to_name?: string;
     reply_to_email?: string;
-    add_note?: boolean;
-  }
+    reply_to_name?: string;
+}

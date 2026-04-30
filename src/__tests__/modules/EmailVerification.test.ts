@@ -66,4 +66,20 @@ describe("Email Verification Module", () => {
         expect(verifyEmail.body).toMatchObject({ message: "valid" });
         expect(verifyEmail.statusCode).toBe(200);
     });
+
+    it("verify email async", async () => {
+        nock("http://test.com").post("/email-verification/verify-async").reply(200, { id: "async_job_id" }, { header1: "test" });
+        const result = await emailVerificationModule.verifyEmailAsync("email@email.com");
+        expect(result.headers).toMatchObject({ header1: "test", "content-type": "application/json" });
+        expect(result.body).toMatchObject({ id: "async_job_id" });
+        expect(result.statusCode).toBe(200);
+    });
+
+    it("get verify email async status", async () => {
+        nock("http://test.com").get("/email-verification/verify-async/async_job_id").reply(200, { status: "completed" }, { header1: "test" });
+        const result = await emailVerificationModule.getVerifyEmailAsyncStatus("async_job_id");
+        expect(result.headers).toMatchObject({ header1: "test", "content-type": "application/json" });
+        expect(result.body).toMatchObject({ status: "completed" });
+        expect(result.statusCode).toBe(200);
+    });
 });

@@ -1,6 +1,8 @@
 export * from "./Token";
 export * from "./EmailVerification";
 export * from "./Pagination";
+export * from "./User";
+export * from "./BlocklistMonitor";
 
 //Email Models
 export * from "./email/Attachment";

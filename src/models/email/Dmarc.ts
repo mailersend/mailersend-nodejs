@@ -8,7 +8,25 @@ export class Dmarc {
   }
 }
 
-export interface DmarcQueryParams extends Pagination {}
+export interface DmarcQueryParams extends Pagination {
+  query?: string;
+  sort_by?: 'created_at' | 'updated_at' | 'dmarc_valid' | 'spf_status';
+  order?: 'asc' | 'desc';
+}
+
+export interface DmarcReportQueryParams extends Pagination {
+  date_from?: number;
+  date_to?: number;
+  search?: string;
+  category?: string;
+  report_source?: string;
+}
+
+export interface DmarcReportSourcesQueryParams {
+  date_from: number;
+  date_to: number;
+  status?: 'accepted' | 'rejected' | 'quarantined';
+}
 
 export interface DmarcUpdate {
   wanted_dmarc_record: string;
