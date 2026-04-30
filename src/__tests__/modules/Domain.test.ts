@@ -1,4 +1,4 @@
-import * as nock from "nock";
+import nock from "nock";
 import { DomainModule } from "../../modules/email/Domain.module";
 import { Domain } from "../../models";
 
@@ -85,4 +85,5 @@ describe("Domain Module", () => {
     expect(verifyDomain.body).toMatchObject({ key1: "verify" });
     expect(verifyDomain.statusCode).toBe(200);
   });
+
 });

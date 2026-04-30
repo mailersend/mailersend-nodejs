@@ -65,6 +65,7 @@ For more info, you can:
     - [Add a domain](#add-a-domain)
     - [Get DNS records](#get-dns-records)
     - [Get verification status](#get-verification-status)
+  - [SMTP Users](#smtp-users)
     - [List SMTP users](#list-smtp-users)
     - [Get SMTP user](#get-smtp-user)
     - [Create SMTP user](#create-smtp-user)
@@ -896,6 +897,8 @@ mailerSend.email.domain.verify("domain_id")
 
 ```
 
+## SMTP Users
+
 ### List SMTP users
 
 ```js
@@ -906,7 +909,7 @@ const mailerSend = new MailerSend({
   apiKey: process.env.API_KEY,
 });
 
-mailerSend.email.domain.listSmtpUsers("domain_id", { page: 1, limit: 25 })
+mailerSend.email.smtpUser.list("domain_id", { page: 1, limit: 25 })
   .then((response) => console.log(response.body))
   .catch((error) => console.log(error.body));
 
@@ -922,7 +925,7 @@ const mailerSend = new MailerSend({
   apiKey: process.env.API_KEY,
 });
 
-mailerSend.email.domain.getSmtpUser("domain_id", "smtp_user_id")
+mailerSend.email.smtpUser.single("domain_id", "smtp_user_id")
   .then((response) => console.log(response.body))
   .catch((error) => console.log(error.body));
 
@@ -938,7 +941,7 @@ const mailerSend = new MailerSend({
   apiKey: process.env.API_KEY,
 });
 
-mailerSend.email.domain.createSmtpUser("domain_id", {
+mailerSend.email.smtpUser.create("domain_id", {
   name: "My SMTP User",
   enabled: true,
 })
@@ -957,7 +960,7 @@ const mailerSend = new MailerSend({
   apiKey: process.env.API_KEY,
 });
 
-mailerSend.email.domain.updateSmtpUser("domain_id", "smtp_user_id", {
+mailerSend.email.smtpUser.update("domain_id", "smtp_user_id", {
   name: "Updated SMTP User",
   enabled: false,
 })
@@ -976,7 +979,7 @@ const mailerSend = new MailerSend({
   apiKey: process.env.API_KEY,
 });
 
-mailerSend.email.domain.deleteSmtpUser("domain_id", "smtp_user_id")
+mailerSend.email.smtpUser.delete("domain_id", "smtp_user_id")
   .then((response) => console.log(response.body))
   .catch((error) => console.log(error.body));
 

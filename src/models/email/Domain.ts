@@ -41,9 +41,3 @@ export interface DomainSettings {
   ignore_duplicated_recipients?: boolean;
 }
 
-export interface SmtpUserParams {
-  name: string;
-  enabled?: boolean;
-}
-
-export interface SmtpUserQueryParams extends Pagination {}

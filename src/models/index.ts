@@ -11,6 +11,7 @@ export * from "./email/Sender";
 export * from "./email/Activity";
 export * from "./email/Analytics";
 export * from "./email/Domain";
+export * from "./email/SmtpUser";
 export * from "./email/Inbound";
 export * from "./email/Message";
 export * from "./email/Schedule";

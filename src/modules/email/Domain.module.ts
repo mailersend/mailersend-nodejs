@@ -1,5 +1,5 @@
 import { RequestService, APIResponse } from "../../services/request.service";
-import { Domain, DomainQueryParams, DomainRecipientsQueryParams, DomainSettings, SmtpUserParams, SmtpUserQueryParams } from "../../models";
+import { Domain, DomainQueryParams, DomainRecipientsQueryParams, DomainSettings } from "../../models";
 
 export class DomainModule extends RequestService {
   constructor(apiKey: string, baseUrl: string) {
@@ -36,25 +36,5 @@ export class DomainModule extends RequestService {
 
   async verify(domainId: string): Promise<APIResponse> {
     return await this.get(`/domains/${domainId}/verify`);
-  }
-
-  async listSmtpUsers(domainId: string, queryParams?: SmtpUserQueryParams): Promise<APIResponse> {
-    return await this.get(`/domains/${domainId}/smtp-users`, queryParams);
-  }
-
-  async getSmtpUser(domainId: string, smtpUserId: string): Promise<APIResponse> {
-    return await this.get(`/domains/${domainId}/smtp-users/${smtpUserId}`);
-  }
-
-  async createSmtpUser(domainId: string, data: SmtpUserParams): Promise<APIResponse> {
-    return await this.post<SmtpUserParams>(`/domains/${domainId}/smtp-users`, data);
-  }
-
-  async updateSmtpUser(domainId: string, smtpUserId: string, data: Partial<SmtpUserParams>): Promise<APIResponse> {
-    return await this.put(`/domains/${domainId}/smtp-users/${smtpUserId}`, data);
-  }
-
-  async deleteSmtpUser(domainId: string, smtpUserId: string): Promise<APIResponse> {
-    return await this.deleteReq(`/domains/${domainId}/smtp-users/${smtpUserId}`);
   }
 }
