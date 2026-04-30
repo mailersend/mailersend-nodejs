@@ -1,4 +1,4 @@
-import * as nock from "nock";
+import nock from "nock";
 import { EmailVerification } from "../../models";
 import { EmailVerificationModule } from "../../modules/EmailVerification.module";
 

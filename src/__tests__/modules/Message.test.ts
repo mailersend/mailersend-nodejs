@@ -1,4 +1,4 @@
-import * as nock from "nock";
+import nock from "nock";
 import { MessageModule } from "../../modules/email/Message.module";
 
 describe("Message Module", () => {

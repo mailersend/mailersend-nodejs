@@ -1,4 +1,4 @@
-import * as nock from "nock";
+import nock from "nock";
 import { RecipientModule } from "../../modules/email/Recipient.module";
 import { BlockListRecipients, BlockListType } from "../../models";
 

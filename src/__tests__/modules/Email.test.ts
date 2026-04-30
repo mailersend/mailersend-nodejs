@@ -1,4 +1,4 @@
-import * as nock from "nock";
+import nock from "nock";
 import { EmailModule } from "../../modules/Email.module";
 import { EmailParams, Recipient, EmailWebhook, EmailWebhookEventType } from "../../models";
 import { ActivityModule } from "../../modules/email/Activity.module";
