@@ -1,13 +1,20 @@
 import { Pagination } from "./Pagination";
 
-export interface EmailVerificationQueryParams extends Pagination {} 
+export interface EmailVerificationQueryParams extends Pagination {}
+export interface EmailVerificationSingleQueryParams {
+    detailed?: boolean;
+    page?: number;
+    limit?: number;
+}
 export interface EmailVerificationResultQueryParams extends Pagination {
-    result?: EmailVerificationResultType[];
+    results?: EmailVerificationResultType[];
 }
 
 export class EmailVerification {
     name: string;
     emails: string[];
+    list_id?: string;
+    verify?: boolean;
 
     constructor(
         name: string,
@@ -24,6 +31,16 @@ export class EmailVerification {
 
     setEmails(emails: string[]): EmailVerification {
       this.emails = emails;
+      return this;
+    }
+
+    setListId(listId: string): EmailVerification {
+      this.list_id = listId;
+      return this;
+    }
+
+    setVerify(verify: boolean): EmailVerification {
+      this.verify = verify;
       return this;
     }
 }

@@ -41,6 +41,7 @@ export class EmailParams {
     this.personalization = config?.personalization;
     this.references = config?.references;
     this.headers = config?.headers;
+    this.settings = config?.settings;
     this.precedence_bulk = config?.precedenceBulk;
     this.list_unsubscribe = config?.listUnsubscribe;
   }

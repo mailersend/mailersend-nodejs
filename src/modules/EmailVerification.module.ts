@@ -1,5 +1,5 @@
 import { RequestService, APIResponse } from "../services/request.service";
-import { EmailVerification, EmailVerificationQueryParams, EmailVerificationResultQueryParams } from "../models";
+import { EmailVerification, EmailVerificationQueryParams, EmailVerificationResultQueryParams, EmailVerificationSingleQueryParams } from "../models";
 
 export class EmailVerificationModule extends RequestService {
     constructor(apiKey: string, baseUrl: string) {
@@ -10,8 +10,8 @@ export class EmailVerificationModule extends RequestService {
         return await this.get(`/email-verification`, queryParams);
     }
 
-    async single(emailVerificationId: string): Promise<APIResponse> {
-        return await this.get(`/email-verification/${emailVerificationId}`);
+    async single(emailVerificationId: string, queryParams?: EmailVerificationSingleQueryParams): Promise<APIResponse> {
+        return await this.get(`/email-verification/${emailVerificationId}`, queryParams);
     }
 
     async create(emailVerification: EmailVerification): Promise<APIResponse> {

@@ -1934,7 +1934,11 @@ const mailerSend = new MailerSend({
   apiKey: process.env.API_KEY,
 });
 
-mailerSend.emailVerification.single("email_verification_id")
+mailerSend.emailVerification.single("email_verification_id", {
+  detailed: true,
+  page: 1,
+  limit: 25,
+})
   .then((response) => console.log(response.body))
   .catch((error) => console.log(error.body));
 
@@ -1954,6 +1958,10 @@ const emailVerification = new EmailVerification("My List", [
   "test1@example.com",
   "test2@example.com",
 ]);
+
+// Optional: link to an existing list and trigger verification automatically
+// emailVerification.setListId("existing_list_id");
+// emailVerification.setVerify(true);
 
 mailerSend.emailVerification.create(emailVerification)
   .then((response) => console.log(response.body))
@@ -1990,7 +1998,7 @@ const mailerSend = new MailerSend({
 mailerSend.emailVerification.getListResult("email_verification_id", {
   page: 1,
   limit: 25,
-  result: [EmailVerificationResultType.VALID, EmailVerificationResultType.CATCH_ALL],
+  results: [EmailVerificationResultType.VALID, EmailVerificationResultType.CATCH_ALL],
 })
   .then((response) => console.log(response.body))
   .catch((error) => console.log(error.body));

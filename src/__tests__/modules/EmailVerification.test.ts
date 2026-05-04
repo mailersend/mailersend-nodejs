@@ -42,6 +42,15 @@ describe("Email Verification Module", () => {
         expect(getEmailVerification.statusCode).toBe(200);
     });
 
+    it("single with query params", async () => {
+        const params = { detailed: true, page: 1, limit: 10 };
+        nock("http://test.com").get("/email-verification/test_id").query(params).reply(200, { key1: "key1_value" }, { header1: "test" });
+        const getEmailVerification = await emailVerificationModule.single("test_id", params);
+        expect(getEmailVerification.headers).toMatchObject({ header1: "test", "content-type": "application/json" });
+        expect(getEmailVerification.body).toMatchObject({ key1: "key1_value" });
+        expect(getEmailVerification.statusCode).toBe(200);
+    });
+
     it("verify list", async () => {
         nock("http://test.com").get("/email-verification/test_id/verify").reply(200, { key1: "key1_value" }, { header1: "test" });
         const verifyEmailVerification = await emailVerificationModule.verifyList("test_id");
