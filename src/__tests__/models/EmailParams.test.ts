@@ -7,6 +7,7 @@ describe("EmailParams Model", () => {
       to: [{ email: "to@email.com", name: "ToRecipient" }],
       cc: [{ email: "cc@email.com", name: "CCRecipient" }],
       bcc: [{ email: "bcc@email.com", name: "BCCRecipient" }],
+      rcptTo: [{ email: "rcpt@email.com", name: "RcptRecipient" }],
       replyTo: { email: "reply@email.com", name: "ReplyRecipient" },
       inReplyTo: "in_reply@email.com",
       subject: "Some subject",
@@ -27,6 +28,9 @@ describe("EmailParams Model", () => {
     expect(params?.cc?.length).toBe(1);
     expect(Array.isArray(params?.bcc)).toBe(true);
     expect(params?.bcc?.length).toBe(1);
+    expect(Array.isArray(params?.rcpt_to)).toBe(true);
+    expect(params?.rcpt_to?.length).toBe(1);
+    expect(params?.rcpt_to?.[0]?.email).toBe("rcpt@email.com");
     expect(params?.reply_to?.email).toBe("reply@email.com");
     expect(params?.in_reply_to).toBe("in_reply@email.com");
     expect(params?.subject).toBe("Some subject");
@@ -48,6 +52,7 @@ describe("EmailParams Model", () => {
       .setTo([{ email: "to@email.com", name: "ToRecipient" }])
       .setCc([{ email: "cc@email.com", name: "CCRecipient" }])
       .setBcc([{ email: "bcc@email.com", name: "BCCRecipient" }])
+      .setRcptTo([{ email: "rcpt@email.com", name: "RcptRecipient" }])
       .setReplyTo({ email: "reply@email.com", name: "ReplyRecipient" })
       .setSubject("Some subject")
       .setText("Some text")
@@ -66,6 +71,9 @@ describe("EmailParams Model", () => {
     expect(params?.cc?.length).toBe(1);
     expect(Array.isArray(params?.bcc)).toBe(true);
     expect(params?.bcc?.length).toBe(1);
+    expect(Array.isArray(params?.rcpt_to)).toBe(true);
+    expect(params?.rcpt_to?.length).toBe(1);
+    expect(params?.rcpt_to?.[0]?.email).toBe("rcpt@email.com");
     expect(params?.reply_to?.email).toBe("reply@email.com");
     expect(params?.reply_to?.name).toBe("ReplyRecipient");
     expect(params?.subject).toBe("Some subject");

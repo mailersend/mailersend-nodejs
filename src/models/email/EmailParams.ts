@@ -4,14 +4,15 @@ import { Attachment } from "./Attachment";
 import { Personalization } from "../../modules/Email.module";
 
 export class EmailParams {
-  from: Sender;
+  from?: Sender;
   to: Recipient[];
   cc?: Recipient[];
   bcc?: Recipient[];
+  rcpt_to?: Recipient[];
   reply_to?: Recipient;
-  subject: string;
-  text: string;
-  html: string;
+  subject?: string;
+  text?: string;
+  html?: string;
   send_at: number | string;
   attachments?: Attachment[];
   template_id?: string;
@@ -29,6 +30,7 @@ export class EmailParams {
     this.to = config?.to;
     this.cc = config?.cc;
     this.bcc = config?.bcc;
+    this.rcpt_to = config?.rcptTo;
     this.reply_to = config?.replyTo;
     this.in_reply_to = config?.inReplyTo;
     this.subject = config?.subject;
@@ -63,6 +65,11 @@ export class EmailParams {
 
   setBcc(bcc: Recipient[]): EmailParams {
     this.bcc = bcc;
+    return this;
+  }
+
+  setRcptTo(rcptTo: Recipient[]): EmailParams {
+    this.rcpt_to = rcptTo;
     return this;
   }
 
