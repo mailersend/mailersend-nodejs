@@ -56,8 +56,10 @@ export enum TokenScopeType {
   BLOCKLIST_MONITORING_READ = "blocklist_monitoring_read",
   BLOCKLIST_MONITORING_FULL = "blocklist_monitoring_full",
   WHATSAPP_FULL = "whatsapp_full",
+  IFTTT = "ifttt",
 }
 
 export interface TokenUpdates {
-  status: "pause" | "unpause";
+  name?: string;
+  status?: "pause" | "unpause";
 }

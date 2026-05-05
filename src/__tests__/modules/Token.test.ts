@@ -40,7 +40,7 @@ describe("Token Module", () => {
   });
 
   it("settings", async () => {
-    nock("http://test.com").put("/token/test_id/settings").reply(200, { key1: "key1_value" }, { header1: "test" });
+    nock("http://test.com").put("/token/test_id").reply(200, { key1: "key1_value" }, { header1: "test" });
     const updateSettings = await tokenModule.updateSettings("test_id", { status: "pause" });
     expect(updateSettings.headers).toMatchObject({ header1: "test", "content-type": "application/json" });
     expect(updateSettings.body).toMatchObject({ key1: "key1_value" });
