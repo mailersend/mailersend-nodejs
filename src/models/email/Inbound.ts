@@ -78,8 +78,10 @@ export class Inbound {
 }
 
 export interface InboundForward {
+    id?: string;
     type: 'webhook' | 'email';
     value: string;
+    secret?: string;
 }
 
 export enum InboundFilterType {
