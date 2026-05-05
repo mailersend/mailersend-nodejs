@@ -13,7 +13,7 @@ export class EmailParams {
   subject?: string;
   text?: string;
   html?: string;
-  send_at: number | string;
+  send_at?: number | string;
   attachments?: Attachment[];
   template_id?: string;
   in_reply_to?: string;
