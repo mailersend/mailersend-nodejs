@@ -47,6 +47,16 @@ export class EmailWebhook {
     this.enabled = enabled;
     return this;
   }
+
+  setEditable(editable: boolean): EmailWebhook {
+    this.editable = editable;
+    return this;
+  }
+
+  setVersion(version: 1 | 2): EmailWebhook {
+    this.version = version;
+    return this;
+  }
 }
 
 export enum EmailWebhookEventType {

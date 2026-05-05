@@ -10,7 +10,7 @@ export class EmailWebhookModule extends RequestService {
         return await this.post<EmailWebhook>("/webhooks", params);
     }
 
-    async list(domainId: string, queryParams?: { limit?: number }): Promise<APIResponse> {
+    async list(domainId: string, queryParams?: { limit?: number; page?: number }): Promise<APIResponse> {
         return await this.get("/webhooks", { domain_id: domainId, ...queryParams });
     }
 
