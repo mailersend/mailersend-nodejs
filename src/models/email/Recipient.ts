@@ -7,11 +7,27 @@ export class Recipient extends Sender {
   }
 }
 export interface RecipientsQueryParams extends Pagination {
-  domain_id?: string; 
+  domain_id?: string;
 }
 
+/** Query params for GET suppression lists that support domain_id filtering. */
+export interface BlockListQueryParams extends Pagination {
+  domain_id?: string;
+}
+
+/** Query params for GET /v1/suppressions/on-hold-list — domain_id is NOT supported. */
+export interface OnHoldListQueryParams extends Pagination {}
+
+/** Used for POST /v1/suppressions/blocklist — domain_id is optional. */
 export interface BlockListRecipients {
   domain_id?: string;
+  recipients?: string[];
+  patterns?: string[];
+}
+
+/** Used for POST /v1/suppressions/hard-bounces, spam-complaints, and unsubscribes — domain_id is required. */
+export interface BlockListRecipientsPost {
+  domain_id: string;
   recipients?: string[];
   patterns?: string[];
 }

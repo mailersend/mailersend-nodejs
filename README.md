@@ -91,6 +91,8 @@ For more info, you can:
     - [Delete recipients from a suppression list](#delete-recipients-from-a-suppression-list)
     - [Get recipients from a suppression list](#get-recipients-from-a-suppression-list)
     - [Delete all recipients from a suppression list](#delete-all-recipients-from-a-suppression-list)
+    - [Get recipients from the on-hold list](#get-recipients-from-the-on-hold-list)
+    - [Delete recipients from the on-hold list](#delete-recipients-from-the-on-hold-list)
   - [Webhooks](#webhooks)
     - [Get a list of webhooks](#get-a-list-of-webhooks)
     - [Get webhook](#get-webhook)
@@ -1592,6 +1594,44 @@ const mailerSend = new MailerSend({
 });
 
 mailerSend.email.recipient.delAllBlockListRecipients(BlockListType.BLOCK_LIST)
+  .then((response) => console.log(response.body))
+  .catch((error) => console.log(error.body));
+
+```
+
+### Get recipients from the on-hold list
+
+```js
+import 'dotenv/config';
+import { BlockListType, MailerSend } from "mailersend";
+
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
+});
+
+mailerSend.email.recipient.blockList(
+  { page: 1, limit: 25 },
+  BlockListType.ON_HOLD_LIST
+)
+  .then((response) => console.log(response.body))
+  .catch((error) => console.log(error.body));
+
+```
+
+### Delete recipients from the on-hold list
+
+```js
+import 'dotenv/config';
+import { BlockListType, MailerSend } from "mailersend";
+
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
+});
+
+mailerSend.email.recipient.delBlockListRecipients(
+  ["recipient_id", "recipient_id"],
+  BlockListType.ON_HOLD_LIST
+)
   .then((response) => console.log(response.body))
   .catch((error) => console.log(error.body));
 
