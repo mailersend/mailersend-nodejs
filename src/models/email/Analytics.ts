@@ -4,7 +4,7 @@ import { Pagination } from "../Pagination";
 export interface AnalyticsQueryParams extends Pagination {
   date_from: number;
   date_to: number;
-  recipient_id?: string;
+  recipient_id?: string[];
   group_by?: AnalyticsGroupByType;
   tags?: string[];
   domain_id?: string;
