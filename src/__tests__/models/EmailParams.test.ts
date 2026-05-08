@@ -18,6 +18,10 @@ describe("EmailParams Model", () => {
       tags: ["tag1", "tag2"],
       personalization: [{ email: "cc@email.com", data: { key1: "value_1" } }],
       listUnsubscribe: "https://www.mailersend.com/unsubscribe",
+      sendAt: 1893456000,
+      references: ["<ref1@example.com>"],
+      settings: { track_clicks: true, track_opens: false, track_content: true },
+      precedenceBulk: true,
     });
 
     expect(params?.from?.email).toBe("from@email.com");
@@ -44,6 +48,13 @@ describe("EmailParams Model", () => {
     expect(Array.isArray(params?.personalization)).toBe(true);
     expect(params?.personalization?.length).toBe(1);
     expect(params?.list_unsubscribe).toBe("https://www.mailersend.com/unsubscribe");
+    expect(params?.send_at).toBe(1893456000);
+    expect(Array.isArray(params?.references)).toBe(true);
+    expect(params?.references?.length).toBe(1);
+    expect(params?.settings?.track_clicks).toBe(true);
+    expect(params?.settings?.track_opens).toBe(false);
+    expect(params?.settings?.track_content).toBe(true);
+    expect(params?.precedence_bulk).toBe(true);
   });
 
   it("Setters", () => {
@@ -62,7 +73,11 @@ describe("EmailParams Model", () => {
       .setTemplateId("some_template_id")
       .setTags(["tag1", "tag2"])
       .setPersonalization([{ email: "cc@email.com", data: { key1: "value_1" } }])
-      .setListUnsubscribe("https://www.mailersend.com/unsubscribe");
+      .setListUnsubscribe("https://www.mailersend.com/unsubscribe")
+      .setSendAt(1893456000)
+      .setReferences(["<ref1@example.com>"])
+      .setSettings({ track_clicks: true, track_opens: false, track_content: true })
+      .setPrecedenceBulk(true);
     expect(params?.from?.email).toBe("from@email.com");
     expect(params?.from?.name).toBe("FromSender");
     expect(Array.isArray(params.to)).toBe(true);
@@ -87,5 +102,12 @@ describe("EmailParams Model", () => {
     expect(Array.isArray(params?.personalization)).toBe(true);
     expect(params?.personalization?.length).toBe(1);
     expect(params?.list_unsubscribe).toBe("https://www.mailersend.com/unsubscribe");
+    expect(params?.send_at).toBe(1893456000);
+    expect(Array.isArray(params?.references)).toBe(true);
+    expect(params?.references?.length).toBe(1);
+    expect(params?.settings?.track_clicks).toBe(true);
+    expect(params?.settings?.track_opens).toBe(false);
+    expect(params?.settings?.track_content).toBe(true);
+    expect(params?.precedence_bulk).toBe(true);
   });
 });

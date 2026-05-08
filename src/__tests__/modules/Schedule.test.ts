@@ -22,10 +22,8 @@ describe("Schedule Module", () => {
   });
 
   it("delete", async () => {
-    nock("http://test.com").delete("/message-schedules/test_message_id").reply(200, { key1: "schedule_deleted" }, { header1: "test" });
+    nock("http://test.com").delete("/message-schedules/test_message_id").reply(204);
     const result = await scheduleModule.delete("test_message_id");
-    expect(result.headers).toMatchObject({ header1: "test", "content-type": "application/json" });
-    expect(result.body).toMatchObject({ key1: "schedule_deleted" });
-    expect(result.statusCode).toBe(200);
+    expect(result.statusCode).toBe(204);
   });
 });

@@ -478,7 +478,7 @@ await mailerSend.email.send(emailParams);
 
 ```
 
-### Send a scheduled email
+### Send a scheduled message
 
 ```js
 import 'dotenv/config';
@@ -639,7 +639,7 @@ await mailerSend.email.send(emailParams);
 
 ## Bulk email API
 
-### Send bulk emails
+### Send bulk email
 
 ```js
 import 'dotenv/config';
