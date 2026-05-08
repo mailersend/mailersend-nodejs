@@ -1,13 +1,15 @@
 import { ActivityEventType } from "./Activity";
-import { Pagination } from "../Pagination";
 
-export interface AnalyticsQueryParams extends Pagination {
+export interface AnalyticsOpensQueryParams {
   date_from: number;
   date_to: number;
   recipient_id?: string[];
-  group_by?: AnalyticsGroupByType;
   tags?: string[];
   domain_id?: string;
+}
+
+export interface AnalyticsDateQueryParams extends AnalyticsOpensQueryParams {
+  group_by?: AnalyticsGroupByType;
   event?: ActivityEventType[];
 }
 

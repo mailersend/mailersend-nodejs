@@ -854,17 +854,20 @@ mailerSend.email.activity.single("activity_id")
 
 ```js
 import 'dotenv/config';
-import { ActivityEventType, MailerSend } from "mailersend";
+import { ActivityEventType, AnalyticsDateQueryParams, AnalyticsGroupByType, MailerSend } from "mailersend";
 
 const mailerSend = new MailerSend({
   apiKey: process.env.API_KEY,
 });
 
-mailerSend.email.analytics.byDate({
+const queryParams: AnalyticsDateQueryParams = {
   date_from: 1443651141,
   date_to: 2443651141,
   event: [ActivityEventType.CLICKED, ActivityEventType.OPENED],
-}).then(response => {
+  // group_by: AnalyticsGroupByType.DAYS, // optional: days, weeks, months, years
+};
+
+mailerSend.email.analytics.byDate(queryParams).then(response => {
   console.log(response.body);
 }).catch(error => {
   console.log(error.body);
@@ -876,7 +879,7 @@ mailerSend.email.analytics.byDate({
 
 ```js
 import 'dotenv/config';
-import { ActivityEventType, MailerSend } from "mailersend";
+import { MailerSend } from "mailersend";
 
 const mailerSend = new MailerSend({
   apiKey: process.env.API_KEY,
@@ -897,7 +900,7 @@ mailerSend.email.analytics.byCountry({
 
 ```js
 import 'dotenv/config';
-import { ActivityEventType, MailerSend } from "mailersend";
+import { MailerSend } from "mailersend";
 
 const mailerSend = new MailerSend({
   apiKey: process.env.API_KEY,
@@ -918,7 +921,7 @@ mailerSend.email.analytics.byUserAgent({
 
 ```js
 import 'dotenv/config';
-import { ActivityEventType, MailerSend } from "mailersend";
+import { MailerSend } from "mailersend";
 
 const mailerSend = new MailerSend({
   apiKey: process.env.API_KEY,

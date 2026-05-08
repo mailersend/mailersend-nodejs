@@ -1,5 +1,7 @@
 import nock from "nock";
 import { AnalyticsModule } from "../../modules/email/Analytics.module";
+import { ActivityEventType } from "../../models/email/Activity";
+import { AnalyticsGroupByType } from "../../models";
 
 describe("Analytics Module", () => {
   const analyticsModule = new AnalyticsModule("test_key", "http://test.com");
@@ -34,6 +36,15 @@ describe("Analytics Module", () => {
     const result = await analyticsModule.byReadingEnvironment(baseParams);
     expect(result.headers).toMatchObject({ header1: "test", "content-type": "application/json" });
     expect(result.body).toMatchObject({ key1: "ua_type_value" });
+    expect(result.statusCode).toBe(200);
+  });
+
+  it("byDate with event and group_by", async () => {
+    const dateParams = { ...baseParams, group_by: AnalyticsGroupByType.DAYS, event: [ActivityEventType.CLICKED, ActivityEventType.OPENED] };
+    nock("http://test.com").get("/analytics/date").query(dateParams).reply(200, { key1: "date_grouped_value" }, { header1: "test" });
+    const result = await analyticsModule.byDate(dateParams);
+    expect(result.headers).toMatchObject({ header1: "test", "content-type": "application/json" });
+    expect(result.body).toMatchObject({ key1: "date_grouped_value" });
     expect(result.statusCode).toBe(200);
   });
 });
