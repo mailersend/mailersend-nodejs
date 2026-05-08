@@ -1,4 +1,4 @@
-import * as nock from "nock";
+import nock from "nock";
 import { TokenModule } from "../../modules/Token.module";
 import { Token, TokenScopeType } from "../../models";
 

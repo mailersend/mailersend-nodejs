@@ -25,7 +25,7 @@ describe("SMS Webhook Module", () => {
       .get("/sms-webhooks")
       .query({ sms_number_id: "sms_number_id" })
       .reply(200, { key1: "sms_webhook_list" }, { header1: "test" });
-    const result = await smsWebhookModule.list("sms_number_id");
+    const result = await smsWebhookModule.list({ sms_number_id: "sms_number_id" });
     expect(result.headers).toMatchObject({ header1: "test", "content-type": "application/json" });
     expect(result.body).toMatchObject({ key1: "sms_webhook_list" });
     expect(result.statusCode).toBe(200);
