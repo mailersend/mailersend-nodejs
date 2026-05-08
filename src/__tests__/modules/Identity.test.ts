@@ -23,6 +23,13 @@ describe("Identity Module", () => {
     expect(result.statusCode).toBe(200);
   });
 
+  it("list with query and ordering", async () => {
+    const params = { query: "sender", order_by: "email" as const, order: "asc" as const };
+    nock("http://test.com").get("/identities").query(params).reply(200, { key1: "identity_list" }, { header1: "test" });
+    const result = await identityModule.list(params);
+    expect(result.statusCode).toBe(200);
+  });
+
   it("single", async () => {
     nock("http://test.com").get("/identities/test_identity_id").reply(200, { key1: "identity_value" }, { header1: "test" });
     const result = await identityModule.single("test_identity_id");
@@ -56,19 +63,15 @@ describe("Identity Module", () => {
   });
 
   it("delete", async () => {
-    nock("http://test.com").delete("/identities/test_identity_id").reply(200, { key1: "identity_deleted" }, { header1: "test" });
+    nock("http://test.com").delete("/identities/test_identity_id").reply(204, {}, { header1: "test" });
     const result = await identityModule.delete("test_identity_id");
-    expect(result.headers).toMatchObject({ header1: "test", "content-type": "application/json" });
-    expect(result.body).toMatchObject({ key1: "identity_deleted" });
-    expect(result.statusCode).toBe(200);
+    expect(result.statusCode).toBe(204);
   });
 
   it("deleteByEmail", async () => {
-    nock("http://test.com").delete("/identities/email/sender@example.com").reply(200, { key1: "identity_deleted_by_email" }, { header1: "test" });
+    nock("http://test.com").delete("/identities/email/sender@example.com").reply(202, {}, { header1: "test" });
     const result = await identityModule.deleteByEmail("sender@example.com");
-    expect(result.headers).toMatchObject({ header1: "test", "content-type": "application/json" });
-    expect(result.body).toMatchObject({ key1: "identity_deleted_by_email" });
-    expect(result.statusCode).toBe(200);
+    expect(result.statusCode).toBe(202);
   });
 
   it("resend", async () => {
