@@ -99,7 +99,6 @@ For more info, you can:
     - [Create webhook](#create-webhook)
     - [Update webhook](#update-webhook)
     - [Delete webhook](#delete-webhook)
-    - [Verify a webhook signature](#verify-webhook-signature)
   - [Templates](#templates)
     - [Get a list of templates](#get-a-list-of-templates)
     - [Get a single template](#get-a-single-template)
@@ -138,7 +137,6 @@ For more info, you can:
     - [Create webhook](#create-webhook-1)
     - [Update webhook](#update-webhook-1)
     - [Delete webhook](#delete-webhook-1)
-    - [Verify webhook signature](#verify-webhook-signature-1)
   - [SMS Inbound](#inbound-1)
     - [Get inbound list](#get-inbound-list-1)
     - [Get inbound](#get-inbound-1)
@@ -189,6 +187,8 @@ For more info, you can:
     - [Delete blocklist monitor](#delete-blocklist-monitor)
   - [Other endpoints](#other-endpoints)
     - [Get API quota](#get-api-quota)
+- [Utils](#utils)
+  - [Verify a webhook signature](#verify-a-webhook-signature)
 - [Support and Feedback](#support-and-feedback)
 - [License](#license)
 
@@ -696,9 +696,9 @@ mailerSend.email.getBulkStatus('bulk_email_id') // bulk email Id e.g 63af1fdb790
 
 ```
 
-## Inbound
+## Inbound routing
 
-### Get inbound list
+### Get a list of inbound routes
 
 ```js
 import 'dotenv/config';
@@ -714,7 +714,27 @@ mailerSend.email.inbound.list()
 
 ```
 
-### Get inbound
+With query parameters:
+
+```js
+import 'dotenv/config';
+import { MailerSend } from "mailersend";
+
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
+});
+
+mailerSend.email.inbound.list({
+  domain_id: "domain_id",
+  page: 1,
+  limit: 25,
+})
+  .then((response) => console.log(response.body))
+  .catch((error) => console.log(error.body));
+
+```
+
+### Get a single inbound route
 
 ```js
 import 'dotenv/config';
@@ -730,7 +750,7 @@ mailerSend.email.inbound.single("inbound_id")
 
 ```
 
-### Create inbound
+### Add an inbound route
 
 ```js
 import 'dotenv/config';
@@ -740,12 +760,14 @@ const mailerSend = new MailerSend({
   apiKey: process.env.API_KEY,
 });
 
-const inbound = new Inbound()
-  .setDomainId('domain_id')
-  .setName('inbound test')
-  .setDomainEnabled(true)
+const inbound = new Inbound('inbound test', true, 'domain_id')
+  .setInboundDomain('inbound.yourdomain.com')
+  .setInboundPriority(50)
   .setMatchFilter({
     type: InboundFilterType.MATCH_ALL,
+  })
+  .setCatchFilter({
+    type: InboundFilterType.CATCH_RECIPIENT,
   })
   .setForwards([
     {
@@ -760,22 +782,24 @@ mailerSend.email.inbound.create(inbound)
 
 ```
 
-### Update inbound
+### Update an inbound route
 
 ```js
 import 'dotenv/config';
-import { MailerSend, Inbound, InboundFilterType } from "mailersend";
+import { MailerSend, InboundUpdateParams, InboundFilterType } from "mailersend";
 
 const mailerSend = new MailerSend({
   apiKey: process.env.API_KEY,
 });
 
-const inbound = new Inbound()
-  .setDomainId('domain_id')
-  .setName('inbound test 2')
-  .setDomainEnabled(false)
+const inbound = new InboundUpdateParams('inbound test 2', false)
+  .setInboundDomain('inbound.yourdomain.com')
+  .setInboundPriority(25)
   .setMatchFilter({
     type: InboundFilterType.MATCH_ALL,
+  })
+  .setCatchFilter({
+    type: InboundFilterType.CATCH_ALL,
   })
   .setForwards([
     {
@@ -790,7 +814,7 @@ mailerSend.email.inbound.update('inbound_id', inbound)
 
 ```
 
-### Delete inbound
+### Delete an inbound route
 
 ```js
 import 'dotenv/config';
@@ -1674,6 +1698,20 @@ mailerSend.email.webhook.list("domain_id")
 
 ```
 
+```js
+import 'dotenv/config';
+import { MailerSend} from "mailersend";
+
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
+});
+
+mailerSend.email.webhook.list("domain_id", { limit: 25, page: 2 })
+  .then((response) => console.log(response.body))
+  .catch((error) => console.log(error.body));
+
+```
+
 ### Get webhook
 
 ```js
@@ -1713,6 +1751,50 @@ mailerSend.email.webhook.create(emailWebhook)
 
 ```
 
+```js
+import 'dotenv/config';
+import { EmailWebhook, EmailWebhookEventType, MailerSend } from "mailersend";
+
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
+});
+
+const emailWebhook = new EmailWebhook()
+  .setName("Webhook Name")
+  .setUrl("https://example.com")
+  .setDomainId("domain_id")
+  .setEnabled(true)
+  .setVersion(2)
+  .setEditable(true)
+  .setEvents([EmailWebhookEventType.SENT, EmailWebhookEventType.OPENED]);
+
+mailerSend.email.webhook.create(emailWebhook)
+  .then((response) => console.log(response.body))
+  .catch((error) => console.log(error.body));
+
+```
+
+```js
+import 'dotenv/config';
+import { EmailWebhook, EmailWebhookEventType, MailerSend } from "mailersend";
+
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
+});
+
+const emailWebhook = new EmailWebhook()
+  .setName("Webhook Name")
+  .setUrl("https://example.com")
+  .setDomainId("domain_id")
+  .setEnabled(false)
+  .setEvents([EmailWebhookEventType.SENT, EmailWebhookEventType.OPENED]);
+
+mailerSend.email.webhook.create(emailWebhook)
+  .then((response) => console.log(response.body))
+  .catch((error) => console.log(error.body));
+
+```
+
 ### Update webhook
 
 ```js
@@ -1725,8 +1807,10 @@ const mailerSend = new MailerSend({
 
 mailerSend.email.webhook.update("webhook_id", {
   name: "Webhook Name 2",
+  url: "https://example.com/updated-hook",
   enabled: false,
   events: [EmailWebhookEventType.SENT, EmailWebhookEventType.OPENED],
+  version: 2,
 })
   .then((response) => console.log(response.body))
   .catch((error) => console.log(error.body));
@@ -1769,6 +1853,24 @@ mailerSend.email.template.list({
 
 ```
 
+```js
+import 'dotenv/config';
+import { MailerSend} from "mailersend";
+
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
+});
+
+mailerSend.email.template.list({
+    domain_id: "domain_id",
+    page: 1,
+    limit: 25,
+})
+  .then((response) => console.log(response.body))
+  .catch((error) => console.log(error.body));
+
+```
+
 ### Get a single template
 
 ```js
@@ -1779,7 +1881,7 @@ const mailerSend = new MailerSend({
   apiKey: process.env.API_KEY,
 });
 
-mailerSend.email.template.single("domain_id")
+mailerSend.email.template.single("template_id")
   .then((response) => console.log(response.body))
   .catch((error) => console.log(error.body));
 
@@ -1799,6 +1901,8 @@ mailerSend.email.template.create({
   name: "My Template",
   html: "<p>Hello, {{name}}!</p>",
   text: "Hello, {{name}}!",
+  domain_id: "domain_id",
+  categories: ["welcome"],
   tags: ["welcome"],
   auto_generate: false,
 })
@@ -1820,6 +1924,7 @@ const mailerSend = new MailerSend({
 mailerSend.email.template.update("template_id", {
   name: "Updated Template Name",
   html: "<p>Hello, {{name}}! Updated.</p>",
+  text: "Hello, {{name}}! Updated.",
   auto_generate: true,
 })
   .then((response) => console.log(response.body))
@@ -2330,23 +2435,7 @@ mailerSend.sms.webhook.delete("sms_webhook_id")
 
 ### Verify webhook signature
 
-```js
-import crypto from 'crypto'
-
-const requestContent = '{request payload from webhook}';
-const receivedSignature = 'signature from webhook header';
-const signingSecret = 'your-secret-key';
-
-const computedSignature = crypto
-  .createHmac('sha256', signingSecret)
-  .update(requestContent, 'utf8')
-  .digest('hex');
-
-return crypto.timingSafeEqual(
-  Buffer.from(receivedSignature, 'hex'),
-  Buffer.from(computedSignature, 'hex')
-);
-```
+See [Utils — Verify a webhook signature](#verify-a-webhook-signature).
 
 ## Inbound
 
@@ -3114,6 +3203,23 @@ mailerSend.others.getApiQuota()
   .then((response) => console.log(response.body))
   .catch((error) => console.log(error.body));
 
+```
+
+## Utils
+
+### Verify a webhook signature
+
+Use `MailerSendUtils.verifyWebHook()` to verify the HMAC signature on incoming webhook requests. This works for both email and SMS webhooks.
+
+```js
+import { MailerSendUtils } from "mailersend";
+
+// rawBody must be the raw Buffer from the request (do not parse it as JSON first)
+const isValid = MailerSendUtils.verifyWebHook(
+  rawBody,
+  request.headers['x-mailersend-signature'],
+  process.env.WEBHOOK_SIGNING_SECRET
+);
 ```
 
 # Support and Feedback

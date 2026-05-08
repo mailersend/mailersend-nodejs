@@ -7,7 +7,7 @@ export interface InboundQueryParams extends Pagination {
 export class Inbound {
     name: string;
     domain_enabled: boolean;
-    domain_id?: string;
+    domain_id: string;
     inbound_domain?: string;
     inbound_priority?: number;
     catch_type?: 'all' | 'one';
@@ -19,7 +19,7 @@ export class Inbound {
     constructor(
         name: string,
         domainEnabled: boolean,
-        domainId?: string,
+        domainId: string,
         inboundDomain?: string,
         inboundPriority?: number,
         forwards?: InboundForward[],
@@ -77,11 +77,74 @@ export class Inbound {
     }
 }
 
+export class InboundUpdateParams {
+    name: string;
+    domain_enabled: boolean;
+    inbound_domain?: string;
+    inbound_priority?: number;
+    catch_type?: 'all' | 'one';
+    match_type?: 'all' | 'one';
+    forwards?: InboundForward[];
+    match_filter?: MatchFilter;
+    catch_filter?: CatchFilter;
+
+    constructor(
+        name: string,
+        domainEnabled: boolean,
+        inboundDomain?: string,
+        inboundPriority?: number,
+        forwards?: InboundForward[],
+        matchFilter?: MatchFilter,
+        catchFilter?: CatchFilter,
+    ) {
+        this.name = name;
+        this.domain_enabled = domainEnabled;
+        this.inbound_domain = inboundDomain;
+        this.inbound_priority = inboundPriority;
+        this.forwards = forwards;
+        this.match_filter = matchFilter;
+        this.catch_filter = catchFilter;
+    }
+
+    setName(name: string): InboundUpdateParams {
+      this.name = name;
+      return this;
+    }
+
+    setDomainEnabled(domainEnabled: boolean): InboundUpdateParams {
+      this.domain_enabled = domainEnabled;
+      return this;
+    }
+
+    setInboundDomain(inboundDomain: string): InboundUpdateParams {
+      this.inbound_domain = inboundDomain;
+      return this;
+    }
+
+    setInboundPriority(inboundPriority: number): InboundUpdateParams {
+      this.inbound_priority = inboundPriority;
+      return this;
+    }
+
+    setForwards(forwards: InboundForward[]): InboundUpdateParams {
+      this.forwards = forwards;
+      return this;
+    }
+
+    setMatchFilter(matchFilter: MatchFilter): InboundUpdateParams {
+      this.match_filter = matchFilter;
+      return this;
+    }
+
+    setCatchFilter(catchFilter: CatchFilter): InboundUpdateParams {
+      this.catch_filter = catchFilter;
+      return this;
+    }
+}
+
 export interface InboundForward {
-    id?: string;
     type: 'webhook' | 'email';
     value: string;
-    secret?: string;
 }
 
 export enum InboundFilterType {

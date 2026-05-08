@@ -82,7 +82,6 @@ export enum EmailWebhookEventType {
   BULK_EMAIL_COMPLETED = "bulk_email.completed",
   RECIPIENT_ON_HOLD_ADDED = "recipient.on_hold_added",
   RECIPIENT_ON_HOLD_REMOVED = "recipient.on_hold_removed",
-  EMAIL_LIST_CREATED = "email_list.created",
 }
 
 export interface IEmailWebhook extends IEmailWebhookUpdate {
@@ -104,4 +103,5 @@ export interface IEmailWebhookUpdateParams {
   events?: EmailWebhookEventType[];
   enabled?: boolean;
   version?: number;
+  editable?: boolean;
 }
