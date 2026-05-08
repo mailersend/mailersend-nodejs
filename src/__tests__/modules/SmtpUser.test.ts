@@ -22,8 +22,20 @@ describe("SmtpUser Module", () => {
   });
 
   it("create", async () => {
-    nock("http://test.com").post("/domains/test_id/smtp-users").reply(201, { key1: "smtp_created" }, { header1: "test" });
+    nock("http://test.com")
+      .post("/domains/test_id/smtp-users", { name: "smtp_user_name" })
+      .reply(201, { key1: "smtp_created" }, { header1: "test" });
     const result = await smtpUserModule.create("test_id", { name: "smtp_user_name" });
+    expect(result.headers).toMatchObject({ header1: "test", "content-type": "application/json" });
+    expect(result.body).toMatchObject({ key1: "smtp_created" });
+    expect(result.statusCode).toBe(201);
+  });
+
+  it("create with enabled field", async () => {
+    nock("http://test.com")
+      .post("/domains/test_id/smtp-users", { name: "smtp_user_name", enabled: true })
+      .reply(201, { key1: "smtp_created" }, { header1: "test" });
+    const result = await smtpUserModule.create("test_id", { name: "smtp_user_name", enabled: true });
     expect(result.headers).toMatchObject({ header1: "test", "content-type": "application/json" });
     expect(result.body).toMatchObject({ key1: "smtp_created" });
     expect(result.statusCode).toBe(201);
@@ -37,11 +49,19 @@ describe("SmtpUser Module", () => {
     expect(result.statusCode).toBe(200);
   });
 
-  it("delete", async () => {
-    nock("http://test.com").delete("/domains/test_id/smtp-users/smtp_user_id").reply(200, { key1: "smtp_deleted" }, { header1: "test" });
-    const result = await smtpUserModule.delete("test_id", "smtp_user_id");
+  it("update with enabled field", async () => {
+    nock("http://test.com")
+      .put("/domains/test_id/smtp-users/smtp_user_id", { name: "new_name", enabled: false })
+      .reply(200, { key1: "smtp_updated" }, { header1: "test" });
+    const result = await smtpUserModule.update("test_id", "smtp_user_id", { name: "new_name", enabled: false });
     expect(result.headers).toMatchObject({ header1: "test", "content-type": "application/json" });
-    expect(result.body).toMatchObject({ key1: "smtp_deleted" });
+    expect(result.body).toMatchObject({ key1: "smtp_updated" });
     expect(result.statusCode).toBe(200);
+  });
+
+  it("delete", async () => {
+    nock("http://test.com").delete("/domains/test_id/smtp-users/smtp_user_id").reply(204);
+    const result = await smtpUserModule.delete("test_id", "smtp_user_id");
+    expect(result.statusCode).toBe(204);
   });
 });
