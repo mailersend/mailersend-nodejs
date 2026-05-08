@@ -1,5 +1,5 @@
 import nock from "nock";
-import { EmailVerification } from "../../models";
+import { EmailVerification, EmailVerificationResultType } from "../../models";
 import { EmailVerificationModule } from "../../modules/EmailVerification.module";
 
 describe("Email Verification Module", () => {
@@ -23,6 +23,19 @@ describe("Email Verification Module", () => {
         expect(createEmailVerificationList.headers).toMatchObject({ header1: "test", "content-type": "application/json" });
         expect(createEmailVerificationList.body).toMatchObject({ id: "dle1krod2jvn8gwm", name: "Example List" });
         expect(createEmailVerificationList.statusCode).toBe(200);
+    });
+
+    it("create with list_id and verify", async () => {
+        const emailVerification = new EmailVerification("List example", ["info@mailersend.com"])
+            .setListId("existing_list_id")
+            .setVerify(true);
+        nock("http://test.com")
+            .post("/email-verification", (body: any) =>
+                body.list_id === "existing_list_id" && body.verify === true
+            )
+            .reply(200, { id: "dle1krod2jvn8gwm" }, { header1: "test" });
+        const result = await emailVerificationModule.create(emailVerification);
+        expect(result.statusCode).toBe(200);
     });
 
     it("list", async () => {
@@ -66,6 +79,13 @@ describe("Email Verification Module", () => {
         expect(getListResult.headers).toMatchObject({ header1: "test", "content-type": "application/json" });
         expect(getListResult.body).toMatchObject({ key1: "key1_value" });
         expect(getListResult.statusCode).toBe(200);
+    });
+
+    it("get list result with results filter", async () => {
+        const params = { limit: 10, page: 1, results: [EmailVerificationResultType.CATCH_ALL, EmailVerificationResultType.DISPOSABLE] };
+        nock("http://test.com").get("/email-verification/test_id/results").query(params).reply(200, { key1: "key1_value" }, { header1: "test" });
+        const result = await emailVerificationModule.getListResult("test_id", params);
+        expect(result.statusCode).toBe(200);
     });
 
     it("verify email", async () => {
