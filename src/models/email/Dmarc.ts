@@ -15,16 +15,16 @@ export interface DmarcQueryParams extends Pagination {
 }
 
 export interface DmarcReportQueryParams extends Pagination {
-  date_from?: number;
-  date_to?: number;
+  date_from?: string;
+  date_to?: string;
   search?: string;
   category?: string;
   report_source?: string;
 }
 
 export interface DmarcReportSourcesQueryParams {
-  date_from: number;
-  date_to: number;
+  date_from: string;
+  date_to: string;
   status?: 'accepted' | 'rejected' | 'quarantined';
 }
 
