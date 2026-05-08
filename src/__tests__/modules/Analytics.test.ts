@@ -47,4 +47,32 @@ describe("Analytics Module", () => {
     expect(result.body).toMatchObject({ key1: "date_grouped_value" });
     expect(result.statusCode).toBe(200);
   });
+
+  it("byDate with tags and recipient_id", async () => {
+    const params = { ...baseParams, tags: ["tag1", "tag2"], recipient_id: ["rcpt_id_1"] };
+    nock("http://test.com").get("/analytics/date").query(params).reply(200, { key1: "date_value" }, { header1: "test" });
+    const result = await analyticsModule.byDate(params);
+    expect(result.statusCode).toBe(200);
+  });
+
+  it("byCountry with tags and recipient_id", async () => {
+    const params = { ...baseParams, tags: ["tag1"], recipient_id: ["rcpt_id_1"] };
+    nock("http://test.com").get("/analytics/country").query(params).reply(200, { key1: "country_value" }, { header1: "test" });
+    const result = await analyticsModule.byCountry(params);
+    expect(result.statusCode).toBe(200);
+  });
+
+  it("byUserAgent with tags and recipient_id", async () => {
+    const params = { ...baseParams, tags: ["tag1"], recipient_id: ["rcpt_id_1"] };
+    nock("http://test.com").get("/analytics/ua-name").query(params).reply(200, { key1: "ua_value" }, { header1: "test" });
+    const result = await analyticsModule.byUserAgent(params);
+    expect(result.statusCode).toBe(200);
+  });
+
+  it("byReadingEnvironment with tags and recipient_id", async () => {
+    const params = { ...baseParams, tags: ["tag1"], recipient_id: ["rcpt_id_1"] };
+    nock("http://test.com").get("/analytics/ua-type").query(params).reply(200, { key1: "ua_type_value" }, { header1: "test" });
+    const result = await analyticsModule.byReadingEnvironment(params);
+    expect(result.statusCode).toBe(200);
+  });
 });
