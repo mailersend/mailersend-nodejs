@@ -14,7 +14,9 @@ export interface BlockListQueryParams extends Pagination {
   domain_id?: string;
 }
 
-export interface OnHoldListQueryParams extends Pagination {}
+export interface OnHoldListQueryParams extends Pagination {
+  domain_id?: string;
+}
 
 export interface BlockListRecipients {
   domain_id?: string;
@@ -24,7 +26,7 @@ export interface BlockListRecipients {
 
 export interface BlockListRecipientsPost {
   domain_id: string;
-  recipients?: string[];
+  recipients: string[];
 }
 
 export enum BlockListType {

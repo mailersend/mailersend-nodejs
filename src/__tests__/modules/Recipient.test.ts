@@ -203,4 +203,83 @@ describe("Recipient Module", () => {
     const result = await recipientModule.delAllBlockListRecipients(BlockListType.ON_HOLD_LIST);
     expect(result.statusCode).toBe(204);
   });
+
+  describe("limit validation", () => {
+    test.each([
+      ["blocklist limit below minimum", 9],
+      ["blocklist limit above maximum", 101],
+    ])("%s", async (_label, limit) => {
+      await expect(recipientModule.blockList({ limit }, BlockListType.BLOCK_LIST)).rejects.toThrow("Limit must be between 10 and 100.");
+    });
+
+    test.each([
+      ["hard-bounces limit below minimum", 9],
+      ["hard-bounces limit above maximum", 101],
+    ])("%s", async (_label, limit) => {
+      await expect(recipientModule.blockList({ limit }, BlockListType.HARD_BOUNCES_LIST)).rejects.toThrow("Limit must be between 10 and 100.");
+    });
+
+    test.each([
+      ["spam-complaints limit below minimum", 9],
+      ["spam-complaints limit above maximum", 101],
+    ])("%s", async (_label, limit) => {
+      await expect(recipientModule.blockList({ limit }, BlockListType.SPAM_COMPLAINTS_LIST)).rejects.toThrow("Limit must be between 10 and 100.");
+    });
+
+    test.each([
+      ["unsubscribes limit below minimum", 9],
+      ["unsubscribes limit above maximum", 101],
+    ])("%s", async (_label, limit) => {
+      await expect(recipientModule.blockList({ limit }, BlockListType.UNSUBSCRIBES_LIST)).rejects.toThrow("Limit must be between 10 and 100.");
+    });
+
+    test.each([
+      ["on-hold-list limit below minimum", 9],
+      ["on-hold-list limit above maximum", 101],
+    ])("%s", async (_label, limit) => {
+      await expect(recipientModule.blockList({ limit }, BlockListType.ON_HOLD_LIST)).rejects.toThrow("Limit must be between 10 and 100.");
+    });
+  });
+
+  describe("blockRecipients blocklist — mutual requirement", () => {
+    it("throws when neither recipients nor patterns are provided", async () => {
+      await expect(recipientModule.blockRecipients({})).rejects.toThrow("Either recipients or patterns must be provided.");
+    });
+
+    it("throws when recipients is empty and patterns is absent", async () => {
+      await expect(recipientModule.blockRecipients({ recipients: [] })).rejects.toThrow("Either recipients or patterns must be provided.");
+    });
+
+    it("throws when patterns is empty and recipients is absent", async () => {
+      await expect(recipientModule.blockRecipients({ patterns: [] })).rejects.toThrow("Either recipients or patterns must be provided.");
+    });
+
+    it("succeeds with only recipients", async () => {
+      nock("http://test.com")
+        .post("/suppressions/blocklist", (body: any) => Array.isArray(body.recipients) && body.recipients[0] === "only@example.com")
+        .reply(200, { data: [] }, {});
+      const result = await recipientModule.blockRecipients({ recipients: ["only@example.com"] });
+      expect(result.statusCode).toBe(200);
+    });
+
+    it("succeeds with only patterns", async () => {
+      nock("http://test.com")
+        .post("/suppressions/blocklist", (body: any) => Array.isArray(body.patterns) && body.patterns[0] === ".*@example.com")
+        .reply(200, { data: [] }, {});
+      const result = await recipientModule.blockRecipients({ patterns: [".*@example.com"] });
+      expect(result.statusCode).toBe(200);
+    });
+  });
+
+  describe("blockRecipients — empty recipients validation", () => {
+    test.each([
+      ["hard-bounces", BlockListType.HARD_BOUNCES_LIST],
+      ["spam-complaints", BlockListType.SPAM_COMPLAINTS_LIST],
+      ["unsubscribes", BlockListType.UNSUBSCRIBES_LIST],
+    ])("throws when recipients is empty for %s", async (_label, type) => {
+      await expect(
+        recipientModule.blockRecipients({ domain_id: "test_domain_id", recipients: [] }, type as BlockListType.HARD_BOUNCES_LIST | BlockListType.SPAM_COMPLAINTS_LIST | BlockListType.UNSUBSCRIBES_LIST)
+      ).rejects.toThrow("Recipients must not be empty.");
+    });
+  });
 });
