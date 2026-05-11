@@ -4,6 +4,8 @@ import { EmailVerificationModule } from "./EmailVerification.module";
 import { SMSModule } from "./SMS.module";
 import { OthersModule } from "./Others.module";
 import { DmarcModule } from "./Dmarc.module";
+import { UserModule } from "./User.module";
+import { BlocklistMonitorModule } from "./BlocklistMonitor.module";
 
 export class MailerSend {
   private readonly apiKey: string;
@@ -14,6 +16,8 @@ export class MailerSend {
   emailVerification: EmailVerificationModule;
   others: OthersModule;
   dmarc: DmarcModule;
+  user: UserModule;
+  blocklistMonitor: BlocklistMonitorModule;
 
   constructor(config: MailerSendConfig) {
     this.apiKey = config.apiKey;
@@ -23,6 +27,8 @@ export class MailerSend {
     this.sms = new SMSModule(config.apiKey, this.baseUrl);
     this.others = new OthersModule(config.apiKey, this.baseUrl);
     this.dmarc = new DmarcModule(config.apiKey, this.baseUrl);
+    this.user = new UserModule(config.apiKey, this.baseUrl);
+    this.blocklistMonitor = new BlocklistMonitorModule(config.apiKey, this.baseUrl);
   }
 }
 

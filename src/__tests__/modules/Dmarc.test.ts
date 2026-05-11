@@ -1,4 +1,4 @@
-import * as nock from "nock";
+import nock from "nock";
 import { DmarcModule } from "../../modules/Dmarc.module";
 import { Dmarc } from "../../models";
 
@@ -11,6 +11,13 @@ describe("Dmarc Module", () => {
     const response = await dmarcModule.list(params);
     expect(response.headers).toMatchObject({ header1: "test", "content-type": "application/json" });
     expect(response.body).toMatchObject({ key1: "key1_value" });
+    expect(response.statusCode).toBe(200);
+  });
+
+  it("list with query and ordering", async () => {
+    const params = { query: "example.com", sort_by: "created_at" as const, order: "desc" as const };
+    nock("http://test.com").get("/dmarc-monitoring").query(params).reply(200, { key1: "key1_value" }, { header1: "test" });
+    const response = await dmarcModule.list(params);
     expect(response.statusCode).toBe(200);
   });
 
@@ -46,6 +53,13 @@ describe("Dmarc Module", () => {
     expect(response.statusCode).toBe(200);
   });
 
+  it("report with filters", async () => {
+    const params = { date_from: "2024-01-01", date_to: "2024-01-31", search: "192.0.2.1", category: "fail", report_source: "google.com" };
+    nock("http://test.com").get("/dmarc-monitoring/test_id/report").query(params).reply(200, { key1: "key1_value" }, { header1: "test" });
+    const response = await dmarcModule.report("test_id", params);
+    expect(response.statusCode).toBe(200);
+  });
+
   it("reportByIp", async () => {
     const params = { limit: 10, page: 1 };
     nock("http://test.com").get("/dmarc-monitoring/test_id/report/1.2.3.4").query(params).reply(200, { key1: "key1_value" }, { header1: "test" });
@@ -55,11 +69,26 @@ describe("Dmarc Module", () => {
     expect(response.statusCode).toBe(200);
   });
 
+  it("reportByIp with filters", async () => {
+    const params = { date_from: "2024-01-01", date_to: "2024-01-31", search: "test", category: "fail", report_source: "google.com" };
+    nock("http://test.com").get("/dmarc-monitoring/test_id/report/1.2.3.4").query(params).reply(200, { key1: "key1_value" }, { header1: "test" });
+    const response = await dmarcModule.reportByIp("test_id", "1.2.3.4", params);
+    expect(response.statusCode).toBe(200);
+  });
+
   it("reportSources", async () => {
-    nock("http://test.com").get("/dmarc-monitoring/test_id/report-sources").reply(200, { key1: "key1_value" }, { header1: "test" });
-    const response = await dmarcModule.reportSources("test_id");
+    const params = { date_from: "2024-01-01", date_to: "2024-01-31" };
+    nock("http://test.com").get("/dmarc-monitoring/test_id/report-sources").query(params).reply(200, { key1: "key1_value" }, { header1: "test" });
+    const response = await dmarcModule.reportSources("test_id", params);
     expect(response.headers).toMatchObject({ header1: "test", "content-type": "application/json" });
     expect(response.body).toMatchObject({ key1: "key1_value" });
+    expect(response.statusCode).toBe(200);
+  });
+
+  it("reportSources with status", async () => {
+    const params = { date_from: "2024-01-01", date_to: "2024-01-31", status: "rejected" as const };
+    nock("http://test.com").get("/dmarc-monitoring/test_id/report-sources").query(params).reply(200, { key1: "key1_value" }, { header1: "test" });
+    const response = await dmarcModule.reportSources("test_id", params);
     expect(response.statusCode).toBe(200);
   });
 
@@ -70,8 +99,8 @@ describe("Dmarc Module", () => {
   });
 
   it("removeFavorite", async () => {
-    nock("http://test.com").delete("/dmarc-monitoring/test_id/favorite/1.2.3.4").reply(200, {}, { header1: "test" });
+    nock("http://test.com").delete("/dmarc-monitoring/test_id/favorite/1.2.3.4").reply(204, {}, { header1: "test" });
     const response = await dmarcModule.removeFavorite("test_id", "1.2.3.4");
-    expect(response.statusCode).toBe(200);
+    expect(response.statusCode).toBe(204);
   });
 });

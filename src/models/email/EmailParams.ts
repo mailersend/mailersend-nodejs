@@ -4,20 +4,23 @@ import { Attachment } from "./Attachment";
 import { Personalization } from "../../modules/Email.module";
 
 export class EmailParams {
-  from: Sender;
+  from?: Sender;
   to: Recipient[];
   cc?: Recipient[];
   bcc?: Recipient[];
+  rcpt_to?: Recipient[];
   reply_to?: Recipient;
-  subject: string;
-  text: string;
-  html: string;
-  send_at: number;
+  subject?: string;
+  text?: string;
+  html?: string;
+  send_at?: number | string;
   attachments?: Attachment[];
   template_id?: string;
   in_reply_to?: string;
+  references?: string[];
   tags?: string[];
   personalization?: Personalization[];
+  headers?: EmailHeader[];
   settings?: EmailSettings;
   precedence_bulk?: boolean;
   list_unsubscribe?: string;
@@ -27,6 +30,7 @@ export class EmailParams {
     this.to = config?.to;
     this.cc = config?.cc;
     this.bcc = config?.bcc;
+    this.rcpt_to = config?.rcptTo;
     this.reply_to = config?.replyTo;
     this.in_reply_to = config?.inReplyTo;
     this.subject = config?.subject;
@@ -37,6 +41,9 @@ export class EmailParams {
     this.template_id = config?.templateId;
     this.tags = config?.tags;
     this.personalization = config?.personalization;
+    this.references = config?.references;
+    this.headers = config?.headers;
+    this.settings = config?.settings;
     this.precedence_bulk = config?.precedenceBulk;
     this.list_unsubscribe = config?.listUnsubscribe;
   }
@@ -58,6 +65,11 @@ export class EmailParams {
 
   setBcc(bcc: Recipient[]): EmailParams {
     this.bcc = bcc;
+    return this;
+  }
+
+  setRcptTo(rcptTo: Recipient[]): EmailParams {
+    this.rcpt_to = rcptTo;
     return this;
   }
 
@@ -86,7 +98,7 @@ export class EmailParams {
     return this;
   }
 
-  setSendAt(sendAt: number): EmailParams {
+  setSendAt(sendAt: number | string): EmailParams {
     this.send_at = sendAt;
     return this;
   }
@@ -121,6 +133,16 @@ export class EmailParams {
     return this;
   }
 
+  setReferences(references: string[]): EmailParams {
+    this.references = references;
+    return this;
+  }
+
+  setHeaders(headers: EmailHeader[]): EmailParams {
+    this.headers = headers;
+    return this;
+  }
+
   setListUnsubscribe(listUnsubscribe: string): EmailParams {
     this.list_unsubscribe = listUnsubscribe;
     return this;
@@ -131,4 +153,9 @@ export interface EmailSettings {
   track_clicks?: boolean;
   track_opens?: boolean;
   track_content?: boolean;
+}
+
+export interface EmailHeader {
+  name: string;
+  value: string;
 }

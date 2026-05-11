@@ -5,10 +5,7 @@ const mailerSend = new MailerSend({
   apiKey: process.env.API_KEY,
 });
 
-const inbound = new Inbound()
-  .setDomainId('domain_id')
-  .setName('inbound test 2')
-  .setDomainEnabled(false)
+const inbound = new Inbound('inbound test 2', false, 'domain_id')
   .setMatchFilter({
     type: InboundFilterType.MATCH_ALL,
   })

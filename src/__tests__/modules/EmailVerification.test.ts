@@ -1,5 +1,5 @@
-import * as nock from "nock";
-import { EmailVerification } from "../../models";
+import nock from "nock";
+import { EmailVerification, EmailVerificationResultType } from "../../models";
 import { EmailVerificationModule } from "../../modules/EmailVerification.module";
 
 describe("Email Verification Module", () => {
@@ -25,6 +25,19 @@ describe("Email Verification Module", () => {
         expect(createEmailVerificationList.statusCode).toBe(200);
     });
 
+    it("create with list_id and verify", async () => {
+        const emailVerification = new EmailVerification("List example", ["info@mailersend.com"])
+            .setListId("existing_list_id")
+            .setVerify(true);
+        nock("http://test.com")
+            .post("/email-verification", (body: any) =>
+                body.list_id === "existing_list_id" && body.verify === true
+            )
+            .reply(200, { id: "dle1krod2jvn8gwm" }, { header1: "test" });
+        const result = await emailVerificationModule.create(emailVerification);
+        expect(result.statusCode).toBe(200);
+    });
+
     it("list", async () => {
         const params = { limit: 20, page: 2};
         nock("http://test.com").get("/email-verification").query(params).reply(200, { key1: "key1_value" }, { header1: "test" });
@@ -37,6 +50,15 @@ describe("Email Verification Module", () => {
     it("single", async () => {
         nock("http://test.com").get("/email-verification/test_id").reply(200, { key1: "key1_value" }, { header1: "test" });
         const getEmailVerification = await emailVerificationModule.single("test_id");
+        expect(getEmailVerification.headers).toMatchObject({ header1: "test", "content-type": "application/json" });
+        expect(getEmailVerification.body).toMatchObject({ key1: "key1_value" });
+        expect(getEmailVerification.statusCode).toBe(200);
+    });
+
+    it("single with query params", async () => {
+        const params = { detailed: true, page: 1, limit: 10 };
+        nock("http://test.com").get("/email-verification/test_id").query(params).reply(200, { key1: "key1_value" }, { header1: "test" });
+        const getEmailVerification = await emailVerificationModule.single("test_id", params);
         expect(getEmailVerification.headers).toMatchObject({ header1: "test", "content-type": "application/json" });
         expect(getEmailVerification.body).toMatchObject({ key1: "key1_value" });
         expect(getEmailVerification.statusCode).toBe(200);
@@ -59,11 +81,34 @@ describe("Email Verification Module", () => {
         expect(getListResult.statusCode).toBe(200);
     });
 
+    it("get list result with results filter", async () => {
+        const params = { limit: 10, page: 1, results: [EmailVerificationResultType.CATCH_ALL, EmailVerificationResultType.DISPOSABLE] };
+        nock("http://test.com").get("/email-verification/test_id/results").query(params).reply(200, { key1: "key1_value" }, { header1: "test" });
+        const result = await emailVerificationModule.getListResult("test_id", params);
+        expect(result.statusCode).toBe(200);
+    });
+
     it("verify email", async () => {
         nock("http://test.com").post("/email-verification/verify").reply(200, { message: "valid" }, { header1: "test" });
         const verifyEmail = await emailVerificationModule.verifyEmail("email@email.com");
         expect(verifyEmail.headers).toMatchObject({ header1: "test", "content-type": "application/json" });
         expect(verifyEmail.body).toMatchObject({ message: "valid" });
         expect(verifyEmail.statusCode).toBe(200);
+    });
+
+    it("verify email async", async () => {
+        nock("http://test.com").post("/email-verification/verify-async").reply(200, { id: "async_job_id" }, { header1: "test" });
+        const result = await emailVerificationModule.verifyEmailAsync("email@email.com");
+        expect(result.headers).toMatchObject({ header1: "test", "content-type": "application/json" });
+        expect(result.body).toMatchObject({ id: "async_job_id" });
+        expect(result.statusCode).toBe(200);
+    });
+
+    it("get verify email async status", async () => {
+        nock("http://test.com").get("/email-verification/verify-async/async_job_id").reply(200, { status: "completed" }, { header1: "test" });
+        const result = await emailVerificationModule.getVerifyEmailAsyncStatus("async_job_id");
+        expect(result.headers).toMatchObject({ header1: "test", "content-type": "application/json" });
+        expect(result.body).toMatchObject({ status: "completed" });
+        expect(result.statusCode).toBe(200);
     });
 });

@@ -1,5 +1,5 @@
 import { RequestService, APIResponse } from "../../services/request.service";
-import { EmailWebhook, IEmailWebhookUpdate } from "../../models";
+import { EmailWebhook, IEmailWebhookUpdateParams } from "../../models";
 
 export class EmailWebhookModule extends RequestService {
     constructor(apiKey: string, baseUrl: string) {
@@ -10,15 +10,15 @@ export class EmailWebhookModule extends RequestService {
         return await this.post<EmailWebhook>("/webhooks", params);
     }
 
-    async list(domainId: string): Promise<APIResponse> {
-        return await this.get("/webhooks", { domain_id: domainId });
+    async list(domainId: string, queryParams?: { limit?: number; page?: number }): Promise<APIResponse> {
+        return await this.get("/webhooks", { domain_id: domainId, ...queryParams });
     }
 
     async single(webhookId: string): Promise<APIResponse> {
         return await this.get(`/webhooks/${webhookId}`);
     }
 
-    async update(webhookId: string, updates: Partial<IEmailWebhookUpdate>): Promise<APIResponse> {
+    async update(webhookId: string, updates: IEmailWebhookUpdateParams): Promise<APIResponse> {
         return await this.put(`/webhooks/${webhookId}`, updates);
     }
 
