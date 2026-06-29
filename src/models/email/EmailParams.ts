@@ -16,6 +16,7 @@ export class EmailParams {
   send_at?: number | string;
   attachments?: Attachment[];
   template_id?: string;
+  language?: string;
   in_reply_to?: string;
   references?: string[];
   tags?: string[];
@@ -39,6 +40,7 @@ export class EmailParams {
     this.send_at = config?.sendAt;
     this.attachments = config?.attachments;
     this.template_id = config?.templateId;
+    this.language = config?.language;
     this.tags = config?.tags;
     this.personalization = config?.personalization;
     this.references = config?.references;
@@ -110,6 +112,11 @@ export class EmailParams {
 
   setTemplateId(id: string): EmailParams {
     this.template_id = id;
+    return this;
+  }
+
+  setLanguage(language: string): EmailParams {
+    this.language = language;
     return this;
   }
 
