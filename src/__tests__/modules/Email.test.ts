@@ -125,6 +125,31 @@ describe("Email Module", () => {
     expect(result.statusCode).toBe(202);
   });
 
+  it("send email with language", async () => {
+    nock("http://test.com")
+      .post("/email", (body: any) => body.template_id === "tmpl_abc123" && body.language === "de")
+      .reply(202, {}, {});
+    const emailParams = new EmailParams()
+      .setTo([new Recipient("some_recipient@mail.com")])
+      .setTemplateId("tmpl_abc123")
+      .setLanguage("de");
+    const result = await emailModule.send(emailParams);
+    expect(result.statusCode).toBe(202);
+  });
+
+  it("send email omits language when not set", async () => {
+    nock("http://test.com")
+      .post("/email", (body: any) => !("language" in body))
+      .reply(202, {}, {});
+    const emailParams = new EmailParams()
+      .setFrom({ email: "some@email.com" })
+      .setTo([new Recipient("some_recipient@mail.com")])
+      .setSubject("Some subject")
+      .setText("Some text");
+    const result = await emailModule.send(emailParams);
+    expect(result.statusCode).toBe(202);
+  });
+
   it("send email with cc", async () => {
     const cc = [new Recipient("cc@example.com", "CC Person")];
     nock("http://test.com")
