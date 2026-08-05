@@ -27,6 +27,16 @@ describe("Activity Module", () => {
     expect(getActivities.statusCode).toBe(200);
   });
 
+  it("domain with suppressed event filter", async () => {
+    nock("http://test.com")
+      .get("/activity/test_id")
+      .query({ date_from: 1672531200, date_to: 1675209600, "event[0]": "suppressed" })
+      .reply(200, { data: [{ type: "suppressed", suppression_reason: "blocklisted" }] }, { header1: "test" });
+    const getActivities = await activityModule.domain("test_id", { date_from: 1672531200, date_to: 1675209600, event: [ActivityEventType.SUPPRESSED] });
+    expect(getActivities.body).toMatchObject({ data: [{ type: "suppressed", suppression_reason: "blocklisted" }] });
+    expect(getActivities.statusCode).toBe(200);
+  });
+
   it("single", async () => {
     nock("http://test.com").get("/activities/test_activity_id").reply(200, { key1: "activity_value" }, { header1: "test" });
     const result = await activityModule.single("test_activity_id");
