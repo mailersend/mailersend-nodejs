@@ -21,4 +21,5 @@ export enum ActivityEventType {
   SURVEY_OPENED = "survey_opened",
   SURVEY_SUBMITTED = "survey_submitted",
   DEFERRED = "deferred",
+  SUPPRESSED = "suppressed",
 }

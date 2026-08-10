@@ -877,7 +877,7 @@ const queryParams = {
   page: 2,
   date_from: 1443651141, // Unix timestamp
   date_to: 1443651141, // Unix timestamp
-  event: [ActivityEventType.SENT, ActivityEventType.SOFT_BOUNCED]
+  event: [ActivityEventType.SENT, ActivityEventType.SOFT_BOUNCED, ActivityEventType.SUPPRESSED]
 }
 
 mailerSend.email.activity.domain("domain_id", queryParams)
@@ -885,6 +885,8 @@ mailerSend.email.activity.domain("domain_id", queryParams)
   .catch((error) => console.log(error));
 
 ```
+
+Activities of type `suppressed` also include a `suppression_reason` field, one of `on_hold`, `hard_bounced`, `unsubscribed`, `spam_complained` or `blocklisted`. Requires the Starter plan or above.
 
 ### Get single activity
 
