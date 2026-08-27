@@ -7,6 +7,7 @@ export * from "./BlocklistMonitor";
 //Email Models
 export * from "./email/Attachment";
 export * from "./email/EmailParams";
+export * from "./email/Emails";
 export * from "./email/EmailWebhook";
 export * from "./email/Recipient";
 export * from "./email/Sender";

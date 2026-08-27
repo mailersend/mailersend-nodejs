@@ -1,4 +1,4 @@
-import { EmailParams } from "../models";
+import { EmailParams, EmailsQueryParams } from "../models";
 import { RequestService, APIResponse } from "../services/request.service";
 
 import { ActivityModule } from "./email/Activity.module";
@@ -52,6 +52,14 @@ export class EmailModule extends RequestService {
 
   async getBulkStatus(bulkId: string): Promise<APIResponse> {
     return await this.get(`/bulk-email/${bulkId}`);
+  }
+
+  async list(queryParams: EmailsQueryParams): Promise<APIResponse> {
+    return await this.get("/emails", queryParams);
+  }
+
+  async single(emailId: string): Promise<APIResponse> {
+    return await this.get(`/email/${emailId}`);
   }
 }
 
