@@ -6,6 +6,7 @@ import { OthersModule } from "./Others.module";
 import { DmarcModule } from "./Dmarc.module";
 import { UserModule } from "./User.module";
 import { BlocklistMonitorModule } from "./BlocklistMonitor.module";
+import { WhatsAppModule } from "./WhatsApp.module";
 
 export class MailerSend {
   private readonly apiKey: string;
@@ -18,6 +19,7 @@ export class MailerSend {
   dmarc: DmarcModule;
   user: UserModule;
   blocklistMonitor: BlocklistMonitorModule;
+  whatsapp: WhatsAppModule;
 
   constructor(config: MailerSendConfig) {
     this.apiKey = config.apiKey;
@@ -29,6 +31,7 @@ export class MailerSend {
     this.dmarc = new DmarcModule(config.apiKey, this.baseUrl);
     this.user = new UserModule(config.apiKey, this.baseUrl);
     this.blocklistMonitor = new BlocklistMonitorModule(config.apiKey, this.baseUrl);
+    this.whatsapp = new WhatsAppModule(config.apiKey, this.baseUrl);
   }
 }
 

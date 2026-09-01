@@ -114,6 +114,9 @@ For more info, you can:
     - [Verify a single email](#verify-a-single-email)
     - [Verify a single email asynchronously](#verify-a-single-email-asynchronously)
     - [Get async email verification status](#get-async-email-verification-status)
+  - [WhatsApp](#whatsapp)
+    - [Send a WhatsApp message](#send-a-whatsapp-message)
+    - [WhatsApp personalization](#whatsapp-personalization)
   - [SMS](#sms)
     - [Send SMS](#send-sms)
     - [SMS personalization](#sms-personalization)
@@ -2127,6 +2130,60 @@ mailerSend.emailVerification.getVerifyEmailAsyncStatus("verification_job_id")
 
 ```
 
+## WhatsApp
+
+### Send a WhatsApp message
+
+```js
+import 'dotenv/config';
+import { MailerSend, WhatsAppParams } from "mailersend";
+
+const mailersend = new MailerSend({
+  apiKey: process.env.API_KEY,
+});
+
+const whatsappParams = new WhatsAppParams()
+  .setFrom("12345678901")
+  .setTo(["19191234567"])
+  .setTemplateId("template_id_123");
+
+await mailersend.whatsapp.send(whatsappParams);
+
+```
+
+### WhatsApp personalization
+
+Values are positional: the first value of each array replaces `{{1}}` in that section of the template, the second replaces `{{2}}`, and so on. `setButtons()` takes the URL parameters appended to the template's URL buttons, not full URLs.
+
+```js
+import 'dotenv/config';
+import { MailerSend, WhatsAppParams, WhatsAppPersonalization } from "mailersend";
+
+const mailersend = new MailerSend({
+  apiKey: process.env.API_KEY,
+});
+
+const personalization = [
+  new WhatsAppPersonalization("19191234567")
+    .setHeader(["John"])
+    .setBody(["order #1234", "tomorrow"])
+    .setButtons(["track/1234"]),
+  new WhatsAppPersonalization("19199876543")
+    .setHeader(["Jane"])
+    .setBody(["order #5678", "Friday"])
+    .setButtons(["track/5678"]),
+];
+
+const whatsappParams = new WhatsAppParams()
+  .setFrom("12345678901")
+  .setTo(["19191234567", "19199876543"])
+  .setTemplateId("template_id_123")
+  .setPersonalization(personalization);
+
+await mailersend.whatsapp.send(whatsappParams);
+
+```
+
 ## SMS
 
 ### Send SMS
@@ -3241,7 +3298,7 @@ mailerSend.others.getApiQuota()
 
 ### Verify a webhook signature
 
-Use `MailerSendUtils.verifyWebHook()` to verify the HMAC signature on incoming webhook requests. This works for both email and SMS webhooks.
+Use `MailerSendUtils.verifyWebHook()` to verify the HMAC signature on incoming webhook requests. This works for email, SMS and WhatsApp webhooks.
 
 ```js
 import { MailerSendUtils } from "mailersend";
