@@ -1,6 +1,6 @@
 import { WhatsAppModule } from "../../modules/WhatsApp.module"
 import { WhatsAppParams, WhatsAppPersonalization } from "../../models"
-import * as nock from "nock"
+import nock from "nock"
 
 describe("WhatsApp Module", () => {
   const whatsappModule = new WhatsAppModule("test_key", "http://test.com")
@@ -27,7 +27,7 @@ describe("WhatsApp Module", () => {
       new WhatsAppPersonalization("19191234567")
         .setHeader(["John"])
         .setBody(["order #1234", "tomorrow"])
-        .setButtons(["https://example.com/track/1234"]),
+        .setButtons(["track/1234"]),
       new WhatsAppPersonalization("19199876543")
         .setHeader(["Jane"])
         .setBody(["order #5678", "Friday"]),
