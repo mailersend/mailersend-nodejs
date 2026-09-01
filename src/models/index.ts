@@ -1,6 +1,8 @@
 export * from "./Token";
 export * from "./EmailVerification";
 export * from "./Pagination";
+export * from "./User";
+export * from "./BlocklistMonitor";
 
 //Email Models
 export * from "./email/Attachment";
@@ -11,11 +13,13 @@ export * from "./email/Sender";
 export * from "./email/Activity";
 export * from "./email/Analytics";
 export * from "./email/Domain";
+export * from "./email/SmtpUser";
 export * from "./email/Inbound";
 export * from "./email/Message";
 export * from "./email/Schedule";
 export * from "./email/Template";
 export * from "./email/Identity";
+export * from "./email/Dmarc";
 
 //SMS Models
 export * from "./sms/Activity";

@@ -3,6 +3,9 @@ import { TokenModule } from "./Token.module";
 import { EmailVerificationModule } from "./EmailVerification.module";
 import { SMSModule } from "./SMS.module";
 import { OthersModule } from "./Others.module";
+import { DmarcModule } from "./Dmarc.module";
+import { UserModule } from "./User.module";
+import { BlocklistMonitorModule } from "./BlocklistMonitor.module";
 import { WhatsAppModule } from "./WhatsApp.module";
 
 export class MailerSend {
@@ -13,6 +16,9 @@ export class MailerSend {
   email: EmailModule;
   emailVerification: EmailVerificationModule;
   others: OthersModule;
+  dmarc: DmarcModule;
+  user: UserModule;
+  blocklistMonitor: BlocklistMonitorModule;
   whatsapp: WhatsAppModule;
 
   constructor(config: MailerSendConfig) {
@@ -22,6 +28,9 @@ export class MailerSend {
     this.emailVerification = new EmailVerificationModule(config.apiKey, this.baseUrl);
     this.sms = new SMSModule(config.apiKey, this.baseUrl);
     this.others = new OthersModule(config.apiKey, this.baseUrl);
+    this.dmarc = new DmarcModule(config.apiKey, this.baseUrl);
+    this.user = new UserModule(config.apiKey, this.baseUrl);
+    this.blocklistMonitor = new BlocklistMonitorModule(config.apiKey, this.baseUrl);
     this.whatsapp = new WhatsAppModule(config.apiKey, this.baseUrl);
   }
 }

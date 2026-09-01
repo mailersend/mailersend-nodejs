@@ -9,8 +9,4 @@ export class SmsActivityModule extends RequestService {
   async list(queryParams?: SmsActivityQueryParams): Promise<APIResponse> {
     return await this.get(`/sms-activity`, queryParams);
   }
-
-  async single(smsMessageId: string): Promise<APIResponse> {
-    return await this.get(`/sms-activity/${smsMessageId}`);
-  }
 }

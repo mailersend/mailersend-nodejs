@@ -1,5 +1,5 @@
 import { RequestService, APIResponse } from "../../services/request.service";
-import { Inbound, InboundQueryParams } from "../../models";
+import { Inbound, InboundUpdateParams, InboundQueryParams } from "../../models";
 
 export class InboundModule extends RequestService {
   constructor(apiKey: string, baseUrl: string) {
@@ -22,7 +22,7 @@ export class InboundModule extends RequestService {
     return await this.deleteReq(`/inbound/${inboundId}`);
   }
 
-  async update(inboundId: string, data: Inbound): Promise<APIResponse> {
+  async update(inboundId: string, data: InboundUpdateParams): Promise<APIResponse> {
     return await this.put(`/inbound/${inboundId}`, data);
   }
 }

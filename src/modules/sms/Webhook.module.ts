@@ -1,4 +1,4 @@
-import { SmsWebhook, SmsWebhookUpdate } from "../../models";
+import { SmsWebhook, SmsWebhookQueryParams, SmsWebhookUpdate } from "../../models";
 import { RequestService, APIResponse } from "../../services/request.service";
 
 export class SmsWebhookModule extends RequestService {
@@ -10,8 +10,8 @@ export class SmsWebhookModule extends RequestService {
     return await this.post<SmsWebhook>("/sms-webhooks", params);
   }
 
-  async list(smsNumberId: string): Promise<APIResponse> {
-    return await this.get("/sms-webhooks", { sms_number_id: smsNumberId });
+  async list(queryParams: SmsWebhookQueryParams): Promise<APIResponse> {
+    return await this.get("/sms-webhooks", queryParams);
   }
 
   async single(smsWebhookId: string): Promise<APIResponse> {

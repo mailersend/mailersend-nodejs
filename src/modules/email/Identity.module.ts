@@ -37,4 +37,8 @@ export class IdentityModule extends RequestService {
   async deleteByEmail(email: string): Promise<APIResponse> {
     return await this.deleteReq(`/identities/email/${email}`);
   }
+
+  async resend(identityId: string): Promise<APIResponse> {
+    return await this.post(`/identities/${identityId}/resend`, {});
+  }
 }

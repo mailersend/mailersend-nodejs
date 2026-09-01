@@ -1,6 +1,6 @@
 import { SMSModule } from "../../modules/SMS.module";
 import { SMSPersonalization, SMSParams } from "../../models";
-import * as nock from "nock";
+import nock from "nock";
 import { SmsActivityModule } from "../../modules/sms/Activity.module";
 import { SmsNumberModule } from "../../modules/sms/Number.module";
 import { SmsInboundModule } from "../../modules/sms/Inbound.module";
