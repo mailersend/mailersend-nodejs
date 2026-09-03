@@ -925,8 +925,8 @@ const queryParams = {
   domain_id: "domain_id",
   date_from: 1443651141, // Unix timestamp
   date_to: 1443661141, // Unix timestamp
-  page: 1, // Min: 1, Max: 1000, Default: 1
-  limit: 50, // Min: 10, Max: 100, Default: 25
+  page: 1, // Min: 1, Max: 100, Default: 1
+  limit: 50, // Min: 10, Max: 1000, Default: 25
   status: [EmailStatus.SENT, EmailStatus.DELIVERED],
   interaction: [EmailInteraction.OPENED]
 }
@@ -944,8 +944,8 @@ mailerSend.email.list(queryParams)
 | `domain_id`       | `string`                        | yes      | Must be a domain that belongs to your account. An unknown ID returns `404`.                                                      |
 | `date_from`       | `number \| string`              | yes      | Unix timestamp (`1443651141`) or datetime (`2015-10-01 00:00:00`), assumed `UTC`. Must be lower than `date_to` and within your plan's data retention limit (1–30 days). |
 | `date_to`         | `number \| string`              | yes      | Unix timestamp or datetime, assumed `UTC`. Must be higher than `date_from` and must not be in the future.                          |
-| `page`            | `number`                        | no       | Min: `1`, Max: `1000`, Default: `1`. See [Pagination](#emails-pagination).                                                        |
-| `limit`           | `number`                        | no       | Min: `10`, Max: `100`, Default: `25`.                                                                                            |
+| `page`            | `number`                        | no       | Min: `1`, Max: `100`, Default: `1`. See [Pagination](#emails-pagination).                                                         |
+| `limit`           | `number`                        | no       | Min: `10`, Max: `1000`, Default: `25`.                                                                                           |
 | `status`          | `EmailStatus[]`                 | no       | Any of `queued`, `sent`, `rejected`, `delivered`. Values are combined with `OR`.                                                  |
 | `interaction`     | `EmailInteraction[]`            | no       | Any of `opened`, `clicked`, `unsubscribed`, `complained`, `no_interaction`. Values are combined with `OR`.                         |
 | `recipient_email` | `string`                        | no       | Exact, case-insensitive match. An address with no emails returns `200` with an empty `data` array.                                 |

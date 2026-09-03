@@ -33,7 +33,7 @@ export type EmailRecordedInteraction = Exclude<EmailInteraction, EmailInteractio
 /**
  * Query parameters for `GET /v1/emails`.
  *
- * Inherits `page` (Min: 1, Max: 1000) and `limit` (Min: 10, Max: 100,
+ * Inherits `page` (Min: 1, Max: 100) and `limit` (Min: 10, Max: 1000,
  * Default: 25) from `Pagination`.
  */
 export interface EmailsQueryParams extends Pagination {
