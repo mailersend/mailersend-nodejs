@@ -55,6 +55,9 @@ For more info, you can:
   - [Activity](#activity)
     - [Get activity list](#get-activity-list)
     - [Get single activity](#get-single-activity)
+  - [Emails](#emails)
+    - [Get a list of emails](#get-a-list-of-emails)
+    - [Get a single email](#get-a-single-email)
   - [Analytics](#analytics)
     - [Get activity data by date](#get-activity-data-by-date)
     - [Opens by country](#opens-by-country)
@@ -904,6 +907,196 @@ const mailerSend = new MailerSend({
 mailerSend.email.activity.single("activity_id")
   .then((response) => console.log(response.body))
   .catch((error) => console.log(error.body));
+
+```
+
+## Emails
+
+An email is the record of a message delivered to one recipient. Unlike [activities](#activity), which return one row per *event*, these requests return one row per *email* with its current status and a summary of recipient interaction.
+
+### Get a list of emails
+
+```js
+import 'dotenv/config';
+import { MailerSend, EmailStatus, EmailInteraction } from "mailersend";
+
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
+});
+
+const queryParams = {
+  domain_id: "domain_id",
+  date_from: 1443651141, // Unix timestamp
+  date_to: 1443661141, // Unix timestamp
+  page: 1, // Min: 1, Max: 100, Default: 1
+  limit: 50, // Min: 10, Max: 1000, Default: 25
+  status: [EmailStatus.SENT, EmailStatus.DELIVERED],
+  interaction: [EmailInteraction.OPENED]
+}
+
+mailerSend.email.list(queryParams)
+  .then((response) => console.log(response.body))
+  .catch((error) => console.log(error.body));
+
+```
+
+`domain_id`, `date_from` and `date_to` are required — every query is bound to a single domain and a single time window. Emails are returned newest first.
+
+| Query parameter   | Type                            | Required | Details                                                                                                                          |
+|-------------------|---------------------------------|----------|----------------------------------------------------------------------------------------------------------------------------------|
+| `domain_id`       | `string`                        | yes      | Must be a domain that belongs to your account. An unknown ID returns `404`.                                                      |
+| `date_from`       | `number \| string`              | yes      | Unix timestamp (`1443651141`) or datetime (`2015-10-01 00:00:00`), assumed `UTC`. Must be lower than `date_to` and within your plan's data retention limit (1–30 days). |
+| `date_to`         | `number \| string`              | yes      | Unix timestamp or datetime, assumed `UTC`. Must be higher than `date_from` and must not be in the future.                          |
+| `page`            | `number`                        | no       | Min: `1`, Max: `100`, Default: `1`. See [Pagination](#emails-pagination).                                                         |
+| `limit`           | `number`                        | no       | Min: `10`, Max: `1000`, Default: `25`.                                                                                           |
+| `status`          | `EmailStatus[]`                 | no       | Any of `queued`, `sent`, `rejected`, `delivered`. Values are combined with `OR`.                                                  |
+| `interaction`     | `EmailInteraction[]`            | no       | Any of `opened`, `clicked`, `unsubscribed`, `complained`, `no_interaction`. Values are combined with `OR`.                         |
+| `recipient_email` | `string`                        | no       | Exact, case-insensitive match. An address with no emails returns `200` with an empty `data` array.                                 |
+| `message_id`      | `string`                        | no       | Alphanumeric. Exact match.                                                                                                       |
+| `template_id`     | `string`                        | no       | Exact match.                                                                                                                     |
+| `subject`         | `string`                        | no       | Min: `3` characters. Partial, case-insensitive match.                                                                            |
+| `tag`             | `string`                        | no       | Exact match against a value in the email's `tags` array.                                                                          |
+
+`status` and `interaction` must be arrays. The two filters are combined with `AND`, so the example above returns emails that are sent **or** delivered **and** that were opened. `EmailInteraction.NO_INTERACTION` matches emails with none of `opened`, `clicked`, `unsubscribed` or `complained` recorded — it is a filter value only and is never returned in a response.
+
+Requires a token with one of the `activity_read` or `activity_full` scopes. Requests are limited to 10 requests/minute, shared with [Get activity list](#get-activity-list) — requests to either endpoint count against the same per-account budget.
+
+<a name="emails-pagination"></a>
+
+#### Pagination
+
+This endpoint paginates with `page` and `limit`, exactly like [Get activity list](#get-activity-list), so `EmailsQueryParams` extends the shared `Pagination` type. To walk the result set, request the next page until `links.next` is `null`:
+
+```js
+import 'dotenv/config';
+import { MailerSend } from "mailersend";
+
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
+});
+
+const queryParams = {
+  domain_id: "domain_id",
+  date_from: 1443651141,
+  date_to: 1443661141,
+  limit: 100,
+};
+
+let page = 1;
+let hasMore = true;
+
+while (hasMore) {
+  const response = await mailerSend.email.list({ ...queryParams, page });
+
+  response.body.data.forEach((email) => console.log(email.id, email.status, email.subject));
+
+  hasMore = response.body.links.next !== null;
+  page++;
+}
+
+```
+
+Every request has to repeat `domain_id`, `date_from`, `date_to` and any filters alongside `page` — dropping one of them returns `422`. Keep `limit` the same across the whole walk, otherwise page boundaries shift underneath you.
+
+Notes on the response envelope:
+
+- `links.next` and `links.prev` are full URLs with all your query parameters preserved, or `null` at the first and last page.
+- `links.last` is **always** `null` — the API does not report a last page for this endpoint.
+- `meta` contains `current_page`, `current_page_url`, `from`, `path`, `per_page` and `to`. There is no `total` and no `last_page`, so check `links.next` rather than trying to compute the page count up front.
+
+A filter that matches nothing returns `200` with an empty `data` array, `links.next: null` and `meta.from`/`meta.to` set to `null`.
+
+#### Types
+
+`EmailListResponse` describes the response body, and `EmailsQueryParams` the query parameters:
+
+```ts
+import {
+  MailerSend,
+  EmailsQueryParams,
+  EmailListResponse,
+  EmailStatus,
+  EmailInteraction,
+} from "mailersend";
+
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY as string,
+});
+
+const queryParams: EmailsQueryParams = {
+  domain_id: "domain_id",
+  date_from: 1443651141,
+  date_to: 1443661141,
+  status: [EmailStatus.DELIVERED],
+  interaction: [EmailInteraction.CLICKED],
+};
+
+const response = await mailerSend.email.list(queryParams);
+const emails: EmailListResponse = response.body;
+
+```
+
+Each item in `data` is an `EmailListItem`, with `id`, `from`, `to`, `subject`, `text`, `html`, `template_id`, `domain_id`, `message_id`, `status`, `tags`, `interaction`, `suppression_reason`, `created_at`, `updated_at` and `headers`.
+
+- `text` and `html` are **always** `null` in list rows, whatever the email actually contained — the list query does not project the content columns. Use [Get a single email](#get-a-single-email) to read the body. They are typed `string | null` rather than `null` so one function can handle both a list row and a single email.
+- `tags`, `template_id` and `headers` are `null` when unused.
+- `headers` is an array of `{ name, value }` objects — the same `EmailHeader` type used when sending — not a flat object.
+- `interaction` is an empty array when there was no interaction, and never contains `no_interaction`.
+- `suppression_reason` is only set when `status` is `rejected`.
+- List rows carry no `recipient` and no `activity` — use [Get a single email](#get-a-single-email) for those.
+
+### Get a single email
+
+```js
+import 'dotenv/config';
+import { MailerSend } from "mailersend";
+
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
+});
+
+mailerSend.email.single("email_id")
+  .then((response) => console.log(response.body))
+  .catch((error) => console.log(error.body));
+
+```
+
+| URL parameter | Type     | Required | Details                                                    |
+|---------------|----------|----------|------------------------------------------------------------|
+| `email_id`    | `string` | yes      | The `id` of an email, as returned by [Get a list of emails](#get-a-list-of-emails). |
+
+Requires a token with one of the `email_full`, `activity_read` or `activity_full` scopes. An email that does not exist or belongs to another account returns `404`.
+
+The response carries the full email: `id`, `from`, `to`, `subject`, `text`, `html`, `template_id`, `domain_id`, `message_id`, `status`, `tags`, `interaction`, `suppression_reason`, `created_at`, `updated_at`, `recipient`, `headers` and `activity`. Unlike a list row, `text` and `html` hold the actual content here, and `recipient` and `activity` are present.
+
+Alongside the email's content, `data.activity` holds the activity events recorded for it:
+
+| Response key                         | Type       | Details                                                                                                     |
+|--------------------------------------|------------|-------------------------------------------------------------------------------------------------------------|
+| `data.activity[].id`                 | `string`   | ID of the event. Pass it to [Get single activity](#get-single-activity) for the full event.                   |
+| `data.activity[].type`               | `string`   | The event type.                                                                                             |
+| `data.activity[].created_at`         | `string`   |                                                                                                             |
+| `data.activity[].suppression_reason`  | `string`   | Only present on `suppressed` events. One of `on_hold`, `hard_bounced`, `unsubscribed`, `spam_complained`, `blocklisted`. |
+
+- Events are returned newest first and are capped at 200 events per email. There is no pagination on this array — use [Get activity list](#get-activity-list) if you need the complete event history for a domain.
+- The `junk` event type is reported as `soft_bounced`.
+- `deferred` and `suppressed` events are only included if your plan has those features enabled. They are available on the Starter plan and above.
+- `activity` is returned even when content tracking is disabled for the domain. In that case `html` and `text` are `null`, but the events are still present.
+- `template_id` is `null` when the email was not sent from a template.
+
+`EmailResponse` describes the response body, `Email` the email itself, and `EmailActivityEvent` an entry in `data.activity`:
+
+```ts
+import { MailerSend, EmailResponse } from "mailersend";
+
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY as string,
+});
+
+const response = await mailerSend.email.single("email_id");
+const email: EmailResponse = response.body;
+
+email.data.activity.forEach((event) => console.log(event.type, event.created_at));
 
 ```
 
