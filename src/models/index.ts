@@ -31,3 +31,7 @@ export * from "./sms/SMSParams";
 export * from "./sms/SMSPersonalization";
 export * from "./sms/Recipient";
 export * from "./sms/Webhook";
+
+//WhatsApp Models
+export * from "./whatsapp/WhatsAppParams";
+export * from "./whatsapp/WhatsAppPersonalization";
