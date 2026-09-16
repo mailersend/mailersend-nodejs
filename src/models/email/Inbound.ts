@@ -15,6 +15,7 @@ export class Inbound {
     forwards?: InboundForward[];
     match_filter?: MatchFilter; 
     catch_filter?: CatchFilter; 
+    exclude_attachments?: boolean;
 
     constructor(
         name: string,
@@ -27,6 +28,7 @@ export class Inbound {
         forwards?: InboundForward[],
         matchFilter?: MatchFilter,
         catchFilter?: CatchFilter,
+        excludeAttachments?: boolean,
     ) {
         this.name = name;
         this.domain_enabled = domainEnabled;
@@ -38,6 +40,7 @@ export class Inbound {
         this.forwards = forwards;
         this.match_filter = matchFilter;
         this.catch_filter = catchFilter;
+        this.exclude_attachments = excludeAttachments;
     }
 
     setDomainId(domainId: string): Inbound {
@@ -87,6 +90,11 @@ export class Inbound {
 
     setCatchFilter(catchFilter: CatchFilter): Inbound {
       this.catch_filter = catchFilter;
+      return this;
+    }
+
+    setExcludeAttachments(excludeAttachments: boolean): Inbound {
+      this.exclude_attachments = excludeAttachments;
       return this;
     }
 }
