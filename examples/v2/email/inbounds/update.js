@@ -1,11 +1,11 @@
 import 'dotenv/config';
-import { MailerSend, Inbound, InboundFilterType } from "mailersend";
+import { MailerSend, InboundUpdateParams, InboundFilterType } from "mailersend";
 
 const mailerSend = new MailerSend({
   apiKey: process.env.API_KEY,
 });
 
-const inbound = new Inbound('inbound test 2', false, 'domain_id')
+const inbound = new InboundUpdateParams('inbound test 2', false)
   .setMatchFilter({
     type: InboundFilterType.MATCH_ALL,
   })
