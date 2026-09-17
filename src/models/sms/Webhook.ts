@@ -1,3 +1,9 @@
+export interface SmsWebhookQueryParams {
+    sms_number_id: string;
+    page?: number;
+    limit?: number;
+}
+
 export class SmsWebhook {
     url: string;
     name: string;

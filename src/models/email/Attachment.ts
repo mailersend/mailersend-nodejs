@@ -1,10 +1,10 @@
 export class Attachment {
   content: string;
   filename: string;
-  disposition: string;
+  disposition: 'inline' | 'attachment';
   id?: string;
 
-  constructor(content: string, fileName: string, disposition: string = "attachment", id?: string) {
+  constructor(content: string, fileName: string, disposition: 'inline' | 'attachment' = "attachment", id?: string) {
     this.content = content;
     this.filename = fileName;
     this.disposition = disposition;

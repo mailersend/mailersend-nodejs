@@ -1,4 +1,4 @@
-import { EmailParams } from "../models";
+import { EmailParams, EmailsQueryParams } from "../models";
 import { RequestService, APIResponse } from "../services/request.service";
 
 import { ActivityModule } from "./email/Activity.module";
@@ -11,6 +11,7 @@ import { RecipientModule } from "./email/Recipient.module";
 import { TemplateModule } from "./email/Template.module";
 import { EmailWebhookModule } from "./email/Webhook.module";
 import { IdentityModule } from "./email/Identity.module";
+import { SmtpUserModule } from "./email/SmtpUser.module";
 
 export class EmailModule extends RequestService {
   activity: ActivityModule;
@@ -23,6 +24,7 @@ export class EmailModule extends RequestService {
   template: TemplateModule;
   webhook: EmailWebhookModule;
   identity: IdentityModule;
+  smtpUser: SmtpUserModule;
 
   constructor(apiKey: string, baseUrl: string) {
     super(apiKey, baseUrl);
@@ -37,6 +39,7 @@ export class EmailModule extends RequestService {
     this.template = new TemplateModule(apiKey, baseUrl);
     this.webhook = new EmailWebhookModule(apiKey, baseUrl);
     this.identity = new IdentityModule(apiKey, baseUrl);
+    this.smtpUser = new SmtpUserModule(apiKey, baseUrl);
   }
 
   async send(params: EmailParams): Promise<APIResponse> {
@@ -49,6 +52,14 @@ export class EmailModule extends RequestService {
 
   async getBulkStatus(bulkId: string): Promise<APIResponse> {
     return await this.get(`/bulk-email/${bulkId}`);
+  }
+
+  async list(queryParams: EmailsQueryParams): Promise<APIResponse> {
+    return await this.get("/emails", queryParams);
+  }
+
+  async single(emailId: string): Promise<APIResponse> {
+    return await this.get(`/email/${emailId}`);
   }
 }
 

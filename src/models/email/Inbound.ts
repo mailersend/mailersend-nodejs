@@ -6,24 +6,22 @@ export interface InboundQueryParams extends Pagination {
 
 export class Inbound {
     name: string;
-    domain_enabled: boolean; 
-    domain_id?: string; 
-    inbound_domain?: string; 
-    inbound_address?: string; 
-    inbound_subdomain?: string; 
+    domain_enabled: boolean;
+    domain_id: string;
+    inbound_domain?: string;
     inbound_priority?: number;
+    catch_type?: 'all' | 'one';
+    match_type?: 'all' | 'one';
     forwards?: InboundForward[];
-    match_filter?: MatchFilter; 
-    catch_filter?: CatchFilter; 
+    match_filter?: MatchFilter;
+    catch_filter?: CatchFilter;
     exclude_attachments?: boolean;
 
     constructor(
         name: string,
         domainEnabled: boolean,
-        domainId?: string,
+        domainId: string,
         inboundDomain?: string,
-        inboundAddress?: string,
-        inboundSubdomain?: string,
         inboundPriority?: number,
         forwards?: InboundForward[],
         matchFilter?: MatchFilter,
@@ -34,8 +32,6 @@ export class Inbound {
         this.domain_enabled = domainEnabled;
         this.domain_id = domainId;
         this.inbound_domain = inboundDomain;
-        this.inbound_address = inboundAddress;
-        this.inbound_subdomain = inboundSubdomain;
         this.inbound_priority = inboundPriority;
         this.forwards = forwards;
         this.match_filter = matchFilter;
@@ -63,18 +59,8 @@ export class Inbound {
       return this;
     }
 
-    setInboundSubDomain(inboundSubdomain: string): Inbound {
-      this.inbound_subdomain = inboundSubdomain;
-      return this;
-    }
-
     setInboundPriority(inboundPriority: number): Inbound {
       this.inbound_priority = inboundPriority;
-      return this;
-    }
-
-    setInboundAddress(inboundAddress: string): Inbound {
-      this.inbound_address = inboundAddress;
       return this;
     }
 
@@ -99,6 +85,79 @@ export class Inbound {
     }
 }
 
+export class InboundUpdateParams {
+    name: string;
+    domain_enabled: boolean;
+    inbound_domain?: string;
+    inbound_priority?: number;
+    catch_type?: 'all' | 'one';
+    match_type?: 'all' | 'one';
+    forwards?: InboundForward[];
+    match_filter?: MatchFilter;
+    catch_filter?: CatchFilter;
+    exclude_attachments?: boolean;
+
+    constructor(
+        name: string,
+        domainEnabled: boolean,
+        inboundDomain?: string,
+        inboundPriority?: number,
+        forwards?: InboundForward[],
+        matchFilter?: MatchFilter,
+        catchFilter?: CatchFilter,
+        excludeAttachments?: boolean,
+    ) {
+        this.name = name;
+        this.domain_enabled = domainEnabled;
+        this.inbound_domain = inboundDomain;
+        this.inbound_priority = inboundPriority;
+        this.forwards = forwards;
+        this.match_filter = matchFilter;
+        this.catch_filter = catchFilter;
+        this.exclude_attachments = excludeAttachments;
+    }
+
+    setName(name: string): InboundUpdateParams {
+      this.name = name;
+      return this;
+    }
+
+    setDomainEnabled(domainEnabled: boolean): InboundUpdateParams {
+      this.domain_enabled = domainEnabled;
+      return this;
+    }
+
+    setInboundDomain(inboundDomain: string): InboundUpdateParams {
+      this.inbound_domain = inboundDomain;
+      return this;
+    }
+
+    setInboundPriority(inboundPriority: number): InboundUpdateParams {
+      this.inbound_priority = inboundPriority;
+      return this;
+    }
+
+    setForwards(forwards: InboundForward[]): InboundUpdateParams {
+      this.forwards = forwards;
+      return this;
+    }
+
+    setMatchFilter(matchFilter: MatchFilter): InboundUpdateParams {
+      this.match_filter = matchFilter;
+      return this;
+    }
+
+    setCatchFilter(catchFilter: CatchFilter): InboundUpdateParams {
+      this.catch_filter = catchFilter;
+      return this;
+    }
+
+    setExcludeAttachments(excludeAttachments: boolean): InboundUpdateParams {
+      this.exclude_attachments = excludeAttachments;
+      return this;
+    }
+}
+
 export interface InboundForward {
     type: 'webhook' | 'email';
     value: string;
@@ -115,7 +174,7 @@ export enum InboundFilterType {
 
 export enum ComparerType {
     EQUAL = 'equal',
-    NOT_EQUQL = 'not-equal',
+    NOT_EQUAL = 'not-equal',
     CONTAINS = 'contains',
     NOT_CONTAINS = 'not-contains',
     STARTS_WITH = 'starts-with',

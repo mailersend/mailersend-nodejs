@@ -32,9 +32,12 @@ export interface DomainSettings {
   track_unsubscribe?: boolean;
   track_unsubscribe_html?: string;
   track_unsubscribe_plain?: string;
+  track_unsubscribe_html_enabled?: boolean;
+  track_unsubscribe_plain_enabled?: boolean;
   track_content?: boolean;
   custom_tracking_enabled?: boolean;
   custom_tracking_subdomain?: string;
   precedence_bulk?: boolean;
   ignore_duplicated_recipients?: boolean;
 }
+

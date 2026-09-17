@@ -12,4 +12,5 @@ export enum SmsActivityStatusType {
   SENT = "sent",
   DELIVERED = "delivered",
   FAILED = "failed",
+  PROCESSED = "processed",
 }
