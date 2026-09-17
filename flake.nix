@@ -1,5 +1,5 @@
 {
-  description = "MailerLite Go SDK environment";
+  description = "MailerSend NodeJS SDK environment";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
