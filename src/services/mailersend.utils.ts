@@ -17,6 +17,13 @@ export class MailerSendUtils {
     const rawData = rawBody.toString("utf8");
     const hmacSignature = createHmac("sha256", signingSecret).update(rawData, "utf8").digest("hex");
 
-    return timingSafeEqual(Buffer.from(signature), Buffer.from(hmacSignature));
+    const signatureBuffer = Buffer.from(signature);
+    const hmacBuffer = Buffer.from(hmacSignature);
+
+    if (signatureBuffer.length !== hmacBuffer.length) {
+      return false;
+    }
+
+    return timingSafeEqual(signatureBuffer, hmacBuffer);
   }
 }

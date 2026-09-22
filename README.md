@@ -3493,15 +3493,32 @@ mailerSend.others.getApiQuota()
 
 Use `MailerSendUtils.verifyWebHook()` to verify the HMAC signature on incoming webhook requests. This works for email, SMS and WhatsApp webhooks.
 
+It returns `false` when the signature does not match the payload, and throws when one of its
+arguments is missing — including when the `x-mailersend-signature` header is absent, which is
+usually a sign that the route or the signing secret is misconfigured. Wrap the call so that a
+request without a valid signature is rejected instead of crashing the handler.
+
 ```js
 import { MailerSendUtils } from "mailersend";
 
-// rawBody must be the raw Buffer from the request (do not parse it as JSON first)
-const isValid = MailerSendUtils.verifyWebHook(
-  rawBody,
-  request.headers['x-mailersend-signature'],
-  process.env.WEBHOOK_SIGNING_SECRET
-);
+try {
+  // rawBody must be the raw Buffer from the request (do not parse it as JSON first)
+  const isValid = MailerSendUtils.verifyWebHook(
+    rawBody,
+    request.headers['x-mailersend-signature'],
+    process.env.WEBHOOK_SIGNING_SECRET
+  );
+
+  if (!isValid) {
+    return response.status(401).send("Invalid signature");
+  }
+
+  // handle the webhook payload
+} catch (error) {
+  // the raw body, the signature header or the signing secret was missing
+  console.error("Could not verify webhook signature:", error.message);
+  return response.status(401).send("Invalid signature");
+}
 ```
 
 # Support and Feedback
