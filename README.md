@@ -788,6 +788,8 @@ mailerSend.email.inbound.single("inbound_id")
 
 ### Add an inbound route
 
+Call `setIncludeAttachments(false)` to drop attachments before the message is forwarded. It defaults to `true`. Inline (CID) parts count as attachments, so images embedded in an HTML body are dropped too.
+
 ```js
 import 'dotenv/config';
 import { MailerSend, Inbound, InboundFilterType } from "mailersend";
@@ -810,7 +812,8 @@ const inbound = new Inbound('inbound test', true, 'domain_id')
       type: "webhook",
       value: "https://www.yourdomain.com/hook"
     }
-  ]);
+  ])
+  .setIncludeAttachments(false);
 
 mailerSend.email.inbound.create(inbound)
   .then((response) => console.log(response.body))
@@ -819,6 +822,8 @@ mailerSend.email.inbound.create(inbound)
 ```
 
 ### Update an inbound route
+
+Leaving `setIncludeAttachments()` unset keeps the route's stored value; the API does not reset it to `true`. Pass `false` explicitly to drop attachments.
 
 ```js
 import 'dotenv/config';
@@ -842,7 +847,8 @@ const inbound = new InboundUpdateParams('inbound test 2', false)
       type: "webhook",
       value: "https://www.yourdomain.com/hook"
     }
-  ]);
+  ])
+  .setIncludeAttachments(true);
 
 mailerSend.email.inbound.update('inbound_id', inbound)
   .then((response) => console.log(response.body))

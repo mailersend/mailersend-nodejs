@@ -15,7 +15,8 @@ const inbound = new Inbound('inbound test', true, 'domain_id')
       type: "webhook",
       value: "https://www.yourdomain.com/hook"
     }
-  ]);
+  ])
+  .setIncludeAttachments(false);
 
 mailerSend.email.inbound.create(inbound)
   .then((response) => console.log(response.body))

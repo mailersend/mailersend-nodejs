@@ -15,6 +15,7 @@ export class Inbound {
     forwards?: InboundForward[];
     match_filter?: MatchFilter;
     catch_filter?: CatchFilter;
+    include_attachments?: boolean;
 
     constructor(
         name: string,
@@ -25,6 +26,7 @@ export class Inbound {
         forwards?: InboundForward[],
         matchFilter?: MatchFilter,
         catchFilter?: CatchFilter,
+        includeAttachments?: boolean,
     ) {
         this.name = name;
         this.domain_enabled = domainEnabled;
@@ -34,6 +36,7 @@ export class Inbound {
         this.forwards = forwards;
         this.match_filter = matchFilter;
         this.catch_filter = catchFilter;
+        this.include_attachments = includeAttachments;
     }
 
     setDomainId(domainId: string): Inbound {
@@ -75,6 +78,11 @@ export class Inbound {
       this.catch_filter = catchFilter;
       return this;
     }
+
+    setIncludeAttachments(includeAttachments: boolean): Inbound {
+      this.include_attachments = includeAttachments;
+      return this;
+    }
 }
 
 export class InboundUpdateParams {
@@ -87,6 +95,7 @@ export class InboundUpdateParams {
     forwards?: InboundForward[];
     match_filter?: MatchFilter;
     catch_filter?: CatchFilter;
+    include_attachments?: boolean;
 
     constructor(
         name: string,
@@ -96,6 +105,7 @@ export class InboundUpdateParams {
         forwards?: InboundForward[],
         matchFilter?: MatchFilter,
         catchFilter?: CatchFilter,
+        includeAttachments?: boolean,
     ) {
         this.name = name;
         this.domain_enabled = domainEnabled;
@@ -104,6 +114,7 @@ export class InboundUpdateParams {
         this.forwards = forwards;
         this.match_filter = matchFilter;
         this.catch_filter = catchFilter;
+        this.include_attachments = includeAttachments;
     }
 
     setName(name: string): InboundUpdateParams {
@@ -138,6 +149,11 @@ export class InboundUpdateParams {
 
     setCatchFilter(catchFilter: CatchFilter): InboundUpdateParams {
       this.catch_filter = catchFilter;
+      return this;
+    }
+
+    setIncludeAttachments(includeAttachments: boolean): InboundUpdateParams {
+      this.include_attachments = includeAttachments;
       return this;
     }
 }
