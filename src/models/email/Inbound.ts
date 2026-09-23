@@ -15,7 +15,7 @@ export class Inbound {
     forwards?: InboundForward[];
     match_filter?: MatchFilter;
     catch_filter?: CatchFilter;
-    exclude_attachments?: boolean;
+    include_attachments?: boolean;
 
     constructor(
         name: string,
@@ -26,7 +26,7 @@ export class Inbound {
         forwards?: InboundForward[],
         matchFilter?: MatchFilter,
         catchFilter?: CatchFilter,
-        excludeAttachments?: boolean,
+        includeAttachments?: boolean,
     ) {
         this.name = name;
         this.domain_enabled = domainEnabled;
@@ -36,7 +36,7 @@ export class Inbound {
         this.forwards = forwards;
         this.match_filter = matchFilter;
         this.catch_filter = catchFilter;
-        this.exclude_attachments = excludeAttachments;
+        this.include_attachments = includeAttachments;
     }
 
     setDomainId(domainId: string): Inbound {
@@ -79,8 +79,8 @@ export class Inbound {
       return this;
     }
 
-    setExcludeAttachments(excludeAttachments: boolean): Inbound {
-      this.exclude_attachments = excludeAttachments;
+    setIncludeAttachments(includeAttachments: boolean): Inbound {
+      this.include_attachments = includeAttachments;
       return this;
     }
 }
@@ -95,7 +95,7 @@ export class InboundUpdateParams {
     forwards?: InboundForward[];
     match_filter?: MatchFilter;
     catch_filter?: CatchFilter;
-    exclude_attachments?: boolean;
+    include_attachments?: boolean;
 
     constructor(
         name: string,
@@ -105,7 +105,7 @@ export class InboundUpdateParams {
         forwards?: InboundForward[],
         matchFilter?: MatchFilter,
         catchFilter?: CatchFilter,
-        excludeAttachments?: boolean,
+        includeAttachments?: boolean,
     ) {
         this.name = name;
         this.domain_enabled = domainEnabled;
@@ -114,7 +114,7 @@ export class InboundUpdateParams {
         this.forwards = forwards;
         this.match_filter = matchFilter;
         this.catch_filter = catchFilter;
-        this.exclude_attachments = excludeAttachments;
+        this.include_attachments = includeAttachments;
     }
 
     setName(name: string): InboundUpdateParams {
@@ -152,8 +152,8 @@ export class InboundUpdateParams {
       return this;
     }
 
-    setExcludeAttachments(excludeAttachments: boolean): InboundUpdateParams {
-      this.exclude_attachments = excludeAttachments;
+    setIncludeAttachments(includeAttachments: boolean): InboundUpdateParams {
+      this.include_attachments = includeAttachments;
       return this;
     }
 }

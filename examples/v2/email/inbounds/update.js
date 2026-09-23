@@ -15,7 +15,7 @@ const inbound = new InboundUpdateParams('inbound test 2', false)
       value: "https://www.yourdomain.com/hook"
     }
   ])
-  .setExcludeAttachments(false);
+  .setIncludeAttachments(true);
 
 mailerSend.email.inbound.update('inbound_id', inbound)
   .then((response) => console.log(response.body))
