@@ -35,3 +35,7 @@ export * from "./sms/Webhook";
 //WhatsApp Models
 export * from "./whatsapp/WhatsAppParams";
 export * from "./whatsapp/WhatsAppPersonalization";
+export * from "./whatsapp/Pagination";
+export * from "./whatsapp/Message";
+export * from "./whatsapp/InboundMessage";
+export * from "./whatsapp/Recipient";
