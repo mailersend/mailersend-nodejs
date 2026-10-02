@@ -120,6 +120,15 @@ For more info, you can:
   - [WhatsApp](#whatsapp)
     - [Send a WhatsApp message](#send-a-whatsapp-message)
     - [WhatsApp personalization](#whatsapp-personalization)
+  - [WhatsApp messages API](#whatsapp-messages-api)
+    - [Get a list of WhatsApp messages](#get-a-list-of-whatsapp-messages)
+    - [Get a WhatsApp message](#get-a-whatsapp-message)
+  - [WhatsApp inbound messages API](#whatsapp-inbound-messages-api)
+    - [Get a list of WhatsApp inbound messages](#get-a-list-of-whatsapp-inbound-messages)
+    - [Get a WhatsApp inbound message](#get-a-whatsapp-inbound-message)
+  - [WhatsApp recipients API](#whatsapp-recipients-api)
+    - [Get a list of WhatsApp recipients](#get-a-list-of-whatsapp-recipients)
+    - [Get a WhatsApp recipient](#get-a-whatsapp-recipient)
   - [SMS](#sms)
     - [Send SMS](#send-sms)
     - [SMS personalization](#sms-personalization)
@@ -2382,6 +2391,192 @@ const whatsappParams = new WhatsAppParams()
 await mailersend.whatsapp.send(whatsappParams);
 
 ```
+
+## WhatsApp messages API
+
+A WhatsApp message is the resource created by a single [send request](#send-a-whatsapp-message). Requires a token with one of the `whatsapp_read` or `whatsapp_full` scopes. Messages are kept for 7 days: an older message is no longer listed, and requesting it returns `404`.
+
+### Get a list of WhatsApp messages
+
+```js
+import 'dotenv/config';
+import { MailerSend } from "mailersend";
+
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
+});
+
+mailerSend.whatsapp.message.list({
+  limit: 25, // Min: 10, Max: 100, Default: 25
+  page: 1 // Min: 1
+})
+  .then((response) => console.log(response.body))
+  .catch((error) => console.log(error.body));
+
+```
+
+Messages are returned newest first. `WhatsAppMessageListResponse` describes the response body, and each item in `data` is a `WhatsAppMessageListItem` with `id`, `from`, `to`, `whatsapp_account_id`, `template_id` and `created_at`. `from` is `null` for a sender connected with a Meta virtual number.
+
+### Get a WhatsApp message
+
+```js
+import 'dotenv/config';
+import { MailerSend } from "mailersend";
+
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
+});
+
+mailerSend.whatsapp.message.single("message_id")
+  .then((response) => console.log(response.body))
+  .catch((error) => console.log(error.body));
+
+```
+
+`WhatsAppMessageResponse` describes the response body. The message has the same fields as a list item, plus `recipients`: one `WhatsAppMessageRecipient` per recipient with `id`, `to`, `status` (`queued`, `sent`, `delivered`, `read` or `failed`), `error_code`, `error_message` and `activity`, every status the recipient's message moved through, oldest first.
+
+```ts
+import { MailerSend, WhatsAppMessageResponse } from "mailersend";
+
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY as string,
+});
+
+const response = await mailerSend.whatsapp.message.single("message_id");
+const message: WhatsAppMessageResponse = response.body;
+
+message.data.recipients.forEach((recipient) => console.log(recipient.to, recipient.status));
+
+```
+
+## WhatsApp inbound messages API
+
+Inbound messages are the messages people send to your WhatsApp phone numbers. Requires a token with one of the `whatsapp_read` or `whatsapp_full` scopes. Inbound messages are kept for your plan's inbound retention period: an older message is no longer listed, and requesting it returns `404`.
+
+### Get a list of WhatsApp inbound messages
+
+```js
+import 'dotenv/config';
+import { MailerSend } from "mailersend";
+
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
+});
+
+mailerSend.whatsapp.inboundMessage.list({
+  whatsapp_account_id: "whatsapp_account_id",
+  type: ["text", "image"],
+  date_from: 1790000000, // Unix timestamp or ISO 8601 datetime
+  date_to: 1790086400, // Unix timestamp or ISO 8601 datetime
+  limit: 25, // Min: 10, Max: 100, Default: 25
+  page: 1, // Min: 1
+})
+  .then((response) => console.log(response.body))
+  .catch((error) => console.log(error.body));
+
+```
+
+| Query parameter       | Type                           | Required | Details                                                                                                                                                        |
+|-----------------------|--------------------------------|----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `whatsapp_account_id` | `string`                       | no       | The MailerSend sender ID of the phone number that received the messages. Must be one of your WhatsApp phone numbers.                                             |
+| `type`                | `WhatsAppInboundMessageType[]` | no       | Any of `text`, `image`, `audio`, `video`, `document`, `sticker`, `location`, `contacts`, `interactive`, `button`, `order`, `reaction`, `system`, `unknown`, `unsupported`. Values are combined with `OR`. |
+| `date_from`           | `number \| string`             | no       | Unix timestamp or ISO 8601 datetime that includes a time, assumed `UTC`. Exclusive. Must be lower than `date_to`.                                               |
+| `date_to`             | `number \| string`             | no       | Unix timestamp or ISO 8601 datetime that includes a time, assumed `UTC`. Exclusive. Must be higher than `date_from`.                                            |
+| `page`                | `number`                       | no       | Min: `1`.                                                                                                                                                      |
+| `limit`               | `number`                       | no       | Min: `10`, Max: `100`, Default: `25`.                                                                                                                          |
+
+Inbound messages are returned newest first. `WhatsAppInboundMessageListResponse` describes the response body, and each item in `data` is a `WhatsAppInboundMessage` with `id`, `whatsapp_account_id`, `from`, `to`, `type`, `received_at`, `context` when the message is a reply, and exactly one content field determined by `type`:
+
+| `type`                                           | Content field                 |
+|--------------------------------------------------|-------------------------------|
+| `text`                                           | `text`                        |
+| `image`, `audio`, `video`, `document`, `sticker` | `attachment`                  |
+| `location`                                       | `location`                    |
+| `contacts`                                       | `contacts`                    |
+| `reaction`                                       | `reaction`                    |
+| `button`                                         | `button`                      |
+| `interactive`                                    | `list_reply` or `interactive` |
+| `order`, `system`, `unknown`, `unsupported`      | matching the type             |
+
+`attachment.url` is a temporary signed URL, and is `null` once the file is no longer stored. Inbound media is kept for 1 day, so download the file as soon as you can if you need to keep it.
+
+### Get a WhatsApp inbound message
+
+```js
+import 'dotenv/config';
+import { MailerSend } from "mailersend";
+
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
+});
+
+mailerSend.whatsapp.inboundMessage.single("inbound_message_id")
+  .then((response) => console.log(response.body))
+  .catch((error) => console.log(error.body));
+
+```
+
+`WhatsAppInboundMessageResponse` describes the response body. The inbound message has the same fields as a list item.
+
+```ts
+import { MailerSend, WhatsAppInboundMessageResponse } from "mailersend";
+
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY as string,
+});
+
+const response = await mailerSend.whatsapp.inboundMessage.single("inbound_message_id");
+const inboundMessage: WhatsAppInboundMessageResponse = response.body;
+
+if (inboundMessage.data.attachment?.status === "stored") {
+  console.log(inboundMessage.data.attachment.url);
+}
+
+```
+
+## WhatsApp recipients API
+
+Requires a token with one of the `whatsapp_read` or `whatsapp_full` scopes.
+
+### Get a list of WhatsApp recipients
+
+```js
+import 'dotenv/config';
+import { MailerSend } from "mailersend";
+
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
+});
+
+mailerSend.whatsapp.recipient.list({
+  status: "active", // active, invalid, suppressed or blocked
+  limit: 25, // Min: 10, Max: 100, Default: 25
+  page: 1, // Min: 1
+})
+  .then((response) => console.log(response.body))
+  .catch((error) => console.log(error.body));
+
+```
+
+Recipients are returned newest first. `WhatsAppRecipientListResponse` describes the response body, and each item in `data` is a `WhatsAppRecipientListItem` with `id`, `phone_number`, `username`, `bsuid`, `status` and `created_at`. The response carries no `total` and no `last_page`, and `links.last` is always `null`: request the next page until `links.next` is `null`.
+
+### Get a WhatsApp recipient
+
+```js
+import 'dotenv/config';
+import { MailerSend } from "mailersend";
+
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
+});
+
+mailerSend.whatsapp.recipient.single("recipient_id")
+  .then((response) => console.log(response.body))
+  .catch((error) => console.log(error.body));
+
+```
+
+`WhatsAppRecipientResponse` describes the response body. The recipient has the same fields as a list item, plus `messages`: their latest 25 messages, newest first, each with `id`, `whatsapp_message_id`, `status`, `template_name`, `error_code`, `error_message` and `created_at`. Pass `whatsapp_message_id` to [Get a WhatsApp message](#get-a-whatsapp-message).
 
 ## SMS
 
