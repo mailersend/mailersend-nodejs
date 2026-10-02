@@ -46,26 +46,29 @@ export interface WhatsAppInboundAttachment {
   animated?: boolean
 }
 
+/**
+ * Fields inside `location`, `reaction`, `button` and `list_reply` are left out when WhatsApp does not send them.
+ */
 export interface WhatsAppInboundLocation {
-  latitude: number
-  longitude: number
+  latitude?: number
+  longitude?: number
   name?: string
   address?: string
 }
 
 export interface WhatsAppInboundReaction {
-  emoji: string
-  message_id: string
+  emoji?: string
+  message_id?: string
 }
 
 export interface WhatsAppInboundButton {
-  text: string
-  payload: string
+  text?: string
+  payload?: string
 }
 
 export interface WhatsAppInboundListReply {
-  id: string
-  title: string
+  id?: string
+  title?: string
   description?: string
 }
 
