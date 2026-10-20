@@ -1,14 +1,22 @@
 import { Pagination } from "../Pagination"
-import { WhatsAppPaginationLinks, WhatsAppPaginationMeta } from "./Pagination"
-
-export type WhatsAppMessageStatus = "queued" | "sent" | "delivered" | "read" | "failed"
+import { WhatsAppItem } from "./Item"
+import { WhatsAppPaginationLinks, WhatsAppSimplePaginationMeta } from "./Pagination"
 
 /**
  * Query parameters for `GET /v1/whatsapp/messages`.
  *
- * Inherits `page` (Min: 1) and `limit` (Min: 10, Max: 100, Default: 25) from `Pagination`.
+ * Inherits `page` (Min: 1, Max: 100) and `limit` (Min: 1, Max: 100, Default: 25) from `Pagination`.
  */
-export interface WhatsAppMessageQueryParams extends Pagination {}
+export interface WhatsAppMessageQueryParams extends Pagination {
+  whatsapp_account_id?: string
+  /** The sender's phone number in international format. */
+  from?: string
+  template_id?: string
+  /** Unix timestamp or datetime with a time, assumed `UTC`. Exclusive. */
+  date_from?: number | string
+  /** Unix timestamp or datetime with a time, assumed `UTC`. Must be after `date_from`. Exclusive. */
+  date_to?: number | string
+}
 
 export interface WhatsAppMessageListItem {
   id: string
@@ -20,28 +28,15 @@ export interface WhatsAppMessageListItem {
   created_at: string
 }
 
-export interface WhatsAppMessageActivity {
-  status: WhatsAppMessageStatus
-  created_at: string
-}
-
-export interface WhatsAppMessageRecipient {
-  id: string
-  to: string
-  status: WhatsAppMessageStatus
-  error_code: number | null
-  error_message: string | null
-  activity: WhatsAppMessageActivity[]
-}
-
 export interface WhatsAppMessage extends WhatsAppMessageListItem {
-  recipients: WhatsAppMessageRecipient[]
+  /** One item per recipient. Can be empty right after the message is sent. */
+  items: WhatsAppItem[]
 }
 
 export interface WhatsAppMessageListResponse {
   data: WhatsAppMessageListItem[]
   links: WhatsAppPaginationLinks
-  meta: WhatsAppPaginationMeta
+  meta: WhatsAppSimplePaginationMeta
 }
 
 export interface WhatsAppMessageResponse {

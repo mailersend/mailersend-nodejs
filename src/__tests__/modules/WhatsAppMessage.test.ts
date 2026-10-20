@@ -5,7 +5,15 @@ describe("WhatsApp Message Module", () => {
   const whatsappMessageModule = new WhatsAppMessageModule("test_key", "http://test.com")
 
   it("list", async () => {
-    const params = { page: 1, limit: 10 }
+    const params = {
+      whatsapp_account_id: "whatsapp_account_id",
+      from: "15550001234",
+      template_id: "template_id",
+      date_from: 1790000000,
+      date_to: "2026-10-15T00:00:00Z",
+      page: 1,
+      limit: 10,
+    }
     nock("http://test.com").get("/whatsapp/messages").query(params).reply(200, { key1: "whatsapp_message_list" }, { header1: "test" })
     const result = await whatsappMessageModule.list(params)
     expect(result.headers).toMatchObject({ header1: "test", "content-type": "application/json" })

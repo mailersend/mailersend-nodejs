@@ -5,7 +5,7 @@ describe("WhatsApp Recipient Module", () => {
   const whatsappRecipientModule = new WhatsAppRecipientModule("test_key", "http://test.com")
 
   it("list", async () => {
-    const params = { status: "active" as const, page: 1, limit: 10 }
+    const params = { status: "active" as const, phone_number: "48600000001", page: 1, limit: 10 }
     nock("http://test.com").get("/whatsapp/recipients").query(params).reply(200, { key1: "whatsapp_recipient_list" }, { header1: "test" })
     const result = await whatsappRecipientModule.list(params)
     expect(result.headers).toMatchObject({ header1: "test", "content-type": "application/json" })

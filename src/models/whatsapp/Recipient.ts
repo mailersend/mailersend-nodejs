@@ -1,5 +1,5 @@
 import { Pagination } from "../Pagination"
-import { WhatsAppMessageStatus } from "./Message"
+import { WhatsAppItem } from "./Item"
 import { WhatsAppPaginationLinks, WhatsAppSimplePaginationMeta } from "./Pagination"
 
 export type WhatsAppRecipientStatus = "active" | "invalid" | "suppressed" | "blocked"
@@ -7,34 +7,25 @@ export type WhatsAppRecipientStatus = "active" | "invalid" | "suppressed" | "blo
 /**
  * Query parameters for `GET /v1/whatsapp/recipients`.
  *
- * Inherits `page` (Min: 1) and `limit` (Min: 10, Max: 100, Default: 25) from `Pagination`.
+ * Inherits `page` (Min: 1, Max: 100) and `limit` (Min: 1, Max: 100, Default: 25) from `Pagination`.
  */
 export interface WhatsAppRecipientQueryParams extends Pagination {
   status?: WhatsAppRecipientStatus
+  /** The recipient's phone number in international format. */
+  phone_number?: string
 }
 
 export interface WhatsAppRecipientListItem {
   id: string
   phone_number: string | null
   username: string | null
-  bsuid: string | null
   status: WhatsAppRecipientStatus
   created_at: string
 }
 
-export interface WhatsAppRecipientMessage {
-  id: string
-  whatsapp_message_id: string
-  status: WhatsAppMessageStatus
-  template_name: string
-  error_code: number | null
-  error_message: string | null
-  created_at: string
-}
-
 export interface WhatsAppRecipient extends WhatsAppRecipientListItem {
-  /** The latest 25 messages, newest first. */
-  messages: WhatsAppRecipientMessage[]
+  /** The latest 25 items, newest first. */
+  items: WhatsAppItem[]
 }
 
 export interface WhatsAppRecipientListResponse {

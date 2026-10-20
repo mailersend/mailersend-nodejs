@@ -8,6 +8,7 @@ describe("WhatsApp Inbound Message Module", () => {
   it("list", async () => {
     const params = {
       whatsapp_account_id: "whatsapp_account_id",
+      from: "48600000001",
       type: ["text", "image"] as WhatsAppInboundMessageType[],
       date_from: 1790000000,
       date_to: 1790086400,

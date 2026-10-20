@@ -123,12 +123,20 @@ For more info, you can:
   - [WhatsApp messages API](#whatsapp-messages-api)
     - [Get a list of WhatsApp messages](#get-a-list-of-whatsapp-messages)
     - [Get a WhatsApp message](#get-a-whatsapp-message)
+  - [WhatsApp items API](#whatsapp-items-api)
+    - [Get a list of WhatsApp items](#get-a-list-of-whatsapp-items)
+    - [Get a WhatsApp item](#get-a-whatsapp-item)
+  - [WhatsApp activities API](#whatsapp-activities-api)
+    - [Get a list of WhatsApp activities](#get-a-list-of-whatsapp-activities)
   - [WhatsApp inbound messages API](#whatsapp-inbound-messages-api)
     - [Get a list of WhatsApp inbound messages](#get-a-list-of-whatsapp-inbound-messages)
     - [Get a WhatsApp inbound message](#get-a-whatsapp-inbound-message)
   - [WhatsApp recipients API](#whatsapp-recipients-api)
     - [Get a list of WhatsApp recipients](#get-a-list-of-whatsapp-recipients)
     - [Get a WhatsApp recipient](#get-a-whatsapp-recipient)
+  - [WhatsApp templates API](#whatsapp-templates-api)
+    - [Get a list of WhatsApp templates](#get-a-list-of-whatsapp-templates)
+    - [Get a WhatsApp template](#get-a-whatsapp-template)
   - [SMS](#sms)
     - [Send SMS](#send-sms)
     - [SMS personalization](#sms-personalization)
@@ -2394,7 +2402,9 @@ await mailersend.whatsapp.send(whatsappParams);
 
 ## WhatsApp messages API
 
-A WhatsApp message is the resource created by a single [send request](#send-a-whatsapp-message). Requires a token with one of the `whatsapp_read` or `whatsapp_full` scopes. Messages are kept for 7 days: an older message is no longer listed, and requesting it returns `404`.
+A WhatsApp message is the resource created by a single [send request](#send-a-whatsapp-message). The delivery to each recipient is tracked separately as an [item](#whatsapp-items-api), and every status an item moves through is recorded as an [activity](#whatsapp-activities-api). Requires a token with one of the `whatsapp_read` or `whatsapp_full` scopes. Messages are kept for 7 days: an older message is no longer listed, and requesting it returns `404`.
+
+All WhatsApp lists use simple pagination. The response carries no `total` and no `last_page`, and `links.last` is always `null`: request the next page until `links.next` is `null`. `page` can't go beyond `100`, so narrow `date_from` and `date_to` to reach older rows. `date_from` and `date_to` accept a Unix timestamp or a datetime that includes a time, such as `2026-10-14T00:00:00Z`, assumed `UTC` and exclusive. A date without a time returns a `422` error.
 
 ### Get a list of WhatsApp messages
 
@@ -2407,8 +2417,13 @@ const mailerSend = new MailerSend({
 });
 
 mailerSend.whatsapp.message.list({
-  limit: 25, // Min: 10, Max: 100, Default: 25
-  page: 1 // Min: 1
+  whatsapp_account_id: "whatsapp_account_id",
+  from: "15550001234", // The sender's phone number
+  template_id: "template_id",
+  date_from: 1790000000, // Unix timestamp or datetime
+  date_to: 1790086400, // Unix timestamp or datetime
+  limit: 25, // Min: 1, Max: 100, Default: 25
+  page: 1, // Min: 1, Max: 100
 })
   .then((response) => console.log(response.body))
   .catch((error) => console.log(error.body));
@@ -2433,7 +2448,7 @@ mailerSend.whatsapp.message.single("message_id")
 
 ```
 
-`WhatsAppMessageResponse` describes the response body. The message has the same fields as a list item, plus `recipients`: one `WhatsAppMessageRecipient` per recipient with `id`, `to`, `status` (`queued`, `sent`, `delivered`, `read` or `failed`), `error_code`, `error_message` and `activity`, every status the recipient's message moved through, oldest first.
+`WhatsAppMessageResponse` describes the response body. The message has the same fields as a list item, plus `items`: one `WhatsAppItem` per recipient, with the same fields as [Get a list of WhatsApp items](#get-a-list-of-whatsapp-items). Items are created asynchronously, so `items` can be empty right after the message is sent.
 
 ```ts
 import { MailerSend, WhatsAppMessageResponse } from "mailersend";
@@ -2445,9 +2460,91 @@ const mailerSend = new MailerSend({
 const response = await mailerSend.whatsapp.message.single("message_id");
 const message: WhatsAppMessageResponse = response.body;
 
-message.data.recipients.forEach((recipient) => console.log(recipient.to, recipient.status));
+message.data.items.forEach((item) => console.log(item.to, item.status));
 
 ```
+
+## WhatsApp items API
+
+An item is the delivery of a message to one recipient. Requires a token with one of the `whatsapp_read` or `whatsapp_full` scopes.
+
+### Get a list of WhatsApp items
+
+```js
+import 'dotenv/config';
+import { MailerSend } from "mailersend";
+
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
+});
+
+mailerSend.whatsapp.item.list({
+  recipient: "48600000001", // Phone number, WhatsApp username or BSUID
+  whatsapp_message_id: "whatsapp_message_id",
+  status: ["delivered", "read"], // queued, sent, delivered, read or failed
+  whatsapp_account_id: "whatsapp_account_id",
+  from: "15550001234", // The sender's phone number
+  template_id: "template_id",
+  date_from: 1790000000, // Unix timestamp or datetime
+  date_to: 1790086400, // Unix timestamp or datetime
+  limit: 25, // Min: 1, Max: 100, Default: 25
+  page: 1, // Min: 1, Max: 100
+})
+  .then((response) => console.log(response.body))
+  .catch((error) => console.log(error.body));
+
+```
+
+Items are returned newest first. `WhatsAppItemListResponse` describes the response body, and each item in `data` is a `WhatsAppItem` with `id`, `whatsapp_message_id`, `whatsapp_account_id`, `from`, `to`, `status`, `template_id`, `template_name`, `error_code`, `error_message` and `created_at`. Multiple `status` values are combined with `OR`.
+
+### Get a WhatsApp item
+
+```js
+import 'dotenv/config';
+import { MailerSend } from "mailersend";
+
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
+});
+
+mailerSend.whatsapp.item.single("item_id")
+  .then((response) => console.log(response.body))
+  .catch((error) => console.log(error.body));
+
+```
+
+`WhatsAppItemResponse` describes the response body. The item has the same fields as a list item, plus `recipient`, the [recipient](#whatsapp-recipients-api) the message was delivered to, and `activity`: every status the item moved through, each with `type` and `created_at`, in status order (`queued`, `sent`, `delivered`, `read`, `failed`).
+
+## WhatsApp activities API
+
+An activity is a single status event of an item, so a delivered and read message appears once as `queued`, once as `sent`, once as `delivered` and once as `read`. Requires a token with one of the `whatsapp_read` or `whatsapp_full` scopes. Activity is kept for 7 days.
+
+### Get a list of WhatsApp activities
+
+```js
+import 'dotenv/config';
+import { MailerSend } from "mailersend";
+
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
+});
+
+mailerSend.whatsapp.activity.list({
+  whatsapp_item_id: "whatsapp_item_id",
+  whatsapp_message_id: "whatsapp_message_id",
+  recipient: "48600000001", // Phone number, WhatsApp username or BSUID
+  type: ["delivered", "read"], // queued, sent, delivered, read or failed
+  date_from: 1790000000, // Unix timestamp or datetime
+  date_to: 1790086400, // Unix timestamp or datetime
+  limit: 25, // Min: 1, Max: 100, Default: 25
+  page: 1, // Min: 1, Max: 100
+})
+  .then((response) => console.log(response.body))
+  .catch((error) => console.log(error.body));
+
+```
+
+Activities are returned newest first. `WhatsAppActivityListResponse` describes the response body, and each item in `data` is a `WhatsAppActivity` with `id`, `whatsapp_item_id`, `whatsapp_message_id`, `whatsapp_account_id`, `from`, `to`, `type` and `created_at`. Multiple `type` values are combined with `OR`.
 
 ## WhatsApp inbound messages API
 
@@ -2465,11 +2562,12 @@ const mailerSend = new MailerSend({
 
 mailerSend.whatsapp.inboundMessage.list({
   whatsapp_account_id: "whatsapp_account_id",
+  from: "48600000001", // The customer's phone number or BSUID
   type: ["text", "image"],
-  date_from: 1790000000, // Unix timestamp or ISO 8601 datetime
-  date_to: 1790086400, // Unix timestamp or ISO 8601 datetime
-  limit: 25, // Min: 10, Max: 100, Default: 25
-  page: 1, // Min: 1
+  date_from: 1790000000, // Unix timestamp or datetime
+  date_to: 1790086400, // Unix timestamp or datetime
+  limit: 25, // Min: 1, Max: 100, Default: 25
+  page: 1, // Min: 1, Max: 100
 })
   .then((response) => console.log(response.body))
   .catch((error) => console.log(error.body));
@@ -2479,26 +2577,29 @@ mailerSend.whatsapp.inboundMessage.list({
 | Query parameter       | Type                           | Required | Details                                                                                                                                                        |
 |-----------------------|--------------------------------|----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `whatsapp_account_id` | `string`                       | no       | The MailerSend sender ID of the phone number that received the messages. Must be one of your WhatsApp phone numbers.                                             |
+| `from`                | `string`                       | no       | The customer's phone number in international format, or their BSUID. A WhatsApp username is not accepted. Max: `255` characters.                              |
 | `type`                | `WhatsAppInboundMessageType[]` | no       | Any of `text`, `image`, `audio`, `video`, `document`, `sticker`, `location`, `contacts`, `interactive`, `button`, `order`, `reaction`, `system`, `unknown`, `unsupported`. Values are combined with `OR`. |
-| `date_from`           | `number \| string`             | no       | Unix timestamp or ISO 8601 datetime that includes a time, assumed `UTC`. Exclusive. Must be lower than `date_to`.                                               |
-| `date_to`             | `number \| string`             | no       | Unix timestamp or ISO 8601 datetime that includes a time, assumed `UTC`. Exclusive. Must be higher than `date_from`.                                            |
-| `page`                | `number`                       | no       | Min: `1`.                                                                                                                                                      |
-| `limit`               | `number`                       | no       | Min: `10`, Max: `100`, Default: `25`.                                                                                                                          |
+| `date_from`           | `number \| string`             | no       | Unix timestamp or datetime that includes a time, assumed `UTC`. Exclusive. Must be lower than `date_to`.                                                       |
+| `date_to`             | `number \| string`             | no       | Unix timestamp or datetime that includes a time, assumed `UTC`. Exclusive. Must be higher than `date_from`.                                                    |
+| `page`                | `number`                       | no       | Min: `1`, Max: `100`.                                                                                                                                          |
+| `limit`               | `number`                       | no       | Min: `1`, Max: `100`, Default: `25`.                                                                                                                           |
 
-Inbound messages are returned newest first. `WhatsAppInboundMessageListResponse` describes the response body, and each item in `data` is a `WhatsAppInboundMessage` with `id`, `whatsapp_account_id`, `from`, `to`, `type`, `received_at`, `context` when the message is a reply, and exactly one content field determined by `type`:
+Inbound messages are returned newest first. `WhatsAppInboundMessageListResponse` describes the response body, and each item in `data` is a `WhatsAppInboundMessage` with `id`, `whatsapp_account_id`, `from`, `to`, `type`, `received_at`, `meta` and `context` when the message is a reply.
 
-| `type`                                           | Content field                 |
-|--------------------------------------------------|-------------------------------|
-| `text`                                           | `text`                        |
-| `image`, `audio`, `video`, `document`, `sticker` | `attachment`                  |
-| `location`                                       | `location`                    |
-| `contacts`                                       | `contacts`                    |
-| `reaction`                                       | `reaction`                    |
-| `button`                                         | `button`                      |
-| `interactive`                                    | `list_reply` or `interactive` |
-| `order`, `system`, `unknown`, `unsupported`      | matching the type             |
+`meta` holds the content of the message, and its shape depends on `type`:
 
-`attachment.url` is a temporary signed URL, and is `null` once the file is no longer stored. Inbound media is kept for 1 day, so download the file as soon as you can if you need to keep it.
+| `type`                                           | `meta`                                                                 |
+|--------------------------------------------------|------------------------------------------------------------------------|
+| `text`                                           | `body`                                                                 |
+| `image`, `audio`, `video`, `document`, `sticker` | `url`, `status`, `mime_type`, `size`, `caption`, `filename`, `animated` |
+| `location`                                       | `latitude`, `longitude`, `name`, `address`                             |
+| `reaction`                                       | `message_id`, `emoji`                                                  |
+| `button`                                         | `text`, `payload`                                                      |
+| `interactive`                                    | `reply_type` (`button_reply` or `list_reply`), `id`, `title`, `description` |
+| `contacts`                                       | `contacts`                                                             |
+| `order`, `system`, `unknown`, `unsupported`      | The object WhatsApp sent, as received, or `null`                       |
+
+Fields that WhatsApp did not send can be `null` or missing. For media, `meta.url` is a temporary signed URL, and is `null` once the file is no longer stored. Inbound media is kept for 1 day, so download the file as soon as you can if you need to keep it.
 
 ### Get a WhatsApp inbound message
 
@@ -2528,8 +2629,8 @@ const mailerSend = new MailerSend({
 const response = await mailerSend.whatsapp.inboundMessage.single("inbound_message_id");
 const inboundMessage: WhatsAppInboundMessageResponse = response.body;
 
-if (inboundMessage.data.attachment?.status === "stored") {
-  console.log(inboundMessage.data.attachment.url);
+if (inboundMessage.data.type === "image" && inboundMessage.data.meta?.status === "stored") {
+  console.log(inboundMessage.data.meta.url);
 }
 
 ```
@@ -2550,15 +2651,16 @@ const mailerSend = new MailerSend({
 
 mailerSend.whatsapp.recipient.list({
   status: "active", // active, invalid, suppressed or blocked
-  limit: 25, // Min: 10, Max: 100, Default: 25
-  page: 1, // Min: 1
+  phone_number: "48600000001",
+  limit: 25, // Min: 1, Max: 100, Default: 25
+  page: 1, // Min: 1, Max: 100
 })
   .then((response) => console.log(response.body))
   .catch((error) => console.log(error.body));
 
 ```
 
-Recipients are returned newest first. `WhatsAppRecipientListResponse` describes the response body, and each item in `data` is a `WhatsAppRecipientListItem` with `id`, `phone_number`, `username`, `bsuid`, `status` and `created_at`. The response carries no `total` and no `last_page`, and `links.last` is always `null`: request the next page until `links.next` is `null`.
+Recipients are returned newest first. `WhatsAppRecipientListResponse` describes the response body, and each item in `data` is a `WhatsAppRecipientListItem` with `id`, `phone_number`, `username`, `status` and `created_at`.
 
 ### Get a WhatsApp recipient
 
@@ -2576,7 +2678,54 @@ mailerSend.whatsapp.recipient.single("recipient_id")
 
 ```
 
-`WhatsAppRecipientResponse` describes the response body. The recipient has the same fields as a list item, plus `messages`: their latest 25 messages, newest first, each with `id`, `whatsapp_message_id`, `status`, `template_name`, `error_code`, `error_message` and `created_at`. Pass `whatsapp_message_id` to [Get a WhatsApp message](#get-a-whatsapp-message).
+`WhatsAppRecipientResponse` describes the response body. The recipient has the same fields as a list item, plus `items`: their latest 25 items, newest first, with the same fields as [Get a list of WhatsApp items](#get-a-list-of-whatsapp-items). Pass an item's `id` to [Get a WhatsApp item](#get-a-whatsapp-item) for its status timeline.
+
+## WhatsApp templates API
+
+Look up your templates and their `id`, which you pass as `template_id` when you [send a WhatsApp message](#send-a-whatsapp-message). Requires a token with one of the `whatsapp_read` or `whatsapp_full` scopes.
+
+### Get a list of WhatsApp templates
+
+```js
+import 'dotenv/config';
+import { MailerSend } from "mailersend";
+
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
+});
+
+mailerSend.whatsapp.template.list({
+  whatsapp_account_id: "whatsapp_account_id",
+  status: "approved", // draft, pending, approved, rejected, archived, deleted, disabled, flagged, in_appeal, limit_exceeded, locked, paused, reinstated or pending_deletion
+  category: "UTILITY", // UTILITY, AUTHENTICATION or MARKETING
+  language: "en_US",
+  limit: 25, // Min: 1, Max: 100, Default: 25
+  page: 1, // Min: 1, Max: 100
+})
+  .then((response) => console.log(response.body))
+  .catch((error) => console.log(error.body));
+
+```
+
+Templates are returned newest first. `WhatsAppTemplateListResponse` describes the response body, and each item in `data` is a `WhatsAppTemplate` with `id`, `whatsapp_account_id`, `name`, `readable_name`, `category`, `language`, `status`, `components`, `created_at` and `updated_at`. `components` has `header` and `body`, each `null` when the template has none, and `buttons`. Only `approved` templates can be sent.
+
+### Get a WhatsApp template
+
+```js
+import 'dotenv/config';
+import { MailerSend } from "mailersend";
+
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
+});
+
+mailerSend.whatsapp.template.single("template_id")
+  .then((response) => console.log(response.body))
+  .catch((error) => console.log(error.body));
+
+```
+
+`WhatsAppTemplateResponse` describes the response body. The template has the same fields as a list item.
 
 ## SMS
 
