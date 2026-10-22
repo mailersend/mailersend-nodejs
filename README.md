@@ -2430,7 +2430,7 @@ mailerSend.whatsapp.message.list({
 
 ```
 
-Messages are returned newest first. `WhatsAppMessageListResponse` describes the response body, and each item in `data` is a `WhatsAppMessageListItem` with `id`, `from`, `to`, `whatsapp_account_id`, `template_id` and `created_at`. `from` is `null` for a sender connected with a Meta virtual number.
+Messages are returned newest first. `WhatsAppMessageListResponse` describes the response body, and each item in `data` is a `WhatsAppMessageListItem` with `id`, `from`, `to`, `whatsapp_account_id`, `template_id` and `created_at`. `from` is the sender's phone number, or its WhatsApp username when the message was sent from the username or the sender has no phone number, and `null` when the sender has neither.
 
 ### Get a WhatsApp message
 
@@ -2707,7 +2707,7 @@ mailerSend.whatsapp.template.list({
 
 ```
 
-Templates are returned newest first. `WhatsAppTemplateListResponse` describes the response body, and each item in `data` is a `WhatsAppTemplate` with `id`, `whatsapp_account_id`, `name`, `readable_name`, `category`, `language`, `status`, `components`, `created_at` and `updated_at`. `components` has `header` and `body`, each `null` when the template has none, and `buttons`. Only `approved` templates can be sent.
+Templates are returned newest first. `WhatsAppTemplateListResponse` describes the response body, and each item in `data` is a `WhatsAppTemplate` with `id`, `whatsapp_account_id`, `name`, `readable_name`, `category`, `language`, `status`, `components`, `created_at` and `updated_at`. `components` has `header` and `body`, each `null` when the template has none, and `buttons`. `header.format` is `TEXT`, `IMAGE`, `VIDEO`, `DOCUMENT` or `LOCATION`. Only `approved` templates can be sent.
 
 ### Get a WhatsApp template
 

@@ -20,7 +20,7 @@ export interface WhatsAppMessageQueryParams extends Pagination {
 
 export interface WhatsAppMessageListItem {
   id: string
-  /** `null` for a sender connected with a Meta virtual number. */
+  /** The sender's phone number, or its WhatsApp username when sent from the username or the sender has no phone number. `null` when the sender has neither. */
   from: string | null
   to: string[]
   whatsapp_account_id: string | null

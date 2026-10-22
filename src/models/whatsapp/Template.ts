@@ -40,8 +40,8 @@ export interface WhatsAppTemplateButton {
 }
 
 export interface WhatsAppTemplateComponents {
-  /** `text` is `null` for a media header. */
-  header: { text: string | null } | null
+  /** `format` is `TEXT`, `IMAGE`, `VIDEO`, `DOCUMENT` or `LOCATION`, and `text` is `null` for a media header. */
+  header: { format: string; text: string | null } | null
   body: { text: string | null } | null
   buttons: WhatsAppTemplateButton[]
 }
