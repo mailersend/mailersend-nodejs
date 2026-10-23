@@ -41,8 +41,10 @@ describe("SmtpUser Module", () => {
     expect(result.statusCode).toBe(201);
   });
 
-  it("update", async () => {
-    nock("http://test.com").put("/domains/test_id/smtp-users/smtp_user_id").reply(200, { key1: "smtp_updated" }, { header1: "test" });
+  it("update with only name", async () => {
+    nock("http://test.com")
+      .put("/domains/test_id/smtp-users/smtp_user_id", { name: "new_name" })
+      .reply(200, { key1: "smtp_updated" }, { header1: "test" });
     const result = await smtpUserModule.update("test_id", "smtp_user_id", { name: "new_name" });
     expect(result.headers).toMatchObject({ header1: "test", "content-type": "application/json" });
     expect(result.body).toMatchObject({ key1: "smtp_updated" });

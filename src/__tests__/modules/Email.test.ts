@@ -27,11 +27,19 @@ describe("Email Module", () => {
     expect(emailModule.webhook instanceof EmailWebhookModule).toBe(true);
   });
 
-  it("send email", async () => {
-    nock("http://test.com").post("/email").reply(202, { key1: "key1_value" }, { header1: "test" });
+  it("send email serializes from, to, subject, text and html", async () => {
+    nock("http://test.com")
+      .post("/email", {
+        from: { email: "some@email.com", name: "Some Sender" },
+        to: [{ email: "some_recipient@mail.com", name: "Some Recipient" }],
+        subject: "Some subject",
+        text: "Some text",
+        html: "Some html",
+      })
+      .reply(202, { key1: "key1_value" }, { header1: "test" });
     const emailParams = new EmailParams()
-      .setFrom({ email: "some@email.com" })
-      .setTo([new Recipient("some_recipient@mail.com")])
+      .setFrom({ email: "some@email.com", name: "Some Sender" })
+      .setTo([new Recipient("some_recipient@mail.com", "Some Recipient")])
       .setSubject("Some subject")
       .setText("Some text")
       .setHtml("Some html");
@@ -52,10 +60,12 @@ describe("Email Module", () => {
         },
       }
     ];
-    nock("http://test.com").post("/email").reply(202, { key1: "key1_value" }, { header1: "test" });
+    nock("http://test.com")
+      .post("/email", (body: any) => JSON.stringify(body.personalization) === JSON.stringify(personalization))
+      .reply(202, { key1: "key1_value" }, { header1: "test" });
     const emailParams = new EmailParams()
       .setFrom({ email: "some@email.com" })
-      .setTo([new Recipient("some_recipient@mail.com")])
+      .setTo([new Recipient("your@client.com")])
       .setSubject("Some subject")
       .setPersonalization(personalization)
       .setText("Some text")
@@ -110,6 +120,71 @@ describe("Email Module", () => {
       .setSubject("Some subject")
       .setText("Some text")
       .setAttachments([attachment]);
+    const result = await emailModule.send(emailParams);
+    expect(result.statusCode).toBe(202);
+  });
+
+  it("send email with attachment defaults disposition to attachment", async () => {
+    nock("http://test.com")
+      .post("/email", (body: any) => body.attachments[0].disposition === "attachment")
+      .reply(202, {}, {});
+    const emailParams = new EmailParams()
+      .setFrom({ email: "some@email.com" })
+      .setTo([new Recipient("some_recipient@mail.com")])
+      .setSubject("Some subject")
+      .setText("Some text")
+      .setAttachments([new Attachment("base64content", "file.pdf")]);
+    const result = await emailModule.send(emailParams);
+    expect(result.statusCode).toBe(202);
+  });
+
+  it("send email built from a config object maps camelCase keys to snake_case", async () => {
+    nock("http://test.com")
+      .post("/email", {
+        from: { email: "some@email.com", name: "Some Sender" },
+        to: [{ email: "to@example.com", name: "To Person" }],
+        cc: [{ email: "cc@example.com" }],
+        bcc: [{ email: "bcc@example.com" }],
+        reply_to: { email: "reply@example.com" },
+        in_reply_to: "<original@example.com>",
+        subject: "Some subject",
+        text: "Some text",
+        html: "Some html",
+        send_at: 1893456000,
+        attachments: [{ content: "base64content", filename: "file.pdf", disposition: "inline", id: "logo" }],
+        template_id: "tmpl_abc123",
+        language: "de",
+        tags: ["tag1"],
+        personalization: [{ email: "to@example.com", data: { name: "To" } }],
+        references: ["<ref1@example.com>"],
+        headers: [{ name: "X-Custom", value: "custom-value" }],
+        settings: { track_clicks: true, track_opens: true, track_content: false },
+        precedence_bulk: false,
+        list_unsubscribe: "<https://www.example.com/unsubscribe>",
+      })
+      .reply(202, {}, {});
+    const emailParams = new EmailParams({
+      from: { email: "some@email.com", name: "Some Sender" },
+      to: [new Recipient("to@example.com", "To Person")],
+      cc: [new Recipient("cc@example.com")],
+      bcc: [new Recipient("bcc@example.com")],
+      replyTo: new Recipient("reply@example.com"),
+      inReplyTo: "<original@example.com>",
+      subject: "Some subject",
+      text: "Some text",
+      html: "Some html",
+      sendAt: 1893456000,
+      attachments: [new Attachment("base64content", "file.pdf", "inline", "logo")],
+      templateId: "tmpl_abc123",
+      language: "de",
+      tags: ["tag1"],
+      personalization: [{ email: "to@example.com", data: { name: "To" } }],
+      references: ["<ref1@example.com>"],
+      headers: [{ name: "X-Custom", value: "custom-value" }],
+      settings: { track_clicks: true, track_opens: true, track_content: false },
+      precedenceBulk: false,
+      listUnsubscribe: "<https://www.example.com/unsubscribe>",
+    });
     const result = await emailModule.send(emailParams);
     expect(result.statusCode).toBe(202);
   });
@@ -293,9 +368,9 @@ describe("Email Module", () => {
     expect(result.statusCode).toBe(202);
   });
 
-  it("send email with rcpt_to", async () => {
+  it("send email omits rcpt_to", async () => {
     nock("http://test.com")
-      .post("/email", (body: any) => body.rcpt_to[0].email === "rcpt@example.com")
+      .post("/email", (body: any) => !("rcpt_to" in body) && body.to[0].email === "some_recipient@mail.com")
       .reply(202, {}, {});
     const emailParams = new EmailParams()
       .setFrom({ email: "some@email.com" })
@@ -342,6 +417,7 @@ describe("Email Module", () => {
           Array.isArray(body) &&
           body[0].from.email === "sender1@example.com" &&
           body[0].to[0].email === "recipient1@example.com" &&
+          body[0].to[0].name === "Recipient One" &&
           body[0].subject === "Subject One" &&
           body[1].from.email === "sender2@example.com" &&
           body[1].to[0].email === "recipient2@example.com" &&
@@ -353,6 +429,22 @@ describe("Email Module", () => {
     const result = await emailModule.sendBulk([emailParams1, emailParams2]);
     expect(result.statusCode).toBe(202);
     expect(result.body).toMatchObject({ bulk_email_id: "bulk_123" });
+  });
+
+  it("send bulk email omits rcpt_to from each item", async () => {
+    const emailParams = new EmailParams()
+      .setFrom({ email: "sender@example.com" })
+      .setTo([new Recipient("recipient@example.com")])
+      .setSubject("Subject")
+      .setText("Body")
+      .setRcptTo([new Recipient("rcpt@example.com")]);
+
+    nock("http://test.com")
+      .post("/bulk-email", (body: any) => !("rcpt_to" in body[0]) && body[0].to[0].email === "recipient@example.com")
+      .reply(202, { bulk_email_id: "bulk_123" }, {});
+
+    const result = await emailModule.sendBulk([emailParams]);
+    expect(result.statusCode).toBe(202);
   });
 
   it("get bulk", async () => {

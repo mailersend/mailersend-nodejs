@@ -5,12 +5,13 @@ const mailerSend = new MailerSend({
   apiKey: process.env.API_KEY,
 });
 
-const smsWebhook = new SmsWebhook()
-  .setName("Sms Webhook")
-  .setUrl("https:://yourapp.com/hook")
-  .setSmsNumberId("sms_number_id")
-  .setEnabled(true)
-  .setEvents([SmsWebhookEventType.SENT, SmsWebhookEventType.DELIVERED])
+const smsWebhook = new SmsWebhook(
+  "Sms Webhook",
+  "https://yourapp.com/hook",
+  [SmsWebhookEventType.SENT, SmsWebhookEventType.DELIVERED],
+  "sms_number_id",
+  true,
+);
 
 mailerSend.sms.webhook.create(smsWebhook)
   .then((response) => console.log(response.body))

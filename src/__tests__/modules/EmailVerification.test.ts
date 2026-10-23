@@ -11,7 +11,10 @@ describe("Email Verification Module", () => {
             "test@mailersend.com"
         ]);
 
-        nock("http://test.com").post("/email-verification").reply(
+        nock("http://test.com").post("/email-verification", {
+            name: "List example",
+            emails: ["info@mailersend.com", "test@mailersend.com"],
+        }).reply(
             200,
             {
                 id: "dle1krod2jvn8gwm",
@@ -30,9 +33,12 @@ describe("Email Verification Module", () => {
             .setListId("existing_list_id")
             .setVerify(true);
         nock("http://test.com")
-            .post("/email-verification", (body: any) =>
-                body.list_id === "existing_list_id" && body.verify === true
-            )
+            .post("/email-verification", {
+                name: "List example",
+                emails: ["info@mailersend.com"],
+                list_id: "existing_list_id",
+                verify: true,
+            })
             .reply(200, { id: "dle1krod2jvn8gwm" }, { header1: "test" });
         const result = await emailVerificationModule.create(emailVerification);
         expect(result.statusCode).toBe(200);
@@ -81,6 +87,13 @@ describe("Email Verification Module", () => {
         expect(getListResult.statusCode).toBe(200);
     });
 
+    it("get list result without params", async () => {
+        nock("http://test.com").get("/email-verification/test_id/results").reply(200, { key1: "key1_value" }, { header1: "test" });
+        const result = await emailVerificationModule.getListResult("test_id");
+        expect(result.body).toMatchObject({ key1: "key1_value" });
+        expect(result.statusCode).toBe(200);
+    });
+
     it("get list result with results filter", async () => {
         const params = { limit: 10, page: 1, results: [EmailVerificationResultType.CATCH_ALL, EmailVerificationResultType.DISPOSABLE] };
         nock("http://test.com").get("/email-verification/test_id/results").query(params).reply(200, { key1: "key1_value" }, { header1: "test" });
@@ -89,7 +102,7 @@ describe("Email Verification Module", () => {
     });
 
     it("verify email", async () => {
-        nock("http://test.com").post("/email-verification/verify").reply(200, { message: "valid" }, { header1: "test" });
+        nock("http://test.com").post("/email-verification/verify", { email: "email@email.com" }).reply(200, { message: "valid" }, { header1: "test" });
         const verifyEmail = await emailVerificationModule.verifyEmail("email@email.com");
         expect(verifyEmail.headers).toMatchObject({ header1: "test", "content-type": "application/json" });
         expect(verifyEmail.body).toMatchObject({ message: "valid" });
@@ -97,11 +110,11 @@ describe("Email Verification Module", () => {
     });
 
     it("verify email async", async () => {
-        nock("http://test.com").post("/email-verification/verify-async").reply(200, { id: "async_job_id" }, { header1: "test" });
+        nock("http://test.com").post("/email-verification/verify-async", { email: "email@email.com" }).reply(201, { id: "async_job_id" }, { header1: "test" });
         const result = await emailVerificationModule.verifyEmailAsync("email@email.com");
         expect(result.headers).toMatchObject({ header1: "test", "content-type": "application/json" });
         expect(result.body).toMatchObject({ id: "async_job_id" });
-        expect(result.statusCode).toBe(200);
+        expect(result.statusCode).toBe(201);
     });
 
     it("get verify email async status", async () => {

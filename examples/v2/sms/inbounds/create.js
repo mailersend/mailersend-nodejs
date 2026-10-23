@@ -1,17 +1,14 @@
 import 'dotenv/config';
-import { MailerSend, SmsInbound } from "mailersend";
+import { MailerSend, SmsInbound, SmsComparerType } from "mailersend";
 
 const mailerSend = new MailerSend({
   apiKey: process.env.API_KEY,
 });
 
-const smsInbound = new SmsInbound()
-  .setSmsNumberId("sms_number_id")
+const smsInbound = new SmsInbound("Inbound Name", "sms_number_id", "https://yourapp.com/hook")
   .setEnabled(true)
-  .setName("Inbound Name")
-  .setForwardUrl("yourapp.com/hook")
   .setFilter({
-    comparer: "equal",
+    comparer: SmsComparerType.EQUAL,
     value: "START"
   });
 

@@ -6,7 +6,7 @@ const mailerSend = new MailerSend({
 });
 
 mailerSend.email.recipient.delBlockListRecipients(
-  ["recipient_id", "recipient_id"],
+  ["spam_complaint_id", "spam_complaint_id"],
   BlockListType.SPAM_COMPLAINTS_LIST
 )
   .then((response) => console.log(response.body))

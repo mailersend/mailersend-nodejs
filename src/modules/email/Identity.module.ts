@@ -26,8 +26,13 @@ export class IdentityModule extends RequestService {
     return await this.put(`/identities/${identityId}`, data);
   }
 
-  async updateByEMail(email: string, data: IdentityUpdate): Promise<APIResponse> {
+  async updateByEmail(email: string, data: IdentityUpdate): Promise<APIResponse> {
     return await this.put(`/identities/email/${email}`, data);
+  }
+
+  /** @deprecated Use updateByEmail() instead. */
+  async updateByEMail(email: string, data: IdentityUpdate): Promise<APIResponse> {
+    return await this.updateByEmail(email, data);
   }
 
   async delete(identityId: string): Promise<APIResponse> {

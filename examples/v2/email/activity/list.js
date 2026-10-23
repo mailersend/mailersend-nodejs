@@ -9,7 +9,7 @@ const queryParams = {
   limit: 10, // Min: 10, Max: 100, Default: 25
   page: 2,
   date_from: 1443651141, // Unix timestamp
-  date_to: 1443651141, // Unix timestamp
+  date_to: 1443661141, // Unix timestamp
   event: [ActivityEventType.SENT, ActivityEventType.SOFT_BOUNCED]
 }
 

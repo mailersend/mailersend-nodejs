@@ -8,6 +8,7 @@ export class EmailParams {
   to: Recipient[];
   cc?: Recipient[];
   bcc?: Recipient[];
+  /** @deprecated Not sent to the API. Use setTo(), setCc() or setBcc() instead. */
   rcpt_to?: Recipient[];
   reply_to?: Recipient;
   subject?: string;
@@ -70,6 +71,7 @@ export class EmailParams {
     return this;
   }
 
+  /** @deprecated Has no effect: rcpt_to is not sent to the API. Use setTo(), setCc() or setBcc() instead. */
   setRcptTo(rcptTo: Recipient[]): EmailParams {
     this.rcpt_to = rcptTo;
     return this;
