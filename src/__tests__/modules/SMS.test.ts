@@ -20,8 +20,18 @@ describe("SMS Module", () => {
     expect(smsModule.webhook instanceof SmsWebhookModule).toBe(true);
   });
 
-  it("send", async () => {
-    nock("http://test.com").post("/sms").reply(202, { key1: "key1_value" }, { "x-sms-message-id": "test" });
+  it("send posts from, to, text and personalization to /sms", async () => {
+    nock("http://test.com")
+      .post("/sms", {
+        from: "+19191234567",
+        to: ["+19191234567", "+19199876543"],
+        text: "Hey {{name}}! This is just a friendly hello :D",
+        personalization: [
+          { phone_number: "+19191234567", data: { name: "Dummy" } },
+          { phone_number: "+19199876543", data: { name: "Not Dummy" } },
+        ],
+      })
+      .reply(202, { key1: "key1_value" }, { "x-sms-message-id": "test" });
     const personalization: SMSPersonalization[] = [];
 
     personalization.push(new SMSPersonalization("+19191234567", { name: "Dummy" }));
@@ -39,5 +49,34 @@ describe("SMS Module", () => {
     expect(sendEmail.body).toMatchObject({ key1: "key1_value" });
 
     expect(sendEmail.statusCode).toBe(202);
+  });
+});
+
+describe("SMSParams", () => {
+  it("constructor config with personalization keeps every field", () => {
+    const params = new SMSParams({
+      from: "+19191234567",
+      to: ["+19191234567"],
+      text: "Hey {{name}}",
+      personalization: [new SMSPersonalization("+19191234567", { name: "Dummy" })],
+    });
+
+    expect(params).toEqual({
+      from: "+19191234567",
+      to: ["+19191234567"],
+      text: "Hey {{name}}",
+      personalization: [{ phone_number: "+19191234567", data: { name: "Dummy" } }],
+    });
+  });
+
+  it("constructor config with empty personalization omits the key", () => {
+    const params = new SMSParams({
+      from: "+19191234567",
+      to: ["+19191234567"],
+      text: "Hello",
+      personalization: [],
+    });
+
+    expect(params).not.toHaveProperty("personalization");
   });
 });

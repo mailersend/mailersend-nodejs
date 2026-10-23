@@ -11,6 +11,9 @@ export class SmsInboundModule extends RequestService {
   }
 
   async list(queryParams?: SmsInboundQueryParams): Promise<APIResponse> {
+    if (typeof queryParams?.enabled === "boolean") {
+      queryParams = { ...queryParams, enabled: queryParams.enabled ? 1 : 0 };
+    }
     return await this.get(`/sms-inbounds`, queryParams);
   }
 

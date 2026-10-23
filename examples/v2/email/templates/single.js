@@ -5,6 +5,6 @@ const mailerSend = new MailerSend({
   apiKey: process.env.API_KEY,
 });
 
-mailerSend.email.template.single("domain_id")
+mailerSend.email.template.single("template_id")
   .then((response) => console.log(response.body))
   .catch((error) => console.log(error.body));

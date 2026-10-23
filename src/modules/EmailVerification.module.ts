@@ -22,7 +22,7 @@ export class EmailVerificationModule extends RequestService {
         return await this.get(`/email-verification/${emailVerificationId}/verify`);
     }
 
-    async getListResult(emailVerificationId: string, queryParams: EmailVerificationResultQueryParams): Promise<APIResponse> {
+    async getListResult(emailVerificationId: string, queryParams?: EmailVerificationResultQueryParams): Promise<APIResponse> {
         return await this.get(`/email-verification/${emailVerificationId}/results`, queryParams);
     }
 

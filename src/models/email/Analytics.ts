@@ -1,8 +1,8 @@
 import { ActivityEventType } from "./Activity";
 
 export interface AnalyticsOpensQueryParams {
-  date_from: number;
-  date_to: number;
+  date_from: number | string;
+  date_to: number | string;
   recipient_id?: string[];
   tags?: string[];
   domain_id?: string;

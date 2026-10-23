@@ -1,5 +1,5 @@
 import 'dotenv/config';
-import { MailerSend } from "mailersend";
+import { MailerSend, SmsWebhookEventType } from "mailersend";
 
 const mailerSend = new MailerSend({
   apiKey: process.env.API_KEY,
@@ -7,8 +7,8 @@ const mailerSend = new MailerSend({
 
 mailerSend.sms.webhook.update("sms_webhook_id", {
   name: "Webhook",
-  url: "https:://yourapp.com/hook",
-  enabled: ["sms.sent", "sms.delivered", "sms.failed"],
+  url: "https://yourapp.com/hook",
+  events: [SmsWebhookEventType.SENT, SmsWebhookEventType.DELIVERED, SmsWebhookEventType.FAILED],
   enabled: true
 })
   .then((response) => console.log(response.body))

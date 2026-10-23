@@ -21,17 +21,17 @@ describe("Dmarc Module", () => {
     expect(response.statusCode).toBe(200);
   });
 
-  it("create", async () => {
+  it("create posts domain_id to /dmarc-monitoring", async () => {
     const dmarc = new Dmarc("domain_id_123");
-    nock("http://test.com").post("/dmarc-monitoring").reply(201, { id: "monitor_id_123" }, { header1: "test" });
+    nock("http://test.com").post("/dmarc-monitoring", { domain_id: "domain_id_123" }).reply(201, { id: "monitor_id_123" }, { header1: "test" });
     const response = await dmarcModule.create(dmarc);
     expect(response.headers).toMatchObject({ header1: "test", "content-type": "application/json" });
     expect(response.body).toMatchObject({ id: "monitor_id_123" });
     expect(response.statusCode).toBe(201);
   });
 
-  it("update", async () => {
-    nock("http://test.com").put("/dmarc-monitoring/test_id").reply(200, { key1: "key1_value" }, { header1: "test" });
+  it("update puts wanted_dmarc_record to /dmarc-monitoring/{id}", async () => {
+    nock("http://test.com").put("/dmarc-monitoring/test_id", { wanted_dmarc_record: "v=DMARC1; p=reject;" }).reply(200, { key1: "key1_value" }, { header1: "test" });
     const response = await dmarcModule.update("test_id", { wanted_dmarc_record: "v=DMARC1; p=reject;" });
     expect(response.headers).toMatchObject({ header1: "test", "content-type": "application/json" });
     expect(response.body).toMatchObject({ key1: "key1_value" });
@@ -93,7 +93,7 @@ describe("Dmarc Module", () => {
   });
 
   it("addFavorite", async () => {
-    nock("http://test.com").put("/dmarc-monitoring/test_id/favorite/1.2.3.4").reply(200, {}, { header1: "test" });
+    nock("http://test.com").put("/dmarc-monitoring/test_id/favorite/1.2.3.4", {}).reply(200, {}, { header1: "test" });
     const response = await dmarcModule.addFavorite("test_id", "1.2.3.4");
     expect(response.statusCode).toBe(200);
   });

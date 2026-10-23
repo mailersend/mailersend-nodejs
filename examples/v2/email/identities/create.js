@@ -5,9 +5,7 @@ const mailerSend = new MailerSend({
   apiKey: process.env.API_KEY,
 });
 
-const identity = new Identity()
-  .setDomainId('domain_id')
-  .setEmail('identity@yourdomain.com')
+const identity = new Identity('domain_id', 'identity@yourdomain.com')
   .setName('Name')
   .setReplyToEmail('reply_identity@yourdomain.com')
   .setReplyToName('Reply Name')

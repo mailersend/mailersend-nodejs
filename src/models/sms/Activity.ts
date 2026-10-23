@@ -1,8 +1,8 @@
 import { Pagination } from "../Pagination";
 
 export interface SmsActivityQueryParams extends Pagination {
-  date_from?: number;
-  date_to?: number;
+  date_from?: number | string;
+  date_to?: number | string;
   status?: SmsActivityStatusType[];
   sms_number_id?: string;
 }

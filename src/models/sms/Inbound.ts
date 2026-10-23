@@ -2,7 +2,7 @@ import { Pagination } from "../Pagination";
 
 export interface SmsInboundQueryParams extends Pagination {
   sms_number_id?: string;
-  enabled?: boolean;
+  enabled?: boolean | 0 | 1;
 }
 
 export class SmsInbound {

@@ -23,8 +23,8 @@ describe("User Module", () => {
   });
 
   it("create", async () => {
-    const data = { email: "user@example.com", role: "admin" };
-    nock("http://test.com").post("/users", (body: any) => body.email === "user@example.com" && body.role === "admin").reply(201, { key1: "user_created" }, { header1: "test" });
+    const data = { email: "user@example.com", role: UserRole.Admin };
+    nock("http://test.com").post("/users", { email: "user@example.com", role: "Admin" }).reply(201, { key1: "user_created" }, { header1: "test" });
     const result = await userModule.create(data);
     expect(result.headers).toMatchObject({ header1: "test", "content-type": "application/json" });
     expect(result.body).toMatchObject({ key1: "user_created" });
@@ -33,20 +33,19 @@ describe("User Module", () => {
 
   it("create with all fields", async () => {
     nock("http://test.com")
-      .post("/users", (body: any) =>
-        body.email === "user@example.com" &&
-        body.role === "Custom User" &&
-        Array.isArray(body.permissions) &&
-        body.permissions[0] === "read-activity" &&
-        Array.isArray(body.templates) &&
-        Array.isArray(body.domains) &&
-        body.requires_periodic_password_change === true
-      )
+      .post("/users", {
+        email: "user@example.com",
+        role: "Custom User",
+        permissions: ["read-own-templates", "read-activity"],
+        templates: ["tmpl_123"],
+        domains: ["domain_123"],
+        requires_periodic_password_change: true,
+      })
       .reply(201, { key1: "user_created" }, { header1: "test" });
     const result = await userModule.create({
       email: "user@example.com",
       role: UserRole.CustomUser,
-      permissions: [UserPermission.ReadActivity, UserPermission.ReadEmail],
+      permissions: [UserPermission.ReadOwnTemplates, UserPermission.ReadActivity],
       templates: ["tmpl_123"],
       domains: ["domain_123"],
       requires_periodic_password_change: true,
@@ -55,26 +54,28 @@ describe("User Module", () => {
   });
 
   it("update", async () => {
-    const data = { role: "manager" };
-    nock("http://test.com").put("/users/test_user_id", (body: any) => body.role === "manager").reply(200, { key1: "user_updated" }, { header1: "test" });
+    const data = { role: UserRole.Manager };
+    nock("http://test.com").put("/users/test_user_id", { role: "Manager" }).reply(200, { key1: "user_updated" }, { header1: "test" });
     const result = await userModule.update("test_user_id", data);
     expect(result.headers).toMatchObject({ header1: "test", "content-type": "application/json" });
     expect(result.body).toMatchObject({ key1: "user_updated" });
     expect(result.statusCode).toBe(200);
   });
 
-  it("update with permissions and domains", async () => {
+  it("update with all fields", async () => {
     nock("http://test.com")
-      .put("/users/test_user_id", (body: any) =>
-        body.role === "Custom User" &&
-        Array.isArray(body.permissions) &&
-        Array.isArray(body.domains) &&
-        body.requires_periodic_password_change === false
-      )
+      .put("/users/test_user_id", {
+        role: "Custom User",
+        permissions: ["read-own-templates", "manage-domain"],
+        templates: ["tmpl_123"],
+        domains: ["domain_123"],
+        requires_periodic_password_change: false,
+      })
       .reply(200, { key1: "user_updated" }, { header1: "test" });
     const result = await userModule.update("test_user_id", {
       role: UserRole.CustomUser,
-      permissions: [UserPermission.ManageDomain],
+      permissions: [UserPermission.ReadOwnTemplates, UserPermission.ManageDomain],
+      templates: ["tmpl_123"],
       domains: ["domain_123"],
       requires_periodic_password_change: false,
     });

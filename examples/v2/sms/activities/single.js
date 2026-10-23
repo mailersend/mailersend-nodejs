@@ -5,6 +5,6 @@ const mailerSend = new MailerSend({
   apiKey: process.env.API_KEY,
 });
 
-mailerSend.sms.activity.single("sms_message_id")
+mailerSend.sms.message.single("sms_message_id")
   .then((response) => console.log(response.body))
   .catch((error) => console.log(error.body));

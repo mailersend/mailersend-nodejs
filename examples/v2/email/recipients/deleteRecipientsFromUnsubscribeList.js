@@ -6,7 +6,7 @@ const mailerSend = new MailerSend({
 });
 
 mailerSend.email.recipient.delBlockListRecipients(
-  ["recipient_id", "recipient_id"],
+  ["unsubscribe_id", "unsubscribe_id"],
   BlockListType.UNSUBSCRIBES_LIST
 )
   .then((response) => console.log(response.body))

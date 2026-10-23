@@ -48,7 +48,6 @@ describe("Template Module", () => {
       categories: ["cat1", "cat2"],
       domain_id: "domain_id",
       tags: ["tag1", "tag2"],
-      auto_generate: true,
     };
     nock("http://test.com")
       .post("/templates", {
@@ -58,12 +57,19 @@ describe("Template Module", () => {
         categories: ["cat1", "cat2"],
         domain_id: "domain_id",
         tags: ["tag1", "tag2"],
-        auto_generate: true,
       })
       .reply(201, { key1: "template_created" }, { header1: "test" });
     const result = await templateModule.create(params);
     expect(result.headers).toMatchObject({ header1: "test", "content-type": "application/json" });
     expect(result.body).toMatchObject({ key1: "template_created" });
+    expect(result.statusCode).toBe(201);
+  });
+
+  it("create omits auto_generate", async () => {
+    nock("http://test.com")
+      .post("/templates", { name: "Test Template", text: "Hello {{name}}", html: "<p>Hello {{name}}</p>" })
+      .reply(201, { key1: "template_created" }, {});
+    const result = await templateModule.create({ ...templateParams, auto_generate: true });
     expect(result.statusCode).toBe(201);
   });
 

@@ -38,12 +38,29 @@ describe("Domain Module", () => {
     expect(createDomain.statusCode).toBe(200);
   });
 
-  it("list", async () => {
-    const params = { limit: 20, page: 2, verified: true };
-    nock("http://test.com").get("/domains").query(params).reply(200, { key1: "key1_value" }, { header1: "test" });
-    const getDomains = await domainModule.list(params);
+  test.each([
+    ["true as 1", true, 1],
+    ["false as 0", false, 0],
+  ])("list sends verified %s", async (_label, verified, expected) => {
+    nock("http://test.com")
+      .get("/domains")
+      .query({ limit: 20, page: 2, verified: expected })
+      .reply(200, { key1: "key1_value" }, { header1: "test" });
+    const getDomains = await domainModule.list({ limit: 20, page: 2, verified });
     expect(getDomains.headers).toMatchObject({ header1: "test", "content-type": "application/json" });
     expect(getDomains.body).toMatchObject({ key1: "key1_value" });
+    expect(getDomains.statusCode).toBe(200);
+  });
+
+  it("list without verified does not send verified", async () => {
+    nock("http://test.com").get("/domains").query({ limit: 20, page: 2 }).reply(200, { key1: "key1_value" }, { header1: "test" });
+    const getDomains = await domainModule.list({ limit: 20, page: 2 });
+    expect(getDomains.statusCode).toBe(200);
+  });
+
+  it("list without query params sends no query string", async () => {
+    nock("http://test.com").get("/domains").reply(200, { key1: "key1_value" }, { header1: "test" });
+    const getDomains = await domainModule.list();
     expect(getDomains.statusCode).toBe(200);
   });
 
