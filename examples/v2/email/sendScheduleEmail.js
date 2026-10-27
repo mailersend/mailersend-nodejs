@@ -18,6 +18,6 @@ const emailParams = new EmailParams()
   .setSubject("This is a scheduled Subject")
   .setHtml("<strong>This is a scheduled HTML content</strong>")
   .setText("This is a scheduled text content")
-  .setSendAt(Math.floor((new Date(Date.now()+ 30*60*1000)).getTime() / 1000)); //send in 30mins; a Unix timestamp or an ISO 8601 string
+  .setSendAt(Math.floor((new Date(Date.now()+ 30*60*1000)).getTime() / 1000)); //send in 30mins NB:param has to be a Unix timestamp e.g 2443651141
 
 await mailerSend.email.send(emailParams);

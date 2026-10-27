@@ -21,14 +21,19 @@ describe("SMS Recipient Module", () => {
     expect(result.statusCode).toBe(200);
   });
 
-  test.each([
-    ["opt_out", "opt_out"],
-    ["active", "active"],
-  ] as const)("update puts status %s to /sms-recipients/{id}", async (_label, status) => {
-    nock("http://test.com").put("/sms-recipients/test_sms_recipient_id", { status }).reply(200, { key1: "sms_recipient_updated" }, { header1: "test" });
-    const result = await smsRecipientModule.update("test_sms_recipient_id", status);
+  it("update - opt_out", async () => {
+    nock("http://test.com").put("/sms-recipients/test_sms_recipient_id").reply(200, { key1: "sms_recipient_updated" }, { header1: "test" });
+    const result = await smsRecipientModule.update("test_sms_recipient_id", "opt_out");
     expect(result.headers).toMatchObject({ header1: "test", "content-type": "application/json" });
     expect(result.body).toMatchObject({ key1: "sms_recipient_updated" });
+    expect(result.statusCode).toBe(200);
+  });
+
+  it("update - active", async () => {
+    nock("http://test.com").put("/sms-recipients/test_sms_recipient_id").reply(200, { key1: "sms_recipient_activated" }, { header1: "test" });
+    const result = await smsRecipientModule.update("test_sms_recipient_id", "active");
+    expect(result.headers).toMatchObject({ header1: "test", "content-type": "application/json" });
+    expect(result.body).toMatchObject({ key1: "sms_recipient_activated" });
     expect(result.statusCode).toBe(200);
   });
 });

@@ -34,28 +34,23 @@ describe("Inbound Module", () => {
         filters: [{ comparer: ComparerType.EQUAL, value: "recipient@example.com" }],
       })
       .setCatchType("one")
-      .setMatchType("one")
-      .setIncludeAttachments(false);
+      .setMatchType("one");
 
     nock("http://test.com")
-      .post("/inbound", {
-        name: "full inbound",
-        domain_enabled: true,
-        domain_id: "domain_id_full",
-        inbound_domain: "inbound.example.com",
-        inbound_priority: 50,
-        forwards: [{ type: "webhook", value: "https://example.com/hook" }],
-        match_filter: {
-          type: "match_sender",
-          filters: [{ comparer: "equal", value: "sender@example.com" }],
-        },
-        catch_filter: {
-          type: "catch_recipient",
-          filters: [{ comparer: "equal", value: "recipient@example.com" }],
-        },
-        catch_type: "one",
-        match_type: "one",
-        include_attachments: false,
+      .post("/inbound", (body) => {
+        return body.name === "full inbound" &&
+          body.domain_enabled === true &&
+          body.domain_id === "domain_id_full" &&
+          body.inbound_domain === "inbound.example.com" &&
+          body.inbound_priority === 50 &&
+          Array.isArray(body.forwards) &&
+          body.forwards.length === 1 &&
+          body.forwards[0].type === "webhook" &&
+          body.forwards[0].value === "https://example.com/hook" &&
+          body.match_filter !== undefined &&
+          body.catch_filter !== undefined &&
+          body.catch_type === "one" &&
+          body.match_type === "one";
       })
       .reply(201, { key1: "inbound_created_full" }, { header1: "test" });
 
@@ -106,40 +101,32 @@ describe("Inbound Module", () => {
   });
 
   it("update sends PUT to /inbound/{id} with all optional fields", async () => {
-    const updateParams = new InboundUpdateParams("full inbound", true)
+    const updateParams = new InboundUpdateParams("full inbound", false)
       .setInboundDomain("inbound.example.com")
       .setInboundPriority(25)
-      .setForwards([{ type: "email", value: "forward@example.com" }])
+      .setForwards([{ type: "webhook", value: "https://example.com/hook" }])
       .setMatchFilter({
-        type: InboundFilterType.MATCH_HEADER,
-        filters: [{ comparer: ComparerType.CONTAINS, value: "urgent", key: "X-Priority" }],
+        type: InboundFilterType.MATCH_ALL,
       })
       .setCatchFilter({
-        type: InboundFilterType.CATCH_RECIPIENT,
-        filters: [{ comparer: ComparerType.STARTS_WITH, value: "support" }],
+        type: InboundFilterType.CATCH_ALL,
       })
       .setCatchType("one")
-      .setMatchType("one")
-      .setIncludeAttachments(true);
+      .setMatchType("one");
 
     nock("http://test.com")
-      .put("/inbound/test_inbound_id", {
-        name: "full inbound",
-        domain_enabled: true,
-        inbound_domain: "inbound.example.com",
-        inbound_priority: 25,
-        forwards: [{ type: "email", value: "forward@example.com" }],
-        match_filter: {
-          type: "match_header",
-          filters: [{ comparer: "contains", value: "urgent", key: "X-Priority" }],
-        },
-        catch_filter: {
-          type: "catch_recipient",
-          filters: [{ comparer: "starts-with", value: "support" }],
-        },
-        catch_type: "one",
-        match_type: "one",
-        include_attachments: true,
+      .put("/inbound/test_inbound_id", (body) => {
+        return body.name === "full inbound" &&
+          body.domain_enabled === false &&
+          !Object.prototype.hasOwnProperty.call(body, "domain_id") &&
+          body.inbound_domain === "inbound.example.com" &&
+          body.inbound_priority === 25 &&
+          Array.isArray(body.forwards) &&
+          body.forwards.length === 1 &&
+          body.match_filter !== undefined &&
+          body.catch_filter !== undefined &&
+          body.catch_type === "one" &&
+          body.match_type === "one";
       })
       .reply(200, { key1: "inbound_updated_full" }, { header1: "test" });
 

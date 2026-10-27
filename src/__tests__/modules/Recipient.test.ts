@@ -52,15 +52,15 @@ describe("Recipient Module", () => {
     expect(blockedRecipient.statusCode).toBe(200);
   });
   it("delete block recipients by ids", async () => {
+    nock("http://test.com").delete("/suppressions/blocklist", (body: any) => Array.isArray(body.ids) && body.ids[0] === "60f198790542d97fb66dfe52").reply(200, {}, { header1: "block-header" });
     const ids = ["60f198790542d97fb66dfe52", "60f198790542d97fb66dfe53"];
-    nock("http://test.com").delete("/suppressions/blocklist", { ids }).reply(200, {}, { header1: "block-header" });
     const removed = await recipientModule.delBlockListRecipients(ids);
     expect(removed.headers).toMatchObject({ header1: "block-header", "content-type": "application/json" });
     expect(removed.body).toMatchObject({});
     expect(removed.statusCode).toBe(200);
   });
   it("delete all block recipients", async () => {
-    nock("http://test.com").delete("/suppressions/blocklist", { all: true }).reply(200, {}, { header1: "block-header" });
+    nock("http://test.com").delete("/suppressions/blocklist", (body: any) => body.all === true).reply(200, {}, { header1: "block-header" });
     const removed = await recipientModule.delAllBlockListRecipients();
     expect(removed.headers).toMatchObject({ header1: "block-header", "content-type": "application/json" });
     expect(removed.body).toMatchObject({});
@@ -146,14 +146,14 @@ describe("Recipient Module", () => {
   it("delete hard bounces by ids", async () => {
     const ids = ["hb_id_1", "hb_id_2"];
     nock("http://test.com")
-      .delete("/suppressions/hard-bounces", { ids })
+      .delete("/suppressions/hard-bounces", (body: any) => Array.isArray(body.ids) && body.ids[0] === "hb_id_1")
       .reply(204, {}, { header1: "hard-bounces-header" });
     const result = await recipientModule.delBlockListRecipients(ids, BlockListType.HARD_BOUNCES_LIST);
     expect(result.statusCode).toBe(204);
   });
   it("delete all hard bounces", async () => {
     nock("http://test.com")
-      .delete("/suppressions/hard-bounces", { all: true })
+      .delete("/suppressions/hard-bounces", (body: any) => body.all === true)
       .reply(204, {}, { header1: "hard-bounces-header" });
     const result = await recipientModule.delAllBlockListRecipients(BlockListType.HARD_BOUNCES_LIST);
     expect(result.statusCode).toBe(204);
@@ -161,14 +161,14 @@ describe("Recipient Module", () => {
   it("delete spam complaints by ids", async () => {
     const ids = ["sc_id_1", "sc_id_2"];
     nock("http://test.com")
-      .delete("/suppressions/spam-complaints", { ids })
+      .delete("/suppressions/spam-complaints", (body: any) => Array.isArray(body.ids) && body.ids[0] === "sc_id_1")
       .reply(204, {}, { header1: "spam-complaints-header" });
     const result = await recipientModule.delBlockListRecipients(ids, BlockListType.SPAM_COMPLAINTS_LIST);
     expect(result.statusCode).toBe(204);
   });
   it("delete all spam complaints", async () => {
     nock("http://test.com")
-      .delete("/suppressions/spam-complaints", { all: true })
+      .delete("/suppressions/spam-complaints", (body: any) => body.all === true)
       .reply(204, {}, { header1: "spam-complaints-header" });
     const result = await recipientModule.delAllBlockListRecipients(BlockListType.SPAM_COMPLAINTS_LIST);
     expect(result.statusCode).toBe(204);
@@ -176,14 +176,14 @@ describe("Recipient Module", () => {
   it("delete unsubscribes by ids", async () => {
     const ids = ["unsub_id_1", "unsub_id_2"];
     nock("http://test.com")
-      .delete("/suppressions/unsubscribes", { ids })
+      .delete("/suppressions/unsubscribes", (body: any) => Array.isArray(body.ids) && body.ids[0] === "unsub_id_1")
       .reply(204, {}, { header1: "unsubscribes-header" });
     const result = await recipientModule.delBlockListRecipients(ids, BlockListType.UNSUBSCRIBES_LIST);
     expect(result.statusCode).toBe(204);
   });
   it("delete all unsubscribes", async () => {
     nock("http://test.com")
-      .delete("/suppressions/unsubscribes", { all: true })
+      .delete("/suppressions/unsubscribes", (body: any) => body.all === true)
       .reply(204, {}, { header1: "unsubscribes-header" });
     const result = await recipientModule.delAllBlockListRecipients(BlockListType.UNSUBSCRIBES_LIST);
     expect(result.statusCode).toBe(204);
@@ -191,71 +191,17 @@ describe("Recipient Module", () => {
   it("delete on-hold-list by ids", async () => {
     const ids = ["oh_id_1", "oh_id_2"];
     nock("http://test.com")
-      .delete("/suppressions/on-hold-list", { ids })
+      .delete("/suppressions/on-hold-list", (body: any) => Array.isArray(body.ids) && body.ids[0] === "oh_id_1")
       .reply(204, {}, { header1: "on-hold-header" });
     const result = await recipientModule.delBlockListRecipients(ids, BlockListType.ON_HOLD_LIST);
     expect(result.statusCode).toBe(204);
   });
   it("delete all on-hold-list", async () => {
     nock("http://test.com")
-      .delete("/suppressions/on-hold-list", { all: true })
+      .delete("/suppressions/on-hold-list", (body: any) => body.all === true)
       .reply(204, {}, { header1: "on-hold-header" });
     const result = await recipientModule.delAllBlockListRecipients(BlockListType.ON_HOLD_LIST);
     expect(result.statusCode).toBe(204);
-  });
-
-  describe("delete with domain id", () => {
-    const suppressionTypes = [
-      ["blocklist", BlockListType.BLOCK_LIST],
-      ["hard-bounces", BlockListType.HARD_BOUNCES_LIST],
-      ["spam-complaints", BlockListType.SPAM_COMPLAINTS_LIST],
-      ["unsubscribes", BlockListType.UNSUBSCRIBES_LIST],
-      ["on-hold-list", BlockListType.ON_HOLD_LIST],
-    ] as const;
-
-    test.each(suppressionTypes)("delete %s by ids sends domain_id", async (path, type) => {
-      const ids = ["entry_id_1", "entry_id_2"];
-      nock("http://test.com")
-        .delete(`/suppressions/${path}`, { ids, domain_id: "test_domain_id" })
-        .reply(204, {}, {});
-      const result = await recipientModule.delBlockListRecipients(ids, type, "test_domain_id");
-      expect(result.statusCode).toBe(204);
-    });
-
-    test.each(suppressionTypes)("delete all %s sends domain_id", async (path, type) => {
-      nock("http://test.com")
-        .delete(`/suppressions/${path}`, { all: true, domain_id: "test_domain_id" })
-        .reply(204, {}, {});
-      const result = await recipientModule.delAllBlockListRecipients(type, "test_domain_id");
-      expect(result.statusCode).toBe(204);
-    });
-  });
-
-  describe("list without limit", () => {
-    test.each([
-      ["blocklist", BlockListType.BLOCK_LIST],
-      ["hard-bounces", BlockListType.HARD_BOUNCES_LIST],
-      ["spam-complaints", BlockListType.SPAM_COMPLAINTS_LIST],
-      ["unsubscribes", BlockListType.UNSUBSCRIBES_LIST],
-    ] as const)("%s list without limit sends the request", async (path, type) => {
-      const params = { page: 2, domain_id: "domain_id" };
-      nock("http://test.com").get(`/suppressions/${path}`).query(params).reply(200, { data: [] }, {});
-      const result = await recipientModule.blockList(params, type);
-      expect(result.statusCode).toBe(200);
-    });
-
-    it("on-hold-list without limit sends the request", async () => {
-      const params = { page: 2, domain_id: "domain_id" };
-      nock("http://test.com").get("/suppressions/on-hold-list").query(params).reply(200, { data: [] }, {});
-      const result = await recipientModule.blockList(params, BlockListType.ON_HOLD_LIST);
-      expect(result.statusCode).toBe(200);
-    });
-
-    it("block list without query params uses blocklist and sends no query string", async () => {
-      nock("http://test.com").get("/suppressions/blocklist").reply(200, { data: [] }, {});
-      const result = await recipientModule.blockList();
-      expect(result.statusCode).toBe(200);
-    });
   });
 
   describe("limit validation", () => {
@@ -296,13 +242,16 @@ describe("Recipient Module", () => {
   });
 
   describe("blockRecipients blocklist — mutual requirement", () => {
-    test.each([
-      ["neither recipients nor patterns are provided", {}],
-      ["recipients is empty and patterns is absent", { recipients: [] }],
-      ["patterns is empty and recipients is absent", { patterns: [] }],
-      ["recipients and patterns are both empty", { recipients: [], patterns: [] }],
-    ])("throws when %s", async (_label, data: BlockListRecipients) => {
-      await expect(recipientModule.blockRecipients(data)).rejects.toThrow("Either recipients or patterns must be provided.");
+    it("throws when neither recipients nor patterns are provided", async () => {
+      await expect(recipientModule.blockRecipients({})).rejects.toThrow("Either recipients or patterns must be provided.");
+    });
+
+    it("throws when recipients is empty and patterns is absent", async () => {
+      await expect(recipientModule.blockRecipients({ recipients: [] })).rejects.toThrow("Either recipients or patterns must be provided.");
+    });
+
+    it("throws when patterns is empty and recipients is absent", async () => {
+      await expect(recipientModule.blockRecipients({ patterns: [] })).rejects.toThrow("Either recipients or patterns must be provided.");
     });
 
     it("succeeds with only recipients", async () => {

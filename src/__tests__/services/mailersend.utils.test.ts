@@ -16,17 +16,32 @@ describe("utils", () => {
     expect(isLegit).toBeTruthy();
   });
 
+  it("no body", async () => {
+    expect(() => MailerSendUtils.verifyWebHook(undefined as any, "test", "test")).toThrow(
+      "No raw body provided",
+    );
+  });
+
+  it("no signature", async () => {
+    expect(() => MailerSendUtils.verifyWebHook(Buffer.from("test"), undefined as any, "test")).toThrow(
+      "No signature provided",
+    );
+  });
+
+  it("no secret", async () => {
+    expect(() => MailerSendUtils.verifyWebHook(Buffer.from("test"), "test", undefined as any)).toThrow(
+      "No secret provided",
+    );
+  });
+
   it("is exported from the package entry", () => {
     expect(PackageMailerSendUtils).toBe(MailerSendUtils);
   });
 
-  test.each([
-    ["no body", undefined as any, "test", "test", "No raw body provided"],
-    ["no signature", Buffer.from("test"), undefined as any, "test", "No signature provided"],
-    ["headers without a Signature header", Buffer.from("test"), { "content-type": "application/json" }, "test", "No signature provided"],
-    ["no secret", Buffer.from("test"), "test", undefined as any, "No secret provided"],
-  ])("%s", (_label, rawBody, signature, secret, message) => {
-    expect(() => MailerSendUtils.verifyWebHook(rawBody, signature, secret)).toThrow(message);
+  it("headers without a Signature header", () => {
+    expect(() => MailerSendUtils.verifyWebHook(Buffer.from("test"), { "content-type": "application/json" }, "test")).toThrow(
+      "No signature provided",
+    );
   });
 
   test.each([

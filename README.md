@@ -33,25 +33,24 @@ For more info, you can:
     - [Send an email](#send-an-email)
     - [Add CC, BCC recipients](#add-cc-bcc-recipients)
     - [Send a template-based email](#send-a-template-based-email)
-    - [Send a template-based email in a specific language](#send-a-template-based-email-in-a-specific-language)
-    - [Personalization](#personalization)
+    - [Personalization](#advanced-personalization)
     - [Send email with attachment](#send-email-with-attachment)
     - [Send email with inline attachment](#send-email-with-inline-attachment)
     - [Send email with references (threading)](#send-email-with-references-threading)
     - [Send email with list-unsubscribe](#send-email-with-list-unsubscribe)
-    - [Send a scheduled message](#send-a-scheduled-message)
+    - [Send a scheduled email](#send-a-scheduled-email)
     - [Send email with precedence bulk header](#send-email-with-precedence-bulk-header)
     - [Send an email with tracking](#send-an-email-with-tracking)
     - [Send email with custom headers](#send-email-with-custom-headers)
   - [Bulk email API](#bulk-email-api)
-    - [Send bulk email](#send-bulk-email)
-    - [Get bulk email status](#get-bulk-email-status)
-  - [Inbound routing](#inbound-routing)
-    - [Get a list of inbound routes](#get-a-list-of-inbound-routes)
-    - [Get a single inbound route](#get-a-single-inbound-route)
-    - [Add an inbound route](#add-an-inbound-route)
-    - [Update an inbound route](#update-an-inbound-route)
-    - [Delete an inbound route](#delete-an-inbound-route)
+    - [Send bulk emails](#send-bulk-emails)
+    - [Get bulk request status](#get-bulk-request-status)
+  - [Inbound Routing](#inbound)
+    - [Get inbound list](#get-inbound-list)
+    - [Get inbound](#get-inbound)
+    - [Create inbound](#create-inbound)
+    - [Update inbound](#update-inbound)
+    - [Delete inbound](#delete-inbound)
   - [Activity](#activity)
     - [Get activity list](#get-activity-list)
     - [Get single activity](#get-single-activity)
@@ -76,9 +75,9 @@ For more info, you can:
     - [Get a list of messages](#get-a-list-of-messages)
     - [Get info on a message](#get-info-on-a-message)
   - [Scheduled Messages](#scheduled-messages)
-    - [Get a list of scheduled messages](#get-a-list-of-scheduled-messages)
-    - [Get a single scheduled message](#get-a-single-scheduled-message)
-    - [Delete a scheduled message](#delete-a-scheduled-message)
+    - [Get scheduled email list](#get-scheduled-email-list)
+    - [Get scheduled email](#get-scheduled-email)
+    - [Delete scheduled email](#delete-scheduled-email)
   - [Tokens](#tokens)
     - [List tokens](#list-tokens)
     - [Get token](#get-token)
@@ -102,7 +101,6 @@ For more info, you can:
     - [Create webhook](#create-webhook)
     - [Update webhook](#update-webhook)
     - [Delete webhook](#delete-webhook)
-    - [Verify webhook signature](#verify-webhook-signature)
   - [Templates](#templates)
     - [Get a list of templates](#get-a-list-of-templates)
     - [Get a single template](#get-a-single-template)
@@ -121,8 +119,6 @@ For more info, you can:
   - [WhatsApp](#whatsapp)
     - [Send a WhatsApp message](#send-a-whatsapp-message)
     - [WhatsApp personalization](#whatsapp-personalization)
-    - [WhatsApp media headers](#whatsapp-media-headers)
-    - [WhatsApp named variables](#whatsapp-named-variables)
   - [WhatsApp messages API](#whatsapp-messages-api)
     - [Get a list of WhatsApp messages](#get-a-list-of-whatsapp-messages)
     - [Get a WhatsApp message](#get-a-whatsapp-message)
@@ -143,32 +139,32 @@ For more info, you can:
   - [SMS](#sms)
     - [Send SMS](#send-sms)
     - [SMS personalization](#sms-personalization)
-  - [SMS phone numbers](#sms-phone-numbers)
+  - [Phone Numbers](#phone-numbers)
     - [Get phone number list](#get-phone-number-list)
     - [Get phone number](#get-phone-number)
     - [Update phone number](#update-phone-number)
     - [Delete phone number](#delete-phone-number)
-  - [SMS messages](#sms-messages)
+  - [SMS Messages](#messages-1)
     - [Get messages list](#get-messages-list)
     - [Get a message](#get-a-message)
-  - [SMS activity](#sms-activity)
+  - [SMS Activity](#activity-1)
     - [Get activity list](#get-activity-list-1)
-  - [SMS recipients](#sms-recipients)
+  - [SMS Recipients](#recipients-1)
     - [Get recipient list](#get-recipient-list)
     - [Get recipient](#get-recipient)
     - [Update recipient](#update-recipient)
-  - [SMS webhooks](#sms-webhooks)
+  - [SMS Webhooks](#webhooks-1)
     - [Get webhook list for a number](#get-webhook-list-for-a-number)
     - [Get webhook](#get-webhook-1)
     - [Create webhook](#create-webhook-1)
     - [Update webhook](#update-webhook-1)
     - [Delete webhook](#delete-webhook-1)
-  - [SMS inbound routing](#sms-inbound-routing)
-    - [Get inbound list](#get-inbound-list)
-    - [Get inbound](#get-inbound)
+  - [SMS Inbound](#inbound-1)
+    - [Get inbound list](#get-inbound-list-1)
+    - [Get inbound](#get-inbound-1)
     - [Add inbound](#add-inbound)
-    - [Update inbound](#update-inbound)
-    - [Delete inbound](#delete-inbound)
+    - [Update inbound](#update-inbound-1)
+    - [Delete inbound](#delete-inbound-1)
   - [Identity](#identity)
     - [Get identity list](#get-identity-list)
     - [Get identity](#get-identity)
@@ -180,9 +176,9 @@ For more info, you can:
     - [Delete identity by email](#delete-identity-by-email-address)
     - [Resend identity verification](#resend-identity-verification)
   - [SMTP Users](#smtp-users)
-    - [Get a list of SMTP users](#get-a-list-of-smtp-users)
-    - [Get a single SMTP user](#get-a-single-smtp-user)
-    - [Add SMTP user](#add-smtp-user)
+    - [List SMTP users](#list-smtp-users)
+    - [Get SMTP user](#get-smtp-user)
+    - [Create SMTP user](#create-smtp-user)
     - [Update SMTP user](#update-smtp-user)
     - [Delete SMTP user](#delete-smtp-user)
   - [Users](#users)
@@ -705,7 +701,7 @@ await mailerSend.email.sendBulk(bulkEmails);
 
 ```
 
-### Get bulk email status
+### Get bulk request status
 
 ```js
 import 'dotenv/config';
@@ -820,7 +816,7 @@ mailerSend.email.inbound.create(inbound)
 
 ### Update an inbound route
 
-Leaving `setIncludeAttachments()` unset keeps the route's stored value; the API does not reset it to `true`. Pass `false` explicitly to drop attachments. `catch_type` and `match_type` work the other way: leaving `setCatchType()` / `setMatchType()` unset resets the route to `"all"`, so call them on every update of a route that uses `"one"`.
+Leaving `setIncludeAttachments()` unset keeps the route's stored value; the API does not reset it to `true`. Pass `false` explicitly to drop attachments.
 
 ```js
 import 'dotenv/config';
@@ -948,8 +944,8 @@ mailerSend.email.list(queryParams)
 | Query parameter   | Type                            | Required | Details                                                                                                                          |
 |-------------------|---------------------------------|----------|----------------------------------------------------------------------------------------------------------------------------------|
 | `domain_id`       | `string`                        | yes      | Must be a domain that belongs to your account. An unknown ID returns `404`.                                                      |
-| `date_from`       | `number \| string`              | yes      | Unix timestamp (`1443651141`) or datetime (`2015-10-01 00:00:00`), assumed `UTC`. Must be lower than `date_to`.                  |
-| `date_to`         | `number \| string`              | yes      | Unix timestamp or datetime, assumed `UTC`. Must be higher than `date_from`.                                                      |
+| `date_from`       | `number \| string`              | yes      | Unix timestamp (`1443651141`) or datetime (`2015-10-01 00:00:00`), assumed `UTC`. Must be lower than `date_to` and within your plan's data retention limit (1–30 days). |
+| `date_to`         | `number \| string`              | yes      | Unix timestamp or datetime, assumed `UTC`. Must be higher than `date_from` and must not be in the future.                          |
 | `page`            | `number`                        | no       | Min: `1`, Max: `100`, Default: `1`. See [Pagination](#emails-pagination).                                                         |
 | `limit`           | `number`                        | no       | Min: `10`, Max: `1000`, Default: `25`.                                                                                           |
 | `status`          | `EmailStatus[]`                 | no       | Any of `queued`, `sent`, `rejected`, `delivered`. Values are combined with `OR`.                                                  |
@@ -1109,7 +1105,7 @@ email.data.activity.forEach((event) => console.log(event.type, event.created_at)
 
 ```js
 import 'dotenv/config';
-import { ActivityEventType, AnalyticsGroupByType, MailerSend } from "mailersend";
+import { ActivityEventType, AnalyticsDateQueryParams, AnalyticsGroupByType, MailerSend } from "mailersend";
 
 const mailerSend = new MailerSend({
   apiKey: process.env.API_KEY,
@@ -1118,7 +1114,7 @@ const mailerSend = new MailerSend({
 const dateTo = Math.floor(Date.now() / 1000); // Unix timestamp; must not be in the future
 const dateFrom = dateTo - 30 * 24 * 60 * 60; // no more than 183 days in the past
 
-const queryParams = {
+const queryParams: AnalyticsDateQueryParams = {
   date_from: dateFrom,
   date_to: dateTo,
   // date_from / date_to also accept ISO 8601 ("YYYY-MM-DDTHH:MM:SSZ") or datetime ("YYYY-MM-DD HH:MM:SS") strings
@@ -1266,9 +1262,9 @@ const mailerSend = new MailerSend({
 
 const domain = new Domain(
   "example.com",
-  "rpsubdomain",
-  "ctsubdomain",
-  "irsubdomain",
+  "rp_subdomain",
+  "ct_subdomain",
+  "ir_subdomain",
 )
 
 mailerSend.email.domain.create(domain)
@@ -1327,8 +1323,8 @@ mailerSend.email.domain.updateSettings("domain_id", {
   track_clicks: true,
   track_opens: true,
   track_unsubscribe: true,
-  track_unsubscribe_html: '<p>Click here to <a href="{{unsubscribe}}">unsubscribe</a></p>',
-  track_unsubscribe_plain: "Click here to unsubscribe: {{unsubscribe}}",
+  track_unsubscribe_html: "<strong> Unsubscribe now </strong>",
+  track_unsubscribe_plain: "Unsubscribe now",
   track_unsubscribe_html_enabled: true,
   track_unsubscribe_plain_enabled: true,
   track_content: true,
@@ -1411,7 +1407,7 @@ mailerSend.email.message.single("message_id")
 
 ## Scheduled Messages
 
-### Get a list of scheduled messages
+### Get scheduled email list
 
 ```js
 import 'dotenv/config';
@@ -1432,7 +1428,7 @@ mailerSend.email.schedule.list({
 
 ```
 
-### Get a single scheduled message
+### Get scheduled email
 
 ```js
 import 'dotenv/config';
@@ -1448,7 +1444,7 @@ mailerSend.email.schedule.single("message_id")
 
 ```
 
-### Delete a scheduled message
+### Delete scheduled email
 
 ```js
 import 'dotenv/config';
@@ -1644,9 +1640,6 @@ mailerSend.email.recipient.blockRecipients({
   domain_id: 'domain_id',
   recipients: [
     "test@example.com"
-  ],
-  patterns: [
-    ".*@example.com"
   ]
 }, BlockListType.BLOCK_LIST)
   .then((response) => console.log(response.body))
@@ -1730,17 +1723,8 @@ const mailerSend = new MailerSend({
 });
 
 mailerSend.email.recipient.delBlockListRecipients(
-  ["blocklist_entry_id", "blocklist_entry_id"],
+  ["recipient_id", "recipient_id"],
   BlockListType.BLOCK_LIST
-)
-  .then((response) => console.log(response.body))
-  .catch((error) => console.log(error.body));
-
-// You can also specify the domain
-mailerSend.email.recipient.delBlockListRecipients(
-  ["blocklist_entry_id"],
-  BlockListType.BLOCK_LIST,
-  "domain_id"
 )
   .then((response) => console.log(response.body))
   .catch((error) => console.log(error.body));
@@ -1758,7 +1742,7 @@ const mailerSend = new MailerSend({
 });
 
 mailerSend.email.recipient.delBlockListRecipients(
-  ["hard_bounce_id", "hard_bounce_id"],
+  ["recipient_id", "recipient_id"],
   BlockListType.HARD_BOUNCES_LIST
 )
   .then((response) => console.log(response.body))
@@ -1777,7 +1761,7 @@ const mailerSend = new MailerSend({
 });
 
 mailerSend.email.recipient.delBlockListRecipients(
-  ["spam_complaint_id", "spam_complaint_id"],
+  ["recipient_id", "recipient_id"],
   BlockListType.SPAM_COMPLAINTS_LIST
 )
   .then((response) => console.log(response.body))
@@ -1796,7 +1780,7 @@ const mailerSend = new MailerSend({
 });
 
 mailerSend.email.recipient.delBlockListRecipients(
-  ["unsubscribe_id", "unsubscribe_id"],
+  ["recipient_id", "recipient_id"],
   BlockListType.UNSUBSCRIBES_LIST
 )
   .then((response) => console.log(response.body))
@@ -1896,11 +1880,6 @@ mailerSend.email.recipient.delAllBlockListRecipients(BlockListType.BLOCK_LIST)
   .then((response) => console.log(response.body))
   .catch((error) => console.log(error.body));
 
-// You can also specify the domain
-mailerSend.email.recipient.delAllBlockListRecipients(BlockListType.BLOCK_LIST, "domain_id")
-  .then((response) => console.log(response.body))
-  .catch((error) => console.log(error.body));
-
 ```
 
 ### Get recipients from the on-hold list
@@ -1933,7 +1912,7 @@ const mailerSend = new MailerSend({
 });
 
 mailerSend.email.recipient.delBlockListRecipients(
-  ["on_hold_entry_id", "on_hold_entry_id"],
+  ["recipient_id", "recipient_id"],
   BlockListType.ON_HOLD_LIST
 )
   .then((response) => console.log(response.body))
@@ -2093,10 +2072,6 @@ mailerSend.email.webhook.delete("webhook_id")
   .catch((error) => console.log(error.body));
 
 ```
-
-### Verify webhook signature
-
-See [Utils — Verify a webhook signature](#verify-a-webhook-signature).
 
 ## Templates
 
@@ -2413,64 +2388,15 @@ await mailersend.whatsapp.send(whatsappParams);
 
 ```
 
-### WhatsApp media headers
-
-If the template has an image, video or document header, pass an object with the file's public `https` URL to `setHeader()` instead of an array. `filename` is only shown for document headers. Every recipient needs one.
+If the template has an image, video or document header, pass an object with the file's public `https` URL to `setHeader()` instead of an array (`filename` is only shown for document headers). Templates with named variables, such as `{{first_name}}`, take an object keyed by variable name instead of an array.
 
 ```js
-import 'dotenv/config';
-import { MailerSend, WhatsAppParams, WhatsAppPersonalization } from "mailersend";
+new WhatsAppPersonalization("19191234567")
+  .setHeader({ link: "https://www.example.com/invoices/12345.pdf", filename: "invoice-12345.pdf" })
+  .setBody(["John"]);
 
-const mailersend = new MailerSend({
-  apiKey: process.env.API_KEY,
-});
-
-const personalization = [
-  new WhatsAppPersonalization("19191234567")
-    .setHeader({
-      link: "https://www.example.com/invoices/12345.pdf",
-      filename: "invoice-12345.pdf",
-    })
-    .setBody(["John", "December 31, 2026"]),
-];
-
-const whatsappParams = new WhatsAppParams()
-  .setFrom("12345678901")
-  .setTo(["19191234567"])
-  .setTemplateId("template_id_123")
-  .setPersonalization(personalization);
-
-await mailersend.whatsapp.send(whatsappParams);
-
-```
-
-### WhatsApp named variables
-
-Templates with named variables, such as `{{first_name}}`, take an object keyed by variable name instead of an array. Every variable in the section must have a value.
-
-```js
-import 'dotenv/config';
-import { MailerSend, WhatsAppParams, WhatsAppPersonalization } from "mailersend";
-
-const mailersend = new MailerSend({
-  apiKey: process.env.API_KEY,
-});
-
-const personalization = [
-  new WhatsAppPersonalization("19191234567")
-    .setBody({
-      first_name: "John",
-      order_date: "December 31, 2026",
-    }),
-];
-
-const whatsappParams = new WhatsAppParams()
-  .setFrom("12345678901")
-  .setTo(["19191234567"])
-  .setTemplateId("template_id_123")
-  .setPersonalization(personalization);
-
-await mailersend.whatsapp.send(whatsappParams);
+new WhatsAppPersonalization("19191234567")
+  .setBody({ first_name: "John", order_date: "December 31, 2026" });
 
 ```
 
@@ -2860,7 +2786,7 @@ await mailersend.sms.send(smsParams);
 
 ```
 
-## SMS phone numbers
+## Phone Numbers
 
 ### Get phone number list
 
@@ -2930,7 +2856,7 @@ mailerSend.sms.number.delete("sms_number_id")
 
 ```
 
-## SMS messages
+## Messages
 
 ### Get messages list
 
@@ -2967,7 +2893,7 @@ mailerSend.sms.message.single("sms_message_id")
 
 ```
 
-## SMS activity
+## Activity
 
 ### Get activity list
 
@@ -2990,7 +2916,7 @@ mailerSend.sms.activity.list({
 
 ```
 
-## SMS recipients
+## Recipients
 
 ### Get recipient list
 
@@ -3045,7 +2971,7 @@ mailerSend.sms.recipient.update("sms_recipient_id", "active")
 
 ```
 
-## SMS webhooks
+## Webhooks
 
 ### Get webhook list for a number
 
@@ -3091,13 +3017,12 @@ const mailerSend = new MailerSend({
   apiKey: process.env.API_KEY,
 });
 
-const smsWebhook = new SmsWebhook(
-  "Sms Webhook",
-  "https://yourapp.com/hook",
-  [SmsWebhookEventType.SENT, SmsWebhookEventType.DELIVERED],
-  "sms_number_id",
-  true,
-);
+const smsWebhook = new SmsWebhook()
+  .setName("Sms Webhook")
+  .setUrl("https://yourapp.com/hook")
+  .setSmsNumberId("sms_number_id")
+  .setEnabled(true)
+  .setEvents([SmsWebhookEventType.SENT, SmsWebhookEventType.DELIVERED])
 
 mailerSend.sms.webhook.create(smsWebhook)
   .then((response) => console.log(response.body))
@@ -3109,7 +3034,7 @@ mailerSend.sms.webhook.create(smsWebhook)
 
 ```js
 import 'dotenv/config';
-import { MailerSend, SmsWebhookEventType } from "mailersend";
+import { MailerSend } from "mailersend";
 
 const mailerSend = new MailerSend({
   apiKey: process.env.API_KEY,
@@ -3118,7 +3043,7 @@ const mailerSend = new MailerSend({
 mailerSend.sms.webhook.update("sms_webhook_id", {
   name: "Webhook",
   url: "https://yourapp.com/hook",
-  events: [SmsWebhookEventType.SENT, SmsWebhookEventType.DELIVERED, SmsWebhookEventType.FAILED],
+  events: ["sms.sent", "sms.delivered", "sms.failed"],
   enabled: true
 })
   .then((response) => console.log(response.body))
@@ -3146,7 +3071,7 @@ mailerSend.sms.webhook.delete("sms_webhook_id")
 
 See [Utils — Verify a webhook signature](#verify-a-webhook-signature).
 
-## SMS inbound routing
+## Inbound
 
 ### Get inbound list
 
@@ -3159,7 +3084,7 @@ const mailerSend = new MailerSend({
 });
 
 mailerSend.sms.inbound.list({
-  enabled: true,
+  enabled: 1,
   sms_number_id: "sms_number_id",
   limit: 10,
   page: 1,
@@ -3189,16 +3114,19 @@ mailerSend.sms.inbound.single("sms_inbound_id")
 
 ```js
 import 'dotenv/config';
-import { MailerSend, SmsInbound, SmsComparerType } from "mailersend";
+import { MailerSend, SmsInbound } from "mailersend";
 
 const mailerSend = new MailerSend({
   apiKey: process.env.API_KEY,
 });
 
-const smsInbound = new SmsInbound("Inbound Name", "sms_number_id", "https://yourapp.com/hook")
+const smsInbound = new SmsInbound()
+  .setSmsNumberId("sms_number_id")
   .setEnabled(true)
+  .setName("Inbound Name")
+  .setForwardUrl("https://yourapp.com/hook")
   .setFilter({
-    comparer: SmsComparerType.EQUAL,
+    comparer: "equal",
     value: "START"
   });
 
@@ -3212,16 +3140,19 @@ mailerSend.sms.inbound.create(smsInbound)
 
 ```js
 import 'dotenv/config';
-import { MailerSend, SmsInbound, SmsComparerType } from "mailersend";
+import { MailerSend, SmsInbound } from "mailersend";
 
 const mailerSend = new MailerSend({
   apiKey: process.env.API_KEY,
 });
 
-const smsInbound = new SmsInbound("Inbound Name Update", "sms_number_id", "https://yourapp.com/hook")
+const smsInbound = new SmsInbound()
+  .setSmsNumberId("sms_number_id")
   .setEnabled(true)
+  .setName("Inbound Name Update")
+  .setForwardUrl("https://yourapp.com/hook")
   .setFilter({
-    comparer: SmsComparerType.EQUAL,
+    comparer: "equal",
     value: "START"
   });
 
@@ -3259,17 +3190,7 @@ const mailerSend = new MailerSend({
   apiKey: process.env.API_KEY,
 });
 
-mailerSend.email.identity.list({ domain_id: 'domain_id', page: 1, limit: 25 })
-  .then((response) => console.log(response.body))
-  .catch((error) => console.log(error.body));
-
-// With search and ordering
-mailerSend.email.identity.list({
-  domain_id: 'domain_id',
-  query: 'identity@yourdomain.com',
-  order_by: 'created_at',
-  order: 'desc',
-})
+mailerSend.email.identity.list()
   .then((response) => console.log(response.body))
   .catch((error) => console.log(error.body));
 
@@ -3317,7 +3238,9 @@ const mailerSend = new MailerSend({
   apiKey: process.env.API_KEY,
 });
 
-const identity = new Identity('domain_id', 'identity@yourdomain.com')
+const identity = new Identity()
+  .setDomainId('domain_id')
+  .setEmail('identity@yourdomain.com')
   .setName('Name')
   .setReplyToEmail('reply_identity@yourdomain.com')
   .setReplyToName('Reply Name')
@@ -3423,7 +3346,7 @@ mailerSend.email.identity.resend("identity_id")
 
 ## SMTP Users
 
-### Get a list of SMTP users
+### List SMTP users
 
 ```js
 import 'dotenv/config';
@@ -3439,7 +3362,7 @@ mailerSend.email.smtpUser.list("domain_id", { page: 1, limit: 25 })
 
 ```
 
-### Get a single SMTP user
+### Get SMTP user
 
 ```js
 import 'dotenv/config';
@@ -3455,7 +3378,7 @@ mailerSend.email.smtpUser.single("domain_id", "smtp_user_id")
 
 ```
 
-### Add SMTP user
+### Create SMTP user
 
 ```js
 import 'dotenv/config';
@@ -3545,11 +3468,9 @@ mailerSend.user.single("user_id")
 
 ### Invite a user
 
-`role` is case-sensitive. `permissions` is required only when `role` is `UserRole.CustomUser`, and `templates` needs `UserPermission.ReadOwnTemplates` in `permissions`; both are ignored for other roles.
-
 ```js
 import 'dotenv/config';
-import { MailerSend, UserRole, UserPermission } from "mailersend";
+import { MailerSend, UserRole } from "mailersend";
 
 const mailerSend = new MailerSend({
   apiKey: process.env.API_KEY,
@@ -3558,18 +3479,10 @@ const mailerSend = new MailerSend({
 mailerSend.user.create({
   email: "user@example.com",
   role: UserRole.Manager,
-})
-  .then((response) => console.log(response.body))
-  .catch((error) => console.log(error.body));
-
-// Example using all options
-mailerSend.user.create({
-  email: "user@example.com",
-  role: UserRole.CustomUser,
-  permissions: [UserPermission.ReadOwnTemplates, UserPermission.ReadActivity],
-  templates: ["template_id"],
-  domains: ["domain_id"],
-  requires_periodic_password_change: true,
+  // For role UserRole.CustomUser, permissions is required:
+  // permissions: ["read-activity", "read-analytics"],
+  // templates: ["template_id"],
+  // domains: ["domain_id"],
 })
   .then((response) => console.log(response.body))
   .catch((error) => console.log(error.body));
@@ -3577,8 +3490,6 @@ mailerSend.user.create({
 ```
 
 ### Update user
-
-`role` is required on every update.
 
 ```js
 import 'dotenv/config';
@@ -3781,8 +3692,8 @@ const mailerSend = new MailerSend({
 });
 
 mailerSend.dmarc.reportSources("monitor_id", {
-  date_from: "1700000000",
-  date_to: "1700100000",
+  date_from: 1700000000,
+  date_to: 1700100000,
   status: "accepted", // optional: "accepted" | "rejected" | "quarantined"
 })
   .then((response) => console.log(response.body))

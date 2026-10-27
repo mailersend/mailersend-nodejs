@@ -6,7 +6,7 @@ const mailerSend = new MailerSend({
 });
 
 mailerSend.sms.inbound.list({
-  enabled: true,
+  enabled: 1,
   sms_number_id: "sms_number_id",
   limit: 10,
   page: 1,

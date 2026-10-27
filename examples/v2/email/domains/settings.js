@@ -6,17 +6,17 @@ const mailerSend = new MailerSend({
 });
 
 mailerSend.email.domain.updateSettings("domain_id", {
-  send_paused: true,
-  track_clicks: true,
-  track_opens: true,
-  track_unsubscribe: true,
-  track_unsubscribe_html: '<p>Click here to <a href="{{unsubscribe}}">unsubscribe</a></p>',
-  track_unsubscribe_plain: "Click here to unsubscribe: {{unsubscribe}}",
-  track_content: true,
-  custom_tracking_enabled: true,
+  send_paused: 1,
+  track_clicks: 1,
+  track_opens: 1,
+  track_unsubscribe: 1,
+  track_unsubscribe_html: "<strong> Unsubscribe now </strong>",
+  track_unsubscribe_plain: "Unsubscribe now",
+  track_content: 1,
+  custom_tracking_enabled: 1,
   custom_tracking_subdomain: "subdomain",
-  precedence_bulk: true,
-  ignore_duplicated_recipients: true,
+  precedence_bulk: 1,
+  ignore_duplicated_recipients: 1,
 })
   .then((response) => console.log(response.body))
   .catch((error) => console.log(error.body));

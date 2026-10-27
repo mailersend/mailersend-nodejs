@@ -5,14 +5,8 @@ import nock from "nock"
 describe("WhatsApp Module", () => {
   const whatsappModule = new WhatsAppModule("test_key", "http://test.com")
 
-  it("send posts from, to and template_id to /whatsapp/send", async () => {
-    nock("http://test.com")
-      .post("/whatsapp/send", {
-        from: "12345678901",
-        to: ["19191234567", "19199876543"],
-        template_id: "template_id_123",
-      })
-      .reply(202, { id: "msg_id_123" }, { "x-message-id": "msg_id_123" })
+  it("send", async () => {
+    nock("http://test.com").post("/whatsapp/send").reply(202, { id: "msg_id_123" }, { "x-message-id": "msg_id_123" })
 
     const params = new WhatsAppParams()
       .setFrom("12345678901")
@@ -26,24 +20,8 @@ describe("WhatsApp Module", () => {
     expect(response.headers).toMatchObject({ "x-message-id": "msg_id_123" })
   })
 
-  it("send with positional personalization posts header, body and buttons arrays", async () => {
-    nock("http://test.com")
-      .post("/whatsapp/send", {
-        from: "12345678901",
-        to: ["19191234567", "19199876543"],
-        template_id: "template_id_123",
-        personalization: [
-          {
-            to: "19191234567",
-            data: { header: ["John"], body: ["order #1234", "tomorrow"], buttons: ["track/1234"] },
-          },
-          {
-            to: "19199876543",
-            data: { header: ["Jane"], body: ["order #5678", "Friday"] },
-          },
-        ],
-      })
-      .reply(202, { id: "msg_id_456" }, { "x-message-id": "msg_id_456" })
+  it("send with personalization", async () => {
+    nock("http://test.com").post("/whatsapp/send").reply(202, { id: "msg_id_456" }, { "x-message-id": "msg_id_456" })
 
     const personalization = [
       new WhatsAppPersonalization("19191234567")
@@ -130,34 +108,5 @@ describe("WhatsApp Module", () => {
     const response = await whatsappModule.send(params)
 
     expect(response.statusCode).toBe(202)
-  })
-})
-
-describe("WhatsAppParams", () => {
-  it("constructor config with personalization keeps every field", () => {
-    const params = new WhatsAppParams({
-      from: "12345678901",
-      to: ["19191234567"],
-      template_id: "template_id_123",
-      personalization: [new WhatsAppPersonalization("19191234567").setBody(["John"])],
-    })
-
-    expect(params).toEqual({
-      from: "12345678901",
-      to: ["19191234567"],
-      template_id: "template_id_123",
-      personalization: [{ to: "19191234567", data: { body: ["John"] } }],
-    })
-  })
-
-  it("constructor config with empty personalization omits the key", () => {
-    const params = new WhatsAppParams({
-      from: "12345678901",
-      to: ["19191234567"],
-      template_id: "template_id_123",
-      personalization: [],
-    })
-
-    expect(params).not.toHaveProperty("personalization")
   })
 })

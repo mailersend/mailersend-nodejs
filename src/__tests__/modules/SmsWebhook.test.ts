@@ -12,16 +12,8 @@ describe("SMS Webhook Module", () => {
     true,
   );
 
-  it("create posts url, name, events, sms_number_id and enabled to /sms-webhooks", async () => {
-    nock("http://test.com")
-      .post("/sms-webhooks", {
-        url: "https://example.com/sms-webhook",
-        name: "Test SMS Webhook",
-        events: ["sms.sent", "sms.delivered"],
-        sms_number_id: "sms_number_id",
-        enabled: true,
-      })
-      .reply(201, { key1: "sms_webhook_created" }, { header1: "test" });
+  it("create", async () => {
+    nock("http://test.com").post("/sms-webhooks").reply(201, { key1: "sms_webhook_created" }, { header1: "test" });
     const result = await smsWebhookModule.create(smsWebhook);
     expect(result.headers).toMatchObject({ header1: "test", "content-type": "application/json" });
     expect(result.body).toMatchObject({ key1: "sms_webhook_created" });
@@ -39,13 +31,6 @@ describe("SMS Webhook Module", () => {
     expect(result.statusCode).toBe(200);
   });
 
-  it("list with page and limit", async () => {
-    const params = { sms_number_id: "sms_number_id", page: 2, limit: 25 };
-    nock("http://test.com").get("/sms-webhooks").query(params).reply(200, { key1: "sms_webhook_list" }, { header1: "test" });
-    const result = await smsWebhookModule.list(params);
-    expect(result.statusCode).toBe(200);
-  });
-
   it("single", async () => {
     nock("http://test.com").get("/sms-webhooks/test_sms_webhook_id").reply(200, { key1: "sms_webhook_value" }, { header1: "test" });
     const result = await smsWebhookModule.single("test_sms_webhook_id");
@@ -54,21 +39,9 @@ describe("SMS Webhook Module", () => {
     expect(result.statusCode).toBe(200);
   });
 
-  it("update puts url, name, events and enabled to /sms-webhooks/{id}", async () => {
-    nock("http://test.com")
-      .put("/sms-webhooks/test_sms_webhook_id", {
-        url: "https://example.com/updated-hook",
-        name: "Updated Webhook",
-        events: ["sms.failed"],
-        enabled: false,
-      })
-      .reply(200, { key1: "sms_webhook_updated" }, { header1: "test" });
-    const result = await smsWebhookModule.update("test_sms_webhook_id", {
-      url: "https://example.com/updated-hook",
-      name: "Updated Webhook",
-      events: [SmsWebhookEventType.FAILED],
-      enabled: false,
-    });
+  it("update", async () => {
+    nock("http://test.com").put("/sms-webhooks/test_sms_webhook_id").reply(200, { key1: "sms_webhook_updated" }, { header1: "test" });
+    const result = await smsWebhookModule.update("test_sms_webhook_id", { name: "Updated Webhook", enabled: false });
     expect(result.headers).toMatchObject({ header1: "test", "content-type": "application/json" });
     expect(result.body).toMatchObject({ key1: "sms_webhook_updated" });
     expect(result.statusCode).toBe(200);

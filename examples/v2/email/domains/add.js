@@ -5,12 +5,12 @@ const mailerSend = new MailerSend({
   apiKey: process.env.API_KEY,
 });
 
-const domain = new Domain(
-  "example.com",
-  "rpsubdomain",
-  "ctsubdomain",
-  "irsubdomain",
-)
+const domain = new Domain({
+  name: "example.com",
+  returnPathSubdomain: "rp_subdomain",
+  customTrackingSubdomain: "ct_subdomain",
+  inboundRoutingSubdomain: "ir_subdomain",
+})
 
 mailerSend.email.domain.create(domain)
   .then((response) => console.log(response.body))
