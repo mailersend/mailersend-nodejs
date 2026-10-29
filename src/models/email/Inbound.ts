@@ -64,6 +64,16 @@ export class Inbound {
       return this;
     }
 
+    setCatchType(catchType: 'all' | 'one'): Inbound {
+      this.catch_type = catchType;
+      return this;
+    }
+
+    setMatchType(matchType: 'all' | 'one'): Inbound {
+      this.match_type = matchType;
+      return this;
+    }
+
     setForwards(forwards: InboundForward[]): Inbound {
       this.forwards = forwards;
       return this;
@@ -134,6 +144,16 @@ export class InboundUpdateParams {
 
     setInboundPriority(inboundPriority: number): InboundUpdateParams {
       this.inbound_priority = inboundPriority;
+      return this;
+    }
+
+    setCatchType(catchType: 'all' | 'one'): InboundUpdateParams {
+      this.catch_type = catchType;
+      return this;
+    }
+
+    setMatchType(matchType: 'all' | 'one'): InboundUpdateParams {
+      this.match_type = matchType;
       return this;
     }
 

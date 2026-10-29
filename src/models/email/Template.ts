@@ -11,6 +11,7 @@ export interface TemplateParams {
     tags?: string[];
     text: string;
     html: string;
+    /** @deprecated Not accepted when creating a template and not sent. Pass it to update() instead. */
     auto_generate?: boolean;
 }
 

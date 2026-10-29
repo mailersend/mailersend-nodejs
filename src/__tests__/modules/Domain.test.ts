@@ -40,10 +40,22 @@ describe("Domain Module", () => {
 
   it("list", async () => {
     const params = { limit: 20, page: 2, verified: true };
-    nock("http://test.com").get("/domains").query(params).reply(200, { key1: "key1_value" }, { header1: "test" });
+    nock("http://test.com").get("/domains").query({ ...params, verified: 1 }).reply(200, { key1: "key1_value" }, { header1: "test" });
     const getDomains = await domainModule.list(params);
     expect(getDomains.headers).toMatchObject({ header1: "test", "content-type": "application/json" });
     expect(getDomains.body).toMatchObject({ key1: "key1_value" });
+    expect(getDomains.statusCode).toBe(200);
+  });
+
+  it("list sends verified false as 0", async () => {
+    nock("http://test.com").get("/domains").query({ limit: 20, page: 2, verified: 0 }).reply(200, { key1: "key1_value" }, { header1: "test" });
+    const getDomains = await domainModule.list({ limit: 20, page: 2, verified: false });
+    expect(getDomains.statusCode).toBe(200);
+  });
+
+  it("list without verified does not send verified", async () => {
+    nock("http://test.com").get("/domains").query({ limit: 20, page: 2 }).reply(200, { key1: "key1_value" }, { header1: "test" });
+    const getDomains = await domainModule.list({ limit: 20, page: 2 });
     expect(getDomains.statusCode).toBe(200);
   });
 

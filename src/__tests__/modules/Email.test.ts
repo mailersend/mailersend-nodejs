@@ -293,9 +293,9 @@ describe("Email Module", () => {
     expect(result.statusCode).toBe(202);
   });
 
-  it("send email with rcpt_to", async () => {
+  it("send email omits rcpt_to", async () => {
     nock("http://test.com")
-      .post("/email", (body: any) => body.rcpt_to[0].email === "rcpt@example.com")
+      .post("/email", (body: any) => !("rcpt_to" in body) && body.to[0].email === "some_recipient@mail.com")
       .reply(202, {}, {});
     const emailParams = new EmailParams()
       .setFrom({ email: "some@email.com" })
@@ -353,6 +353,22 @@ describe("Email Module", () => {
     const result = await emailModule.sendBulk([emailParams1, emailParams2]);
     expect(result.statusCode).toBe(202);
     expect(result.body).toMatchObject({ bulk_email_id: "bulk_123" });
+  });
+
+  it("send bulk email omits rcpt_to from each item", async () => {
+    const emailParams = new EmailParams()
+      .setFrom({ email: "sender@example.com" })
+      .setTo([new Recipient("recipient@example.com")])
+      .setSubject("Subject")
+      .setText("Body")
+      .setRcptTo([new Recipient("rcpt@example.com")]);
+
+    nock("http://test.com")
+      .post("/bulk-email", (body: any) => !("rcpt_to" in body[0]) && body[0].to[0].email === "recipient@example.com")
+      .reply(202, { bulk_email_id: "bulk_123" }, {});
+
+    const result = await emailModule.sendBulk([emailParams]);
+    expect(result.statusCode).toBe(202);
   });
 
   it("get bulk", async () => {

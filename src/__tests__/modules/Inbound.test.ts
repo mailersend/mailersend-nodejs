@@ -32,7 +32,9 @@ describe("Inbound Module", () => {
       .setCatchFilter({
         type: InboundFilterType.CATCH_RECIPIENT,
         filters: [{ comparer: ComparerType.EQUAL, value: "recipient@example.com" }],
-      });
+      })
+      .setCatchType("one")
+      .setMatchType("one");
 
     nock("http://test.com")
       .post("/inbound", (body) => {
@@ -46,7 +48,9 @@ describe("Inbound Module", () => {
           body.forwards[0].type === "webhook" &&
           body.forwards[0].value === "https://example.com/hook" &&
           body.match_filter !== undefined &&
-          body.catch_filter !== undefined;
+          body.catch_filter !== undefined &&
+          body.catch_type === "one" &&
+          body.match_type === "one";
       })
       .reply(201, { key1: "inbound_created_full" }, { header1: "test" });
 
@@ -106,7 +110,9 @@ describe("Inbound Module", () => {
       })
       .setCatchFilter({
         type: InboundFilterType.CATCH_ALL,
-      });
+      })
+      .setCatchType("one")
+      .setMatchType("one");
 
     nock("http://test.com")
       .put("/inbound/test_inbound_id", (body) => {
@@ -118,7 +124,9 @@ describe("Inbound Module", () => {
           Array.isArray(body.forwards) &&
           body.forwards.length === 1 &&
           body.match_filter !== undefined &&
-          body.catch_filter !== undefined;
+          body.catch_filter !== undefined &&
+          body.catch_type === "one" &&
+          body.match_type === "one";
       })
       .reply(200, { key1: "inbound_updated_full" }, { header1: "test" });
 

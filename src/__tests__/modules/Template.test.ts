@@ -58,7 +58,6 @@ describe("Template Module", () => {
         categories: ["cat1", "cat2"],
         domain_id: "domain_id",
         tags: ["tag1", "tag2"],
-        auto_generate: true,
       })
       .reply(201, { key1: "template_created" }, { header1: "test" });
     const result = await templateModule.create(params);
