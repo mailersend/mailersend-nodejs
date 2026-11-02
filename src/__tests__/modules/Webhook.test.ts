@@ -71,6 +71,29 @@ describe("Email Webhook Module", () => {
     expect(result.statusCode).toBe(201);
   });
 
+  it("create with suppressed, inbound rejected and list created events", async () => {
+    const webhookWithNewEvents = new EmailWebhook({
+      url: "https://example.com/webhook",
+      name: "Test Webhook",
+      events: [
+        EmailWebhookEventType.SUPPRESSED,
+        EmailWebhookEventType.INBOUND_MESSAGE_REJECTED,
+        EmailWebhookEventType.EMAIL_LIST_CREATED,
+      ],
+      domain_id: "test_domain_id",
+    });
+    nock("http://test.com")
+      .post("/webhooks", {
+        url: "https://example.com/webhook",
+        name: "Test Webhook",
+        events: ["activity.suppressed", "inbound_message.rejected", "email_list.created"],
+        domain_id: "test_domain_id",
+      })
+      .reply(201, { key1: "webhook_created" }, {});
+    const result = await webhookModule.create(webhookWithNewEvents);
+    expect(result.statusCode).toBe(201);
+  });
+
   it("list sends GET to /webhooks with domain_id and limit", async () => {
     nock("http://test.com")
       .get("/webhooks")
@@ -130,6 +153,14 @@ describe("Email Webhook Module", () => {
       .put("/webhooks/test_webhook_id", (body) => body.version === 2)
       .reply(200, { key1: "webhook_updated" }, {});
     const result = await webhookModule.update("test_webhook_id", { version: 2 });
+    expect(result.statusCode).toBe(200);
+  });
+
+  it("update omits editable", async () => {
+    nock("http://test.com")
+      .put("/webhooks/test_webhook_id", { name: "Updated Webhook" })
+      .reply(200, { key1: "webhook_updated" }, {});
+    const result = await webhookModule.update("test_webhook_id", { name: "Updated Webhook", editable: true });
     expect(result.statusCode).toBe(200);
   });
 

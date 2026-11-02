@@ -19,7 +19,8 @@ export class EmailWebhookModule extends RequestService {
     }
 
     async update(webhookId: string, updates: IEmailWebhookUpdateParams): Promise<APIResponse> {
-        return await this.put(`/webhooks/${webhookId}`, updates);
+        const { editable, ...body } = updates;
+        return await this.put(`/webhooks/${webhookId}`, body);
     }
 
     async delete(webhookId: string): Promise<APIResponse> {

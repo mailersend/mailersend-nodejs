@@ -57,6 +57,7 @@ export enum TokenScopeType {
   BLOCKLIST_MONITORING_FULL = "blocklist_monitoring_full",
   WHATSAPP_READ = "whatsapp_read",
   WHATSAPP_FULL = "whatsapp_full",
+  /** @deprecated Internal scope, not part of the public API. */
   IFTTT = "ifttt",
 }
 

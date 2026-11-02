@@ -70,6 +70,7 @@ export enum EmailWebhookEventType {
   CLICKED_UNIQUE = "activity.clicked_unique",
   UNSUBSCRIBED = "activity.unsubscribed",
   SPAM_COMPLAINT = "activity.spam_complaint",
+  SUPPRESSED = "activity.suppressed",
   SURVEY_OPENED = "activity.survey_opened",
   SURVEY_SUBMITTED = "activity.survey_submitted",
   IDENTITY_VERIFIED = "sender_identity.verified",
@@ -77,7 +78,9 @@ export enum EmailWebhookEventType {
   MAINTENANCE_END = "maintenance.end",
   DEFERRED = "activity.deferred",
   INBOUND_FORWARD_FAILED = "inbound_forward.failed",
+  INBOUND_MESSAGE_REJECTED = "inbound_message.rejected",
   EMAIL_SINGLE_VERIFIED = "email_single.verified",
+  EMAIL_LIST_CREATED = "email_list.created",
   EMAIL_LIST_VERIFIED = "email_list.verified",
   BULK_EMAIL_COMPLETED = "bulk_email.completed",
   RECIPIENT_ON_HOLD_ADDED = "recipient.on_hold_added",
@@ -105,5 +108,6 @@ export interface IEmailWebhookUpdateParams {
   events?: EmailWebhookEventType[];
   enabled?: boolean;
   version?: number;
+  /** @deprecated Not accepted when updating a webhook and not sent. */
   editable?: boolean;
 }

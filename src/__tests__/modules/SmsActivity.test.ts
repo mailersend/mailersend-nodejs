@@ -1,5 +1,6 @@
 import nock from "nock";
 import { SmsActivityModule } from "../../modules/sms/Activity.module";
+import { SmsActivityStatusType } from "../../models";
 
 describe("SMS Activity Module", () => {
   const smsActivityModule = new SmsActivityModule("test_key", "http://test.com");
@@ -13,4 +14,20 @@ describe("SMS Activity Module", () => {
     expect(result.statusCode).toBe(200);
   });
 
+  it("list sends date_from, date_to and status", async () => {
+    nock("http://test.com")
+      .get("/sms-activity")
+      .query({
+        date_from: "1443651141",
+        date_to: "2015-09-30T22:12:21Z",
+        status: ["sent", "delivered"],
+      })
+      .reply(200, { key1: "sms_activity_list" }, { header1: "test" });
+    const result = await smsActivityModule.list({
+      date_from: 1443651141,
+      date_to: "2015-09-30T22:12:21Z",
+      status: [SmsActivityStatusType.SENT, SmsActivityStatusType.DELIVERED],
+    });
+    expect(result.statusCode).toBe(200);
+  });
 });

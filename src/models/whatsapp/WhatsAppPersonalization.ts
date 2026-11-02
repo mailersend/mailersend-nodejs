@@ -1,8 +1,15 @@
+export interface WhatsAppMediaHeader {
+  link: string
+  filename?: string
+}
+
+export type WhatsAppNamedVariables = { [key: string]: string }
+
 export class WhatsAppPersonalization {
   to: string
   data: {
-    header?: string[]
-    body?: string[]
+    header?: string[] | WhatsAppNamedVariables | WhatsAppMediaHeader
+    body?: string[] | WhatsAppNamedVariables
     buttons?: string[]
   }
 
@@ -11,12 +18,12 @@ export class WhatsAppPersonalization {
     this.data = {}
   }
 
-  setHeader(header: string[]): WhatsAppPersonalization {
+  setHeader(header: string[] | WhatsAppNamedVariables | WhatsAppMediaHeader): WhatsAppPersonalization {
     this.data.header = header
     return this
   }
 
-  setBody(body: string[]): WhatsAppPersonalization {
+  setBody(body: string[] | WhatsAppNamedVariables): WhatsAppPersonalization {
     this.data.body = body
     return this
   }

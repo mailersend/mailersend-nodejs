@@ -43,11 +43,12 @@ export class EmailModule extends RequestService {
   }
 
   async send(params: EmailParams): Promise<APIResponse> {
-    return await this.post<EmailParams>("/email", params);
+    const { rcpt_to, ...body } = params;
+    return await this.post("/email", body);
   }
 
   async sendBulk(params: EmailParams[]): Promise<APIResponse> {
-    return await this.post<EmailParams[]>("/bulk-email", params);
+    return await this.post("/bulk-email", params.map(({ rcpt_to, ...body }) => body));
   }
 
   async getBulkStatus(bulkId: string): Promise<APIResponse> {

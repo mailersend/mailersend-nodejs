@@ -62,6 +62,15 @@ describe("Identity Module", () => {
     expect(result.statusCode).toBe(200);
   });
 
+  it("updateByEmail", async () => {
+    nock("http://test.com")
+      .put("/identities/email/sender@example.com", { name: "New Name" })
+      .reply(200, { key1: "identity_updated_by_email" }, { header1: "test" });
+    const result = await identityModule.updateByEmail("sender@example.com", { name: "New Name" });
+    expect(result.body).toMatchObject({ key1: "identity_updated_by_email" });
+    expect(result.statusCode).toBe(200);
+  });
+
   it("delete", async () => {
     nock("http://test.com").delete("/identities/test_identity_id").reply(204, {}, { header1: "test" });
     const result = await identityModule.delete("test_identity_id");

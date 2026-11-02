@@ -11,7 +11,10 @@ export class DomainModule extends RequestService {
   }
 
   async list(queryParams?: DomainQueryParams): Promise<APIResponse> {
-    return await this.get(`/domains`, queryParams);
+    if (queryParams?.verified === undefined) {
+      return await this.get(`/domains`, queryParams);
+    }
+    return await this.get(`/domains`, { ...queryParams, verified: queryParams.verified ? 1 : 0 });
   }
 
   async single(domainId: string): Promise<APIResponse> {

@@ -75,4 +75,17 @@ describe("Analytics Module", () => {
     const result = await analyticsModule.byReadingEnvironment(params);
     expect(result.statusCode).toBe(200);
   });
+
+  test.each([
+    ["byDate", "/analytics/date"],
+    ["byCountry", "/analytics/country"],
+    ["byUserAgent", "/analytics/ua-name"],
+    ["byReadingEnvironment", "/analytics/ua-type"],
+  ] as const)("%s with ISO 8601 and datetime string dates", async (method, path) => {
+    const params = { date_from: "2023-01-01T00:00:00Z", date_to: "2023-02-01 23:59:59", domain_id: "test_domain_id" };
+    nock("http://test.com").get(path).query(params).reply(200, { key1: "string_date_value" }, { header1: "test" });
+    const result = await analyticsModule[method](params);
+    expect(result.body).toMatchObject({ key1: "string_date_value" });
+    expect(result.statusCode).toBe(200);
+  });
 });

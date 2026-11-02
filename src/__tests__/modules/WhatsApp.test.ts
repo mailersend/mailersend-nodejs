@@ -43,4 +43,70 @@ describe("WhatsApp Module", () => {
 
     expect(response.statusCode).toBe(202)
   })
+
+  it("send with media header posts header.link and header.filename", async () => {
+    nock("http://test.com")
+      .post("/whatsapp/send", {
+        from: "12345678901",
+        to: ["19191234567"],
+        template_id: "template_id_123",
+        personalization: [
+          {
+            to: "19191234567",
+            data: {
+              header: { link: "https://www.example.com/invoices/12345.pdf", filename: "invoice-12345.pdf" },
+              body: ["John"],
+            },
+          },
+        ],
+      })
+      .reply(202, { id: "msg_id_789" }, { "x-message-id": "msg_id_789" })
+
+    const params = new WhatsAppParams()
+      .setFrom("12345678901")
+      .setTo(["19191234567"])
+      .setTemplateId("template_id_123")
+      .setPersonalization([
+        new WhatsAppPersonalization("19191234567")
+          .setHeader({ link: "https://www.example.com/invoices/12345.pdf", filename: "invoice-12345.pdf" })
+          .setBody(["John"]),
+      ])
+
+    const response = await whatsappModule.send(params)
+
+    expect(response.statusCode).toBe(202)
+  })
+
+  it("send with named variables posts header and body as objects", async () => {
+    nock("http://test.com")
+      .post("/whatsapp/send", {
+        from: "12345678901",
+        to: ["19191234567"],
+        template_id: "template_id_123",
+        personalization: [
+          {
+            to: "19191234567",
+            data: {
+              header: { order_number: "12345" },
+              body: { first_name: "John", order_date: "December 31, 2026" },
+            },
+          },
+        ],
+      })
+      .reply(202, { id: "msg_id_999" }, { "x-message-id": "msg_id_999" })
+
+    const params = new WhatsAppParams()
+      .setFrom("12345678901")
+      .setTo(["19191234567"])
+      .setTemplateId("template_id_123")
+      .setPersonalization([
+        new WhatsAppPersonalization("19191234567")
+          .setHeader({ order_number: "12345" })
+          .setBody({ first_name: "John", order_date: "December 31, 2026" }),
+      ])
+
+    const response = await whatsappModule.send(params)
+
+    expect(response.statusCode).toBe(202)
+  })
 })

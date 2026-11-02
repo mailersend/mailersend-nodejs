@@ -19,7 +19,8 @@ export class TemplateModule extends RequestService {
   }
 
   async create(params: TemplateParams): Promise<APIResponse> {
-    return await this.post<TemplateParams>(`/templates`, params);
+    const { auto_generate, ...body } = params;
+    return await this.post(`/templates`, body);
   }
 
   async update(templateId: string, params: TemplateUpdateParams): Promise<APIResponse> {

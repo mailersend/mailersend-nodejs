@@ -23,6 +23,20 @@ describe("SMS Inbound Module", () => {
     expect(result.statusCode).toBe(200);
   });
 
+  test.each([
+    ["true is sent as 1", true, "1"],
+    ["false is sent as 0", false, "0"],
+    ["1 is sent unchanged", 1, "1"],
+    ["0 is sent unchanged", 0, "0"],
+  ] as const)("list enabled %s", async (_label, enabled, expected) => {
+    nock("http://test.com")
+      .get("/sms-inbounds")
+      .query({ sms_number_id: "sms_number_id", enabled: expected })
+      .reply(200, { key1: "sms_inbound_list" }, { header1: "test" });
+    const result = await smsInboundModule.list({ sms_number_id: "sms_number_id", enabled });
+    expect(result.statusCode).toBe(200);
+  });
+
   it("single", async () => {
     nock("http://test.com").get("/sms-inbounds/test_sms_inbound_id").reply(200, { key1: "sms_inbound_value" }, { header1: "test" });
     const result = await smsInboundModule.single("test_sms_inbound_id");

@@ -1,4 +1,9 @@
 import { MailerSendUtils } from "../../services/mailersend.utils";
+import { MailerSendUtils as PackageMailerSendUtils } from "../../index";
+
+const SIGNED_BODY = Buffer.from('{"type":"activity.sent"}');
+const SIGNED_SECRET = "secret";
+const SIGNED_SIGNATURE = "ecbed0658cfb61cfcf17bcd5edcb8cc21b1dc5097c0c8af8c3280f2e14186a37";
 
 describe("utils", () => {
   it("webhook check", async () => {
@@ -27,6 +32,25 @@ describe("utils", () => {
     expect(() => MailerSendUtils.verifyWebHook(Buffer.from("test"), "test", undefined as any)).toThrow(
       "No secret provided",
     );
+  });
+
+  it("is exported from the package entry", () => {
+    expect(PackageMailerSendUtils).toBe(MailerSendUtils);
+  });
+
+  it("headers without a Signature header", () => {
+    expect(() => MailerSendUtils.verifyWebHook(Buffer.from("test"), { "content-type": "application/json" }, "test")).toThrow(
+      "No signature provided",
+    );
+  });
+
+  test.each([
+    ["a lowercase signature key", { signature: SIGNED_SIGNATURE }],
+    ["a capitalised Signature key", { Signature: SIGNED_SIGNATURE }],
+    ["an array header value", { signature: [SIGNED_SIGNATURE] }],
+    ["a fetch Headers instance", new Headers({ Signature: SIGNED_SIGNATURE })],
+  ])("reads the Signature header from %s", (_label, headers) => {
+    expect(MailerSendUtils.verifyWebHook(SIGNED_BODY, headers, SIGNED_SECRET)).toBe(true);
   });
 
   it("returns false for a signature that is too short", async () => {

@@ -42,7 +42,6 @@ For more info, you can:
     - [Send email with precedence bulk header](#send-email-with-precedence-bulk-header)
     - [Send an email with tracking](#send-an-email-with-tracking)
     - [Send email with custom headers](#send-email-with-custom-headers)
-    - [Send an email with RCPT TO recipients](#send-an-email-with-rcpt-to-recipients)
   - [Bulk email API](#bulk-email-api)
     - [Send bulk emails](#send-bulk-emails)
     - [Get bulk request status](#get-bulk-request-status)
@@ -660,36 +659,6 @@ await mailerSend.email.send(emailParams);
 
 ```
 
-### Send an email with RCPT TO recipients
-
-> `rcptTo` is intended for SMTP source delivery and accepts a list of recipients.
-> When `to` is empty and `rcptTo` is provided, the addresses are forwarded as BCC.
-
-```js
-import 'dotenv/config';
-import { MailerSend, EmailParams, Sender, Recipient } from "mailersend";
-
-const mailerSend = new MailerSend({
-  apiKey: process.env.API_KEY,
-});
-
-const sentFrom = new Sender("you@yourdomain.com", "Your name");
-
-const rcptTo = [
-  new Recipient("rcpt@client.com")
-];
-
-const emailParams = new EmailParams()
-  .setFrom(sentFrom)
-  .setSubject("This is a Subject")
-  .setHtml("<strong>This is the HTML content</strong>")
-  .setText("This is the text content")
-  .setRcptTo(rcptTo);
-
-await mailerSend.email.send(emailParams);
-
-```
-
 ## Bulk email API
 
 ### Send bulk email
@@ -805,11 +774,11 @@ mailerSend.email.inbound.single("inbound_id")
 
 ### Add an inbound route
 
-Call `setIncludeAttachments(false)` to drop attachments before the message is forwarded. It defaults to `true`. Inline (CID) parts count as attachments, so images embedded in an HTML body are dropped too.
+Call `setIncludeAttachments(false)` to drop attachments before the message is forwarded. It defaults to `true`. Inline (CID) parts count as attachments, so images embedded in an HTML body are dropped too. Call `setCatchType("one")` to forward when any catch filter matches instead of all of them (only with `catch_recipient`), and `setMatchType("one")` for the same on `match_sender`, `match_domain` or `match_header` filters. Both default to `"all"`.
 
 ```js
 import 'dotenv/config';
-import { MailerSend, Inbound, InboundFilterType } from "mailersend";
+import { MailerSend, Inbound, InboundFilterType, ComparerType } from "mailersend";
 
 const mailerSend = new MailerSend({
   apiKey: process.env.API_KEY,
@@ -823,7 +792,14 @@ const inbound = new Inbound('inbound test', true, 'domain_id')
   })
   .setCatchFilter({
     type: InboundFilterType.CATCH_RECIPIENT,
+    filters: [
+      {
+        comparer: ComparerType.EQUAL,
+        value: "support",
+      },
+    ],
   })
+  .setCatchType("one")
   .setForwards([
     {
       type: "webhook",
@@ -905,7 +881,7 @@ const queryParams = {
   limit: 10, // Min: 10, Max: 100, Default: 25
   page: 2,
   date_from: 1443651141, // Unix timestamp
-  date_to: 1443651141, // Unix timestamp
+  date_to: 1443661141, // Unix timestamp
   event: [ActivityEventType.SENT, ActivityEventType.SOFT_BOUNCED, ActivityEventType.SUPPRESSED]
 }
 
@@ -1135,9 +1111,13 @@ const mailerSend = new MailerSend({
   apiKey: process.env.API_KEY,
 });
 
+const dateTo = Math.floor(Date.now() / 1000); // Unix timestamp; must not be in the future
+const dateFrom = dateTo - 30 * 24 * 60 * 60; // no more than 183 days in the past
+
 const queryParams: AnalyticsDateQueryParams = {
-  date_from: 1443651141,
-  date_to: 2443651141,
+  date_from: dateFrom,
+  date_to: dateTo,
+  // date_from / date_to also accept ISO 8601 ("YYYY-MM-DDTHH:MM:SSZ") or datetime ("YYYY-MM-DD HH:MM:SS") strings
   event: [ActivityEventType.CLICKED, ActivityEventType.OPENED],
   // group_by: AnalyticsGroupByType.DAYS, // optional: days, weeks, months, years
 };
@@ -1160,9 +1140,12 @@ const mailerSend = new MailerSend({
   apiKey: process.env.API_KEY,
 });
 
+const dateTo = Math.floor(Date.now() / 1000); // Unix timestamp; must not be in the future
+const dateFrom = dateTo - 30 * 24 * 60 * 60; // no more than 183 days in the past
+
 mailerSend.email.analytics.byCountry({
-  date_from: 1443651141,
-  date_to: 2443651141,
+  date_from: dateFrom,
+  date_to: dateTo,
 }).then(response => {
   console.log(response.body);
 }).catch(error => {
@@ -1181,9 +1164,12 @@ const mailerSend = new MailerSend({
   apiKey: process.env.API_KEY,
 });
 
+const dateTo = Math.floor(Date.now() / 1000); // Unix timestamp; must not be in the future
+const dateFrom = dateTo - 30 * 24 * 60 * 60; // no more than 183 days in the past
+
 mailerSend.email.analytics.byUserAgent({
-  date_from: 1443651141,
-  date_to: 2443651141,
+  date_from: dateFrom,
+  date_to: dateTo,
 }).then(response => {
   console.log(response.body);
 }).catch(error => {
@@ -1202,9 +1188,12 @@ const mailerSend = new MailerSend({
   apiKey: process.env.API_KEY,
 });
 
+const dateTo = Math.floor(Date.now() / 1000); // Unix timestamp; must not be in the future
+const dateFrom = dateTo - 30 * 24 * 60 * 60; // no more than 183 days in the past
+
 mailerSend.email.analytics.byReadingEnvironment({
-  date_from: 1443651141,
-  date_to: 2443651141,
+  date_from: dateFrom,
+  date_to: dateTo,
 }).then(response => {
   console.log(response.body);
 }).catch(error => {
@@ -2155,7 +2144,6 @@ mailerSend.email.template.create({
   domain_id: "domain_id",
   categories: ["welcome"],
   tags: ["welcome"],
-  auto_generate: false,
 })
   .then((response) => console.log(response.body))
   .catch((error) => console.log(error.body));
@@ -2397,6 +2385,18 @@ const whatsappParams = new WhatsAppParams()
   .setPersonalization(personalization);
 
 await mailersend.whatsapp.send(whatsappParams);
+
+```
+
+If the template has an image, video or document header, pass an object with the file's public `https` URL to `setHeader()` instead of an array (`filename` is only shown for document headers). Templates with named variables, such as `{{first_name}}`, take an object keyed by variable name instead of an array.
+
+```js
+new WhatsAppPersonalization("19191234567")
+  .setHeader({ link: "https://www.example.com/invoices/12345.pdf", filename: "invoice-12345.pdf" })
+  .setBody(["John"]);
+
+new WhatsAppPersonalization("19191234567")
+  .setBody({ first_name: "John", order_date: "December 31, 2026" });
 
 ```
 
@@ -2983,7 +2983,9 @@ const mailerSend = new MailerSend({
   apiKey: process.env.API_KEY,
 });
 
-mailerSend.sms.webhook.list("sms_number_id")
+mailerSend.sms.webhook.list({
+  sms_number_id: "sms_number_id",
+})
   .then((response) => console.log(response.body))
   .catch((error) => console.log(error.body));
 
@@ -3017,7 +3019,7 @@ const mailerSend = new MailerSend({
 
 const smsWebhook = new SmsWebhook()
   .setName("Sms Webhook")
-  .setUrl("https:://yourapp.com/hook")
+  .setUrl("https://yourapp.com/hook")
   .setSmsNumberId("sms_number_id")
   .setEnabled(true)
   .setEvents([SmsWebhookEventType.SENT, SmsWebhookEventType.DELIVERED])
@@ -3040,8 +3042,8 @@ const mailerSend = new MailerSend({
 
 mailerSend.sms.webhook.update("sms_webhook_id", {
   name: "Webhook",
-  url: "https:://yourapp.com/hook",
-  enabled: ["sms.sent", "sms.delivered", "sms.failed"],
+  url: "https://yourapp.com/hook",
+  events: ["sms.sent", "sms.delivered", "sms.failed"],
   enabled: true
 })
   .then((response) => console.log(response.body))
@@ -3122,7 +3124,7 @@ const smsInbound = new SmsInbound()
   .setSmsNumberId("sms_number_id")
   .setEnabled(true)
   .setName("Inbound Name")
-  .setForwardUrl("yourapp.com/hook")
+  .setForwardUrl("https://yourapp.com/hook")
   .setFilter({
     comparer: "equal",
     value: "START"
@@ -3148,7 +3150,7 @@ const smsInbound = new SmsInbound()
   .setSmsNumberId("sms_number_id")
   .setEnabled(true)
   .setName("Inbound Name Update")
-  .setForwardUrl("yourapp.com/hook")
+  .setForwardUrl("https://yourapp.com/hook")
   .setFilter({
     comparer: "equal",
     value: "START"
@@ -3230,7 +3232,7 @@ mailerSend.email.identity.singleByEmail('email_address')
 
 ```js
 import 'dotenv/config';
-import { MailerSend, Inbound, InboundFilterType } from "mailersend";
+import { MailerSend, Identity } from "mailersend";
 
 const mailerSend = new MailerSend({
   apiKey: process.env.API_KEY,
@@ -3468,7 +3470,7 @@ mailerSend.user.single("user_id")
 
 ```js
 import 'dotenv/config';
-import { MailerSend } from "mailersend";
+import { MailerSend, UserRole } from "mailersend";
 
 const mailerSend = new MailerSend({
   apiKey: process.env.API_KEY,
@@ -3476,8 +3478,8 @@ const mailerSend = new MailerSend({
 
 mailerSend.user.create({
   email: "user@example.com",
-  role: "manager",
-  // For role "custom", permissions is required:
+  role: UserRole.Manager,
+  // For role UserRole.CustomUser, permissions is required:
   // permissions: ["read-activity", "read-analytics"],
   // templates: ["template_id"],
   // domains: ["domain_id"],
@@ -3491,14 +3493,14 @@ mailerSend.user.create({
 
 ```js
 import 'dotenv/config';
-import { MailerSend } from "mailersend";
+import { MailerSend, UserRole } from "mailersend";
 
 const mailerSend = new MailerSend({
   apiKey: process.env.API_KEY,
 });
 
 mailerSend.user.update("user_id", {
-  role: "designer",
+  role: UserRole.Designer,
 })
   .then((response) => console.log(response.body))
   .catch((error) => console.log(error.body));
@@ -3841,10 +3843,10 @@ mailerSend.others.getApiQuota()
 
 ### Verify a webhook signature
 
-Use `MailerSendUtils.verifyWebHook()` to verify the HMAC signature on incoming webhook requests. This works for email, SMS and WhatsApp webhooks.
+Use `MailerSendUtils.verifyWebHook()` to verify the HMAC signature on incoming webhook requests. This works for email, SMS and WhatsApp webhooks. Pass the request headers (a Node/Express headers object or a fetch `Headers` instance) and it reads the `Signature` header for you, or pass the header value as a string.
 
 It returns `false` when the signature does not match the payload, and throws when one of its
-arguments is missing — including when the `x-mailersend-signature` header is absent, which is
+arguments is missing — including when the `Signature` header is absent, which is
 usually a sign that the route or the signing secret is misconfigured. Wrap the call so that a
 request without a valid signature is rejected instead of crashing the handler.
 
@@ -3855,7 +3857,7 @@ try {
   // rawBody must be the raw Buffer from the request (do not parse it as JSON first)
   const isValid = MailerSendUtils.verifyWebHook(
     rawBody,
-    request.headers['x-mailersend-signature'],
+    request.headers,
     process.env.WEBHOOK_SIGNING_SECRET
   );
 

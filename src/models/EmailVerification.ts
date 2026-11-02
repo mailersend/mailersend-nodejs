@@ -57,5 +57,6 @@ export enum EmailVerificationResultType {
     DISPOSABLE = 'disposable',
     MAILBOX_BLOCKED = 'mailbox_blocked',
     FAILED = 'failed',
+    QUEUED = 'queued',
 }
   
