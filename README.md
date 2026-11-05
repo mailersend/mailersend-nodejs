@@ -209,6 +209,7 @@ For more info, you can:
     - [Delete blocklist monitor](#delete-blocklist-monitor)
   - [Other endpoints](#other-endpoints)
     - [Get API quota](#get-api-quota)
+    - [Get account](#get-account)
 - [Utils](#utils)
   - [Verify a webhook signature](#verify-a-webhook-signature)
 - [Support and Feedback](#support-and-feedback)
@@ -3834,6 +3835,22 @@ const mailerSend = new MailerSend({
 });
 
 mailerSend.others.getApiQuota()
+  .then((response) => console.log(response.body))
+  .catch((error) => console.log(error.body));
+
+```
+
+### Get account
+
+```js
+import 'dotenv/config';
+import { MailerSend } from "mailersend";
+
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
+});
+
+mailerSend.others.getAccount()
   .then((response) => console.log(response.body))
   .catch((error) => console.log(error.body));
 

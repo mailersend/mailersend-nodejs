@@ -3,6 +3,7 @@ export * from "./EmailVerification";
 export * from "./Pagination";
 export * from "./User";
 export * from "./BlocklistMonitor";
+export * from "./Account";
 
 //Email Models
 export * from "./email/Attachment";
