@@ -20,7 +20,7 @@ For more info, you can:
 - Read our [Knowledge base ❓](https://www.mailersend.com/help) for guides on how to use MailerSend
 - Contact our [Support team 📨](https://www.mailersend.com/contact-us) if you require more assistance
 
-#### V1 Documentation can be found [here](https://github.com/mailersend/mailersend-nodejs/tree/v1#readme)
+#### Documentation for v1 of this SDK can be found [here](https://github.com/mailersend/mailersend-nodejs/tree/v1#readme)
 
 <br/>
 
@@ -28,6 +28,7 @@ For more info, you can:
 
 - [Installation](#installation)
   - [Setup](#setup)
+  - [API version](#api-version)
 - [Usage](#usage)
   - [Email](#email)
     - [Send an email](#send-an-email)
@@ -227,6 +228,19 @@ if you would like to use the env approach as shown in the examples, please run
 ```bash
 npm install dotenv --save
 ```
+
+### API version
+
+The SDK sends requests to API version `2026-10` by default, which returns the same responses as `v1`. To pin a version, or to stay on `v1`, set `apiVersion`:
+
+```js
+const mailerSend = new MailerSend({
+  apiKey: process.env.API_KEY,
+  apiVersion: "2026-10",
+});
+```
+
+See the [API changelog](https://developers.mailersend.com/api/changelog) for what changes between versions.
 
 ## Usage
 
