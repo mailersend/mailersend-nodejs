@@ -242,6 +242,8 @@ const mailerSend = new MailerSend({
 
 See the [API changelog](https://developers.mailersend.com/api/changelog) for what changes between versions.
 
+Later releases of the SDK only change this default in a major version. Set `apiVersion` to choose when you move.
+
 ## Usage
 
 ## Email
