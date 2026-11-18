@@ -1,6 +1,6 @@
 {
   "name": "mailersend",
-  "version": "3.7.0",
+  "version": "0.0.0-development",
   "description": "Node.js helper module for MailerSend API",
   "main": "./lib/index.js",
   "typings": "./lib/index.d.ts",
@@ -39,9 +39,7 @@
     "watch": "tsc --watch",
     "test": "jest --config jestconfig.json",
     "prepare": "npm run build",
-    "prepublishOnly": "npm test",
-    "version": "git add -A src",
-    "postversion": "git push && git push --tags"
+    "prepublishOnly": "npm test"
   },
   "dependencies": {
     "gaxios": "^7.0.0",

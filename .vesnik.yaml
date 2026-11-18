@@ -1,0 +1,36 @@
+# vesnik tags releases and writes the GitHub Release notes for `just release` and
+# `just hotfix-release`: https://github.com/nklmilojevic/vesnik
+#
+# The tag is the only source of the version. vesnik never commits: the publish
+# workflow writes the version from the tag into package.json before npm publish.
+
+provider: claude
+model: claude-haiku-5-5
+
+# The SDK is public. GitHub's generated notes copy PR titles, which carry internal
+# ticket keys, so a release without the model stops instead of using them.
+ai:
+  on_error: fail
+
+style:
+  preset: ste100
+  product: "MailerSend Node.js SDK (TypeScript) for the MailerSend API; release notes are read by developers who use the SDK."
+  rules:
+    - "Never write ticket keys such as MSD-15283 or SRE-76231, branch names, or names of internal tools and processes."
+    - "Describe each change by what it adds, changes or fixes for developers who use the SDK, such as the endpoint, method or option."
+    - "Leave out merge commits, Renovate dependency updates (\"chore(deps): ...\"), and version bump commits unless they change behavior."
+    - "Leave out reverted changes, and \"Fix\", \"Nits\" or \"update docs\" commits unless they change behavior."
+
+github:
+  append_generated_notes: false
+
+changelog:
+  enabled: false
+
+branch: main
+
+breaking_bumps_minor: true
+
+packages:
+  - path: .
+    ecosystem: none
