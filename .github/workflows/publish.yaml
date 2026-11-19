@@ -1,7 +1,8 @@
 name: NPM Publish
 on:
-  release:
-    types: [created]
+  push:
+    tags:
+      - "v*"
 jobs:
   build:
     runs-on: ubuntu-24.04
@@ -13,5 +14,20 @@ jobs:
         with:
           node-version: 24
           registry-url: "https://registry.npmjs.org"
-      - run: npm install
-      - run: npm publish
+      # The tag is the only source of the version; package.json holds a placeholder.
+      - name: Set the version from the tag
+        run: |
+          if ! [[ "$GITHUB_REF_NAME" =~ ^v[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z.]+)?$ ]]; then
+            echo "::error::Tag $GITHUB_REF_NAME is not a version such as v1.2.3"
+            exit 1
+          fi
+          npm version "${GITHUB_REF_NAME#v}" --no-git-tag-version
+      - run: npm ci
+      # A pre-release such as v3.8.0-rc.1 must not become the default install.
+      - name: Publish
+        run: |
+          if [[ "$GITHUB_REF_NAME" == *-* ]]; then
+            npm publish --tag next
+          else
+            npm publish
+          fi

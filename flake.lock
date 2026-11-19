@@ -18,7 +18,29 @@
     },
     "root": {
       "inputs": {
-        "nixpkgs": "nixpkgs"
+        "nixpkgs": "nixpkgs",
+        "vesnik": "vesnik"
+      }
+    },
+    "vesnik": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1792501163,
+        "narHash": "sha256-NL9FUQSh2m8WD67KBuWi0Y5jy+qkGE/0dT+BC3MJD60=",
+        "owner": "nklmilojevic",
+        "repo": "vesnik",
+        "rev": "ee5d22cdabf097da4fbcd975da9473a8be78ea28",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nklmilojevic",
+        "ref": "v0.2.0",
+        "repo": "vesnik",
+        "type": "github"
       }
     }
   },
