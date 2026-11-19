@@ -8,9 +8,12 @@ import { UserModule } from "./User.module";
 import { BlocklistMonitorModule } from "./BlocklistMonitor.module";
 import { WhatsAppModule } from "./WhatsApp.module";
 
+export const DEFAULT_API_VERSION = "2026-10";
+const API_VERSION_PATTERN = /^(v1|\d{4}-(0[1-9]|1[0-2]))$/;
+
 export class MailerSend {
   private readonly apiKey: string;
-  private baseUrl: string = "https://api.mailersend.com/v1";
+  private readonly baseUrl: string;
   sms: SMSModule;
   token: TokenModule;
   email: EmailModule;
@@ -22,6 +25,13 @@ export class MailerSend {
   whatsapp: WhatsAppModule;
 
   constructor(config: MailerSendConfig) {
+    const apiVersion = config.apiVersion ?? DEFAULT_API_VERSION;
+
+    if (!API_VERSION_PATTERN.test(apiVersion)) {
+      throw new Error(`apiVersion must be "v1" or a dated version such as "${DEFAULT_API_VERSION}", got "${apiVersion}"`);
+    }
+
+    this.baseUrl = `https://api.mailersend.com/${apiVersion}`;
     this.apiKey = config.apiKey;
     this.token = new TokenModule(config.apiKey, this.baseUrl);
     this.email = new EmailModule(config.apiKey, this.baseUrl);
@@ -37,4 +47,5 @@ export class MailerSend {
 
 export interface MailerSendConfig {
   apiKey: string;
+  apiVersion?: string;
 }
