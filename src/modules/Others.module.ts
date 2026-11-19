@@ -8,4 +8,8 @@ export class OthersModule extends RequestService {
   async getApiQuota(): Promise<APIResponse> {
     return await this.get("/api-quota");
   }
+
+  async getAccount(): Promise<APIResponse> {
+    return await this.get("/account");
+  }
 }
